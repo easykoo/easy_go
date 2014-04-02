@@ -1,0 +1,165 @@
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index"><strong>Easy Go</strong></a>
+        </div>
+        <!-- /.navbar-header -->
+        <div class="navbar-header">
+        <ul class="nav navbar-top-links navbar-right" style="float:right">
+            <li class="dropdown">
+                <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">language
+                    <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:changeLanguage('zh_CN')">中文/简体</a></li>
+                    <li><a href="javascript:changeLanguage('en')">English</a></li>
+                </ul>
+            </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:">
+                        <span id="feedbackCount" class="badge"></span>
+                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul id="feedback_notification" class="dropdown-menu dropdown-messages">
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:">
+                    <i class="fa fa-user fa-fw"></i> {{.Session.SignedUser.Username}} <i class="fa fa-caret-down"></i></a>
+                <ul class="dropdown-menu dropdown-user">
+                        <li><a href="/settings/settings"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        </li>
+                        <li><a href="/profile/profile"><i class="fa fa-user fa-fw"></i>Profile</a>
+                        </li>
+                    <li class="divider"></li>
+                    <li><a href="/user/logout"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+            </div>
+    </nav>
+<script type="text/javascript">
+
+    var feedbackList = null;
+
+    var getTop5Feedback = function () {
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: 'feedback/ajax/getTop5Feedback',
+            data: null,
+            success: function (data) {
+                $('#feedback_notification').empty();
+                var html = '';
+                if (data != null) {
+                    feedbackList = data;
+                    $.each(data, function (index, feedback) {
+                        html += '<li>'
+                                + '<a href="javascript:readFeedbackWithCallback(' + feedback.feedbackId + ',getTop5Feedback, getFeedbackCount)">'
+                                + '<div>'
+                                + '<strong>' + (feedback.name.length <= 5 ? feedback.name : (feedback.name.substr(0, 5) + '... ')) + '</strong>'
+                                + '<span class="pull-right text-muted">'
+                                + '<em>' + timeStamp2String(feedback.createDate) + '</em>'
+                                + '</span>'
+                                + '</div>'
+                                + '<div>' + (feedback.content.length <= 30 ? feedback.content : (feedback.content.substr(0, 30) + '... ')) + '</div>'
+                                + '</a>'
+                                + '</li>'
+                                + '<li class="divider"></li>'
+                    });
+
+                    html += '<li>'
+                            + '<a class="text-center" href="javascript:viewAllFeedback()">'
+                            + '<strong><spring:message code="label.view.all.message"/></strong>'
+                            + ' <i class="fa fa-angle-right"></i>'
+                            + '</a>'
+                            + '</li>'
+                    $('#feedback_notification').html(html);
+                }
+            }
+        });
+    };
+
+    var getFeedbackCount = function () {
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: 'feedback/ajax/getFeedbackCount',
+            data: null,
+            success: function (data) {
+                if (data == 0) {
+                    $('#feedbackCount').empty();
+                } else {
+                    $('#feedbackCount').text(data);
+                }
+            }
+        });
+    };
+
+    var timeStamp2String = function (time) {
+        var datetime = new Date();
+        datetime.setTime(time);
+        var year = datetime.getFullYear();
+        var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+        var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+        var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
+        var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+        var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+        return hour + ":" + minute + ":" + second + " " + month + "/" + date + "/" + year;
+    };
+
+    var readFeedbackWithCallback = function (id, fnCallback1, fnCallback2) {
+        $.each(feedbackList, function (index, feedback) {
+            if (feedback.feedbackId == id) {
+                bootbox.dialog({
+                    message: feedback.content,
+                    title: feedback.name,
+                    buttons: {
+                        success: {
+                            label: '<spring:message code="label.ok" />',
+                            className: "btn-success",
+                            callback: function () {
+                                $.ajax({
+                                    dataType: "json",
+                                    type: "POST",
+                                    url: 'feedback/ajax/readFeedback',
+                                    data: {id: id},
+                                    success: function (data) {
+                                        if (data.success) {
+                                            if (fnCallback1 != null)fnCallback1();
+                                            if (fnCallback2 != null)fnCallback2();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    };
+
+    var viewAllFeedback = function () {
+        location.href = "feedback/allFeedback";
+    }
+
+    $(document).ready(function () {
+
+        getFeedbackCount();
+        setInterval(getFeedbackCount, 10000);
+        getTop5Feedback();
+        setInterval(getTop5Feedback, 10000);
+    });
+
+</script>
