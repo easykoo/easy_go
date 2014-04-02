@@ -78,11 +78,6 @@ func main() {
 			r.Get("/dashboard", handler.DashboardHandler)
 		})
 
-	m.Group("/layout", func(r martini.Router) {
-			r.Get("/head", handler.HeadHandler)
-			r.Get("/left", handler.LeftHandler)
-		})
-
 	log.Info("server is started...")
 	os.Setenv("PORT", "80")
 	m.Run()
