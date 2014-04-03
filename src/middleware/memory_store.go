@@ -1,15 +1,16 @@
 package middleware
 
 import (
-	"encoding/base32"
-	"net/http"
-	"strings"
-
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
 	"github.com/qiniu/log"
-	"time"
+
 	"util"
+
+	"encoding/base32"
+	"net/http"
+	"strings"
+	"time"
 )
 
 // MemoryStore ------------------------------------------------------------

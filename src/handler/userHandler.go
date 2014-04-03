@@ -1,12 +1,12 @@
 package handler
 
 import (
+	"github.com/martini-contrib/binding"
+	"github.com/qiniu/log"
+
 	"middleware"
 	"model"
 	"util"
-
-	"github.com/qiniu/log"
-	"github.com/martini-contrib/binding"
 )
 
 func LogoutHandler(resp middleware.Response) {

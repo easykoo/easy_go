@@ -1,18 +1,19 @@
 package middleware
 
 import (
+	"github.com/gorilla/securecookie"
+	. "github.com/gorilla/sessions"
+	"github.com/qiniu/log"
+
+	"util"
+
 	"encoding/base32"
 	"io"
 	"net/http"
 	"os"
 	"strings"
 	"sync"
-
-	"github.com/gorilla/securecookie"
-	. "github.com/gorilla/sessions"
-	"github.com/qiniu/log"
 	"time"
-	"util"
 )
 
 // FileStore ------------------------------------------------------------

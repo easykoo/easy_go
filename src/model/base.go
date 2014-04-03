@@ -3,10 +3,9 @@ package model
 import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/lunny/xorm"
+	"github.com/qiniu/log"
 
 	"util"
-
-	"github.com/qiniu/log"
 )
 
 var orm *xorm.Engine
@@ -18,9 +17,3 @@ func SetEngine() *xorm.Engine {
 	util.PanicIf(err)
 	return orm
 }
-
-type (
-	// Type TmplData represents data in the templates.
-	TmplData map[string]interface{}
-	Base struct{}
-)

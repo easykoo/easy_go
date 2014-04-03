@@ -5,6 +5,7 @@ import (
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
+
 	"net/http"
 )
 
@@ -39,14 +40,14 @@ type Response interface {
 }
 
 type response struct {
-	Response map[interface{}]interface{}
-	Session  map[interface{}]interface{}
-	Rnd               render.Render
-	R        *http.Request
-	S                 sessions.Session
-	FormErr           binding.Errors
-	Messages          []string
-	CommonErrors      []string
+	Response     map[interface{}]interface{}
+	Session      map[interface{}]interface{}
+	Rnd          render.Render
+	R            *http.Request
+	S            sessions.Session
+	FormErr      binding.Errors
+	Messages     []string
+	CommonErrors []string
 }
 
 func NewResponse() *response {

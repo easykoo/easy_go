@@ -3,9 +3,10 @@ package model
 import (
 	"github.com/martini-contrib/binding"
 	"github.com/qiniu/log"
+
 	"net/http"
-	"time"
 	"regexp"
+	"time"
 )
 
 type User struct {
@@ -37,11 +38,11 @@ func (user *User) Exist() (bool, error) {
 }
 
 func (user *User) ExistUsername() (bool, error) {
-	return orm.Get(&User{Username:user.Username})
+	return orm.Get(&User{Username: user.Username})
 }
 
 func (user *User) ExistEmail() (bool, error) {
-	return orm.Get(&User{Email:user.Email})
+	return orm.Get(&User{Email: user.Email})
 }
 
 func (user *User) GetUser() (*User, error) {
@@ -62,8 +63,8 @@ func (user *User) SelectAll() ([]User, error) {
 }
 
 type UserLoginForm struct {
-	Username   string    `form:"username" binding:"required"`
-	Password   string    `form:"password" binding:"required"`
+	Username string `form:"username" binding:"required"`
+	Password string `form:"password" binding:"required"`
 }
 
 func (user *UserLoginForm) Validate(errors *binding.Errors, req *http.Request) {
@@ -76,9 +77,9 @@ func (user *UserLoginForm) Validate(errors *binding.Errors, req *http.Request) {
 }
 
 type UserRegisterForm struct {
-	Username   string    `form:"username" binding:"required"`
-	Password   string    `form:"password" binding:"required"`
-	Email      string    `form:"email" binding:"required"`
+	Username string `form:"username" binding:"required"`
+	Password string `form:"password" binding:"required"`
+	Email    string `form:"email" binding:"required"`
 }
 
 func (user *UserRegisterForm) Validate(errors *binding.Errors, req *http.Request) {
