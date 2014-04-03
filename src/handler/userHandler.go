@@ -19,16 +19,12 @@ func LoginHandler(resp middleware.Response, formErr binding.Errors, loginUser mo
 	switch resp.Req().Method {
 	case "POST":
 		resp.JoinErrors(formErr)
-		log.Debug(loginUser)
 		user := &model.User{Username: loginUser.Username, Password: loginUser.Password}
-		log.Debug(user)
 		if !resp.HasError() {
 			if has, err := user.Exist(); has {
-				log.Debug(has)
 				util.PanicIf(err)
 				var result *model.User
 				result, err = user.GetUser()
-				log.Debug(result)
 				util.PanicIf(err)
 				resp.Sn().Set("SignedUser", result)
 				resp.SessionSet("SignedUser", result)
@@ -37,7 +33,8 @@ func LoginHandler(resp middleware.Response, formErr binding.Errors, loginUser mo
 				users, err = user.SelectAll()
 				util.PanicIf(err)
 				resp.Set("users", users)
-				resp.Render().HTML(200, "admin/dashboard", resp)
+				log.Debug(result.Username, "login")
+				resp.Render().Redirect("/admin/dashboard", 302)
 			} else {
 				resp.Set("user", user)
 				resp.AddError("invalid username or password")
@@ -68,7 +65,7 @@ func RegisterHandler(resp middleware.Response, formErr binding.Errors, user mode
 		}
 
 		if !resp.HasError() {
-			err := dbUser.Save()
+			err := dbUser.Insert()
 			util.PanicIf(err)
 			resp.AddMessage("Register successfully!")
 		} else {

@@ -4,7 +4,6 @@ import (
 	"github.com/martini-contrib/binding"
 	"github.com/qiniu/log"
 
-	"net/http"
 	"regexp"
 	"time"
 )
@@ -14,21 +13,21 @@ type User struct {
 	Username   string    `form:"username" xorm:"varchar(20) not null"`
 	Password   string    `form:"password" xorm:"varchar(60) not null"`
 	FullName   string    `form:"fullName" xorm:"varchar(20) null"`
-	Gender     int       `form:"gender" xorm:"int(1) "`
+	Gender     int       `form:"gender" xorm:"int(1) default 0"`
 	Qq         int       `form:"qq" xorm:"int(16) default null"`
 	Tel        string    `form:"tel" xorm:"varchar(20) null"`
 	Postcode   string    `form:"postcode" xorm:"varchar(10) default null"`
 	Address    string    `form:"address" xorm:"varchar(80) default null"`
-	Email      string    `form:"email" json:"email" xorm:"varchar(45) default null"`
-	RoleId     int       `xorm:"int(3) not null default 3"`
-	DeptId     int       `xorm:"int(3) not null default 1"`
+	Email      string    `form:"email" xorm:"varchar(45) unique"`
+	RoleId     int       `xorm:"int(3) default 3"`
+	DeptId     int       `xorm:"int(3) default 1"`
 	Active     bool      `xorm:"tinyint(1) default 0"`
 	Locked     bool      `xorm:"tinyint(1) default 0"`
 	FailTime   int       `xorm:"int(1) default 0"`
 	EffectDate time.Time `xorm:"datetime default null"`
-	CreateUser string    `xorm:"varchar(20) default null"`
+	CreateUser string    `xorm:"varchar(20) default 'SYSTEM'"`
 	CreateDate time.Time `xorm:"datetime created"`
-	UpdateUser string    `xorm:"varchar(20) default null"`
+	UpdateUser string    `xorm:"varchar(20) default 'SYSTEM'"`
 	UpdateDate time.Time `xorm:"datetime updated"`
 	Version    int       `xorm:"int(11) version"`
 }
@@ -50,9 +49,19 @@ func (user *User) GetUser() (*User, error) {
 	return user, err
 }
 
-func (user *User) Save() error {
-	_, err := orm.Insert(user)
-	log.Println("user inserted")
+func (user *User) Insert() error {
+	user.DeptId = 1
+	user.RoleId = 3
+	user.CreateUser = "SYSTEM"
+	user.UpdateUser = "SYSTEM"
+	_, err := orm.InsertOne(user)
+	log.Println(user.Username, "inserted")
+	return err
+}
+
+func (user *User) Delete() error {
+	_, err := orm.Delete(user)
+	log.Println(user.Username, "deleted")
 	return err
 }
 
@@ -67,7 +76,7 @@ type UserLoginForm struct {
 	Password string `form:"password" binding:"required"`
 }
 
-func (user *UserLoginForm) Validate(errors *binding.Errors, req *http.Request) {
+func (user *UserLoginForm) Validate(errors *binding.Errors) {
 	if len(user.Username) < 5 {
 		errors.Fields["username"] = "Length of username should be longer than 5."
 	}
@@ -82,7 +91,7 @@ type UserRegisterForm struct {
 	Email    string `form:"email" binding:"required"`
 }
 
-func (user *UserRegisterForm) Validate(errors *binding.Errors, req *http.Request) {
+func (user *UserRegisterForm) Validate(errors *binding.Errors) {
 	if len(user.Username) < 5 {
 		errors.Fields["username"] = "Length of username should be longer than 5."
 	}

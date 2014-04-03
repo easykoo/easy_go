@@ -15,5 +15,6 @@ func SetEngine() *xorm.Engine {
 	var err error
 	orm, err = xorm.NewEngine("mysql", "root:pass@/easy_go?charset=utf8")
 	util.PanicIf(err)
+	orm.ShowSQL = true
 	return orm
 }

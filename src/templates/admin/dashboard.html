@@ -85,9 +85,9 @@
                             <tbody>
                             <!--<c:forEach items="{.Response.page.results}" var="sessionLog" varStatus="status">-->
                                 <tr>
-                                    <td>{.Response.status.index}</td>
-                                    <td>{.Response.sessionLog.ip}</td>
-                                    <td>{.Response.sessionLog.createDateStr}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td id="{.Response.status.index}">
                                         <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={.Response.sessionLog.ip}"></script><script type="text/javascript">
                                         $('#{.Response.status.index+1}').text(remote_ip_info.country + remote_ip_info.province + remote_ip_info.city + remote_ip_info.district)</script>
@@ -150,15 +150,15 @@
                                 <th>#</th>
                                 <th>Total Count</th>
                                 <th>Month Count</th>
-                                <th>Day Count"/></th>
+                                <th>Day Count</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td>#</td>
-                                <td>{.Response.statistics.totalCount}</td>
-                                <td>{.Response.statistics.monthCount}</td>
-                                <td>{.Response.statistics.dayCount}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             </tbody>
                         </table>
@@ -191,7 +191,7 @@
     $(document).ready(function () {
         $('#dashboard').css({"background": "#DDDDDD"});
         $('#dataTable').dataTable();
-        setCheckSession();
+//        setCheckSession();
     });
 </script>
 </body>
