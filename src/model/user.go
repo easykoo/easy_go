@@ -14,7 +14,7 @@ type User struct {
 	Password   string    `form:"password" xorm:"varchar(60) not null"`
 	FullName   string    `form:"fullName" xorm:"varchar(20) null"`
 	Gender     int       `form:"gender" xorm:"int(1) default 0"`
-	Qq         int       `form:"qq" xorm:"int(16) default null"`
+	Qq         int       `form:"qq" xorm:"varchar(16) default null"`
 	Tel        string    `form:"tel" xorm:"varchar(20) null"`
 	Postcode   string    `form:"postcode" xorm:"varchar(10) default null"`
 	Address    string    `form:"address" xorm:"varchar(80) default null"`
@@ -24,7 +24,6 @@ type User struct {
 	Active     bool      `xorm:"tinyint(1) default 0"`
 	Locked     bool      `xorm:"tinyint(1) default 0"`
 	FailTime   int       `xorm:"int(1) default 0"`
-	EffectDate time.Time `xorm:"datetime default null"`
 	CreateUser string    `xorm:"varchar(20) default 'SYSTEM'"`
 	CreateDate time.Time `xorm:"datetime created"`
 	UpdateUser string    `xorm:"varchar(20) default 'SYSTEM'"`

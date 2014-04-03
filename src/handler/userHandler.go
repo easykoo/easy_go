@@ -18,7 +18,7 @@ func LogoutHandler(resp middleware.Response) {
 func LoginHandler(resp middleware.Response, formErr binding.Errors, loginUser model.UserLoginForm) {
 	switch resp.Req().Method {
 	case "POST":
-		resp.JoinErrors(formErr)
+		resp.JoinFormErrors(formErr)
 		user := &model.User{Username: loginUser.Username, Password: loginUser.Password}
 		if !resp.HasError() {
 			if has, err := user.Exist(); has {
@@ -51,29 +51,35 @@ func LoginHandler(resp middleware.Response, formErr binding.Errors, loginUser mo
 func RegisterHandler(resp middleware.Response, formErr binding.Errors, user model.UserRegisterForm) {
 	switch resp.Req().Method {
 	case "POST":
-		resp.JoinErrors(formErr)
-		dbUser := model.User{Username: user.Username, Password: user.Password, Email: user.Email}
-
-		if exist, err := dbUser.ExistUsername(); exist {
-			util.PanicIf(err)
-			resp.AddFieldError("username", "This username already exists.")
-		}
-
-		if exist, err := dbUser.ExistEmail(); exist {
-			util.PanicIf(err)
-			resp.AddFieldError("email", "This email already exists.")
-		}
-
+		log.Println(formErr)
+		resp.SetFormErrors(formErr)
+		log.Println(resp.FieldErrors())
 		if !resp.HasError() {
-			err := dbUser.Insert()
-			util.PanicIf(err)
-			resp.AddMessage("Register successfully!")
-		} else {
-			resp.Set("user", user)
-		}
+			dbUser := model.User{Username: user.Username, Password: user.Password, Email: user.Email}
 
-		log.Println(resp)
-		resp.Render().HTML(200, "user/register", resp)
+			if exist, err := dbUser.ExistUsername(); exist {
+				util.PanicIf(err)
+				resp.AddFieldError("username", "This username already exists.")
+			}
+
+			if exist, err := dbUser.ExistEmail(); exist {
+				util.PanicIf(err)
+				resp.AddFieldError("email", "This email already exists.")
+			}
+
+			log.Println(resp.FieldErrors())
+			if !resp.HasError() {
+				err := dbUser.Insert()
+				util.PanicIf(err)
+				resp.AddMessage("Register successfully!")
+			} else {
+				resp.Set("user", user)
+			}
+			resp.Render().HTML(200, "user/register", resp)
+		}else {
+			resp.Set("user", user)
+			resp.Render().HTML(200, "user/register", resp)
+		}
 	default:
 		resp.Render().HTML(200, "user/register", resp)
 	}

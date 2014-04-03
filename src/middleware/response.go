@@ -20,8 +20,8 @@ type Response interface {
 	AddMessage(message string)
 	ClearMessages()
 	HasMessage() bool
-	SetErrors(err binding.Errors)
-	JoinErrors(err binding.Errors)
+	SetFormErrors(err binding.Errors)
+	JoinFormErrors(err binding.Errors)
 	AddError(err string)
 	AddFieldError(field string, err string)
 	ClearError()
@@ -105,11 +105,11 @@ func (self *response) HasMessage() bool {
 	return (len(self.Messages) > 0)
 }
 
-func (self *response) SetErrors(err binding.Errors) {
+func (self *response) SetFormErrors(err binding.Errors) {
 	self.FormErr = err
 }
 
-func (self *response) JoinErrors(err binding.Errors) {
+func (self *response) JoinFormErrors(err binding.Errors) {
 	self.initIf()
 	for key, val := range err.Fields {
 		if _, exists := self.FormErr.Fields[key]; !exists {
@@ -148,7 +148,7 @@ func (self *response) ClearError() {
 }
 
 func (self *response) HasError() bool {
-	return (len(self.CommonErrors) > 0) || (len(self.FormErr.Overall) > 0) || (len(self.FormErr.Fields) > 0)
+	return self.HasCommonError() || self.HasFieldError() || self.HasOverallError()
 }
 
 func (self *response) HasCommonError() bool {
