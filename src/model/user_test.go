@@ -1,7 +1,7 @@
 package model
 
 import (
-	"util"
+	. "common"
 
 	"reflect"
 	"testing"
@@ -12,10 +12,10 @@ func Test_user(t *testing.T) {
 	user := &User{Username: "test4", Password: "11111", Email: "ddd3@ddd.com"}
 	user.Delete()
 	err := user.Insert()
-	util.PanicIf(err)
+	PanicIf(err)
 
 	dbUser, err1 := user.GetUser()
-	util.PanicIf(err1)
+	PanicIf(err1)
 	expect(t, dbUser.DeptId, 1)
 	expect(t, dbUser.RoleId, 3)
 }

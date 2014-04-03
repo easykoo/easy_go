@@ -92,7 +92,7 @@
                 <h1>Please sign in</h1>
 
                 <form role="form" action="/user/login" method="post">
-                    {{with .CommonErrors}}
+                    {{with .Errors}}
                     {{range . }}
                     <div>
                         {{.}}

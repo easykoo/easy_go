@@ -5,12 +5,12 @@ import (
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
-	cfg "github.com/Unknwon/goconfig"
-	"github.com/qiniu/log"
 
 	"handler"
 	"middleware"
 	"model"
+	"auth"
+	. "common"
 
 	"encoding/gob"
 	"html/template"
@@ -19,18 +19,15 @@ import (
 )
 
 func init() {
-	c, _ := cfg.LoadConfigFile("config.ini")
-	s, _ := c.GetValue("", "good")
-	log.Debug(s)
 	gob.Register(model.User{})
-	log.SetOutputLevel(log.Ldebug)
-	log.Debug("server initializing...")
+	Log.Debug("server initializing...")
+	Log.Debugf("server initializing...%d",50)
 }
 
 func newMartini() *martini.ClassicMartini {
 	r := martini.NewRouter()
 	m := martini.New()
-	m.Use(martini.Logger())
+	m.Use(middleware.GetLogger())
 	m.Map(model.SetEngine())
 	m.Use(martini.Recovery())
 	m.Use(martini.Static("public"))
@@ -41,21 +38,21 @@ func newMartini() *martini.ClassicMartini {
 	//m.Use(sessions.Sessions("my_session", middleware.NewMemoryStore(60*30)))
 
 	m.Use(render.Renderer(render.Options{
-	Directory:  "templates",
-	Extensions: []string{".tmpl", ".html"},
-	Charset:    "UTF-8",
-	Funcs: []template.FuncMap{
-	{
-	"formatTime": func(args ...interface{}) string {
-		t1 := time.Unix(args[0].(int64), 0)
-		return t1.Format(time.Stamp)
-	},
-	"unescaped": func(args ...interface{}) template.HTML {
-		return template.HTML(args[0].(string))
-	},
-},
-},
-}))
+		Directory:  "templates",
+		Extensions: []string{".tmpl", ".html"},
+		Charset:    "UTF-8",
+		Funcs: []template.FuncMap{
+			{
+				"formatTime": func(args ...interface{}) string {
+					t1 := time.Unix(args[0].(int64), 0)
+					return t1.Format(time.Stamp)
+				},
+				"unescaped": func(args ...interface{}) template.HTML {
+					return template.HTML(args[0].(string))
+				},
+			},
+		},
+	}))
 
 	m.Use(middleware.InitContext())
 
@@ -69,20 +66,21 @@ func main() {
 	m.Get("/index", handler.IndexHandler)
 
 	m.Group("/user", func(r martini.Router) {
-			r.Any("/logout", handler.LogoutHandler)
-			r.Any("/login", binding.Form(model.UserLoginForm{}), handler.LoginHandler)
-			r.Any("/register", binding.Form(model.UserRegisterForm{}), handler.RegisterHandler)
-			//		r.Get("/:id", GetBooks)
-			//		r.Post("/new", NewBook)
-			//		r.Put("/update/:id", UpdateBook)
-			//		r.Delete("/delete/:id", DeleteBook)
-		})
+		r.Any("/logout", auth.AuthRequest(auth.SignInRequire), handler.LogoutHandler)
+		r.Any("/login", auth.AuthRequest(auth.SignOutRequire), binding.Form(model.UserLoginForm{}), handler.LoginHandler)
+		r.Any("/register", auth.AuthRequest(auth.SignOutRequire), binding.Form(model.UserRegisterForm{}), handler.RegisterHandler)
+		//		r.Get("/:id", GetBooks)
+		//		r.Post("/new", NewBook)
+		//		r.Put("/update/:id", UpdateBook)
+		//		r.Delete("/delete/:id", DeleteBook)
+	})
 
 	m.Group("/admin", func(r martini.Router) {
-			r.Get("/dashboard", handler.DashboardHandler)
-		})
+			r.Get("/dashboard", auth.AuthRequest(auth.SignInRequire), handler.DashboardHandler)
+			r.Get("/settings", auth.AuthRequest(auth.Module_Account), handler.DashboardHandler)
+	})
 
-	log.Info("server is started...")
+	Log.Info("server is started...")
 	os.Setenv("PORT", "80")
 	m.Run()
 }

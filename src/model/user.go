@@ -2,11 +2,12 @@ package model
 
 import (
 	"github.com/martini-contrib/binding"
-	"github.com/qiniu/log"
 
+	. "common"
+
+	"net/http"
 	"regexp"
 	"time"
-	"net/http"
 )
 
 type User struct {
@@ -55,13 +56,13 @@ func (user *User) Insert() error {
 	user.CreateUser = "SYSTEM"
 	user.UpdateUser = "SYSTEM"
 	_, err := orm.InsertOne(user)
-	log.Println(user.Username, "inserted")
+	Log.Info(user.Username, "inserted")
 	return err
 }
 
 func (user *User) Delete() error {
 	_, err := orm.Delete(user)
-	log.Println(user.Username, "deleted")
+	Log.Info(user.Username, "deleted")
 	return err
 }
 

@@ -2,11 +2,10 @@ package handler
 
 import (
 	"github.com/martini-contrib/binding"
-	"github.com/qiniu/log"
 
+	. "common"
 	"middleware"
 	"model"
-	"util"
 )
 
 func LogoutHandler(ctx *middleware.Context) {
@@ -15,22 +14,22 @@ func LogoutHandler(ctx *middleware.Context) {
 }
 
 func LoginHandler(ctx *middleware.Context, formErr binding.Errors, loginUser model.UserLoginForm) {
-	switch ctx.Method {
+	switch ctx.R.Method {
 	case "POST":
 		ctx.JoinFormErrors(formErr)
 		user := &model.User{Username: loginUser.Username, Password: loginUser.Password}
 		if !ctx.HasError() {
 			if has, err := user.Exist(); has {
-				util.PanicIf(err)
+				PanicIf(err)
 				var result *model.User
 				result, err = user.GetUser()
-				util.PanicIf(err)
+				PanicIf(err)
 				ctx.SessionSet("SignedUser", result)
 				var users []model.User
 				users, err = user.SelectAll()
-				util.PanicIf(err)
+				PanicIf(err)
 				ctx.Set("users", users)
-				log.Debug(result.Username, "login")
+				Log.Info(result.Username, " login")
 				ctx.Redirect("/admin/dashboard")
 			} else {
 				ctx.Set("user", user)
@@ -46,31 +45,31 @@ func LoginHandler(ctx *middleware.Context, formErr binding.Errors, loginUser mod
 }
 
 func RegisterHandler(ctx *middleware.Context, formErr binding.Errors, user model.UserRegisterForm) {
-	switch ctx.Method {
+	switch ctx.R.Method {
 	case "POST":
 		ctx.JoinFormErrors(formErr)
 		if !ctx.HasError() {
 			dbUser := model.User{Username: user.Username, Password: user.Password, Email: user.Email}
 
 			if exist, err := dbUser.ExistUsername(); exist {
-				util.PanicIf(err)
+				PanicIf(err)
 				ctx.AddFieldError("username", "This username already exists.")
 			}
 
 			if exist, err := dbUser.ExistEmail(); exist {
-				util.PanicIf(err)
+				PanicIf(err)
 				ctx.AddFieldError("email", "This email already exists.")
 			}
 
 			if !ctx.HasError() {
 				err := dbUser.Insert()
-				util.PanicIf(err)
+				PanicIf(err)
 				ctx.AddMessage("Register successfully!")
 			} else {
 				ctx.Set("user", user)
 			}
 			ctx.HTML(200, "user/register", ctx)
-		}else {
+		} else {
 			ctx.Set("user", user)
 			ctx.HTML(200, "user/register", ctx)
 		}

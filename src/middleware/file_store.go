@@ -3,9 +3,8 @@ package middleware
 import (
 	"github.com/gorilla/securecookie"
 	. "github.com/gorilla/sessions"
-	"github.com/qiniu/log"
 
-	"util"
+	. "common"
 
 	"encoding/base32"
 	"io"
@@ -84,7 +83,7 @@ func (s *FileStore) New(r *http.Request, name string) (*Session, error) {
 	var err error
 	if c, errCookie := r.Cookie(name); errCookie == nil {
 		err = securecookie.DecodeMulti(name, c.Value, &session.ID, s.Codecs...)
-		util.PanicIf(err)
+		PanicIf(err)
 		if err == nil {
 			err = s.load(session)
 			if err == nil {
@@ -182,19 +181,19 @@ func (s *FileStore) CheckFileSessions() {
 
 func (s *FileStore) removeFileSessions(first bool) {
 	dir, err := os.Open(".")
-	util.PanicIf(err)
+	PanicIf(err)
 	files, err := dir.Readdir(0)
-	util.PanicIf(err)
+	PanicIf(err)
 	for _, f := range files {
 		if !f.IsDir() && strings.HasPrefix(f.Name(), "session_") {
 			if first {
 				os.Remove(f.Name())
-				log.Println("Removed: ", f.Name())
+				Log.Info("Removed: ", f.Name())
 			} else {
 				if time.Now().Unix()-f.ModTime().Unix() >= 60*30 {
-					log.Println(time.Now().Unix() - f.ModTime().Unix())
+					Log.Info(time.Now().Unix() - f.ModTime().Unix())
 					os.Remove(f.Name())
-					log.Println("Removed: ", f.Name())
+					Log.Info("Removed: ", f.Name())
 				}
 			}
 		}
