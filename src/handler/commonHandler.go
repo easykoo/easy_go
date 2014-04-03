@@ -4,6 +4,6 @@ import (
 	"middleware"
 )
 
-func IndexHandler(resp middleware.Response) {
-	resp.Render().HTML(200, "index", resp)
+func IndexHandler(ctx *middleware.Context) {
+	ctx.HTML(200, "index", ctx)
 }

@@ -6,6 +6,7 @@ import (
 
 	"regexp"
 	"time"
+	"net/http"
 )
 
 type User struct {
@@ -75,22 +76,13 @@ type UserLoginForm struct {
 	Password string `form:"password" binding:"required"`
 }
 
-func (user *UserLoginForm) Validate(errors *binding.Errors) {
-	if len(user.Username) < 5 {
-		errors.Fields["username"] = "Length of username should be longer than 5."
-	}
-	if len(user.Password) < 5 {
-		errors.Fields["password"] = "Length of password should be longer than 5."
-	}
-}
-
 type UserRegisterForm struct {
 	Username string `form:"username" binding:"required"`
 	Password string `form:"password" binding:"required"`
 	Email    string `form:"email" binding:"required"`
 }
 
-func (user *UserRegisterForm) Validate(errors *binding.Errors) {
+func (user UserRegisterForm) Validate(errors *binding.Errors, r *http.Request) {
 	if len(user.Username) < 5 {
 		errors.Fields["username"] = "Length of username should be longer than 5."
 	}

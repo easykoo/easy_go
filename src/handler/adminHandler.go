@@ -1,9 +1,8 @@
 package handler
 
-import (
-	"middleware"
-)
+import "middleware"
 
-func DashboardHandler(resp middleware.Response) {
-	resp.Render().HTML(200, "admin/dashboard", resp)
+
+func DashboardHandler(ctx *middleware.Context) {
+	ctx.HTML(200, "admin/dashboard", ctx)
 }

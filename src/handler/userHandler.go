@@ -9,78 +9,72 @@ import (
 	"util"
 )
 
-func LogoutHandler(resp middleware.Response) {
-	resp.Sn().Set("SignedUser", nil)
-	resp.SessionSet("SignedUser", nil)
-	resp.Render().HTML(200, "index", resp)
+func LogoutHandler(ctx *middleware.Context) {
+	ctx.SessionSet("SignedUser", nil)
+	ctx.HTML(200, "index", ctx)
 }
 
-func LoginHandler(resp middleware.Response, formErr binding.Errors, loginUser model.UserLoginForm) {
-	switch resp.Req().Method {
+func LoginHandler(ctx *middleware.Context, formErr binding.Errors, loginUser model.UserLoginForm) {
+	switch ctx.Method {
 	case "POST":
-		resp.JoinFormErrors(formErr)
+		ctx.JoinFormErrors(formErr)
 		user := &model.User{Username: loginUser.Username, Password: loginUser.Password}
-		if !resp.HasError() {
+		if !ctx.HasError() {
 			if has, err := user.Exist(); has {
 				util.PanicIf(err)
 				var result *model.User
 				result, err = user.GetUser()
 				util.PanicIf(err)
-				resp.Sn().Set("SignedUser", result)
-				resp.SessionSet("SignedUser", result)
-				resp.RegisterSessionProperty("SignedUser")
+				ctx.SessionSet("SignedUser", result)
 				var users []model.User
 				users, err = user.SelectAll()
 				util.PanicIf(err)
-				resp.Set("users", users)
+				ctx.Set("users", users)
 				log.Debug(result.Username, "login")
-				resp.Render().Redirect("/admin/dashboard", 302)
+				ctx.Redirect("/admin/dashboard")
 			} else {
-				resp.Set("user", user)
-				resp.AddError("invalid username or password")
-				resp.Render().HTML(200, "user/login", resp)
+				ctx.Set("user", user)
+				ctx.AddError("invalid username or password")
+				ctx.HTML(200, "user/login", ctx)
 			}
 		} else {
-			resp.Render().HTML(200, "user/login", resp)
+			ctx.HTML(200, "user/login", ctx)
 		}
 	default:
-		resp.Render().HTML(200, "user/login", resp)
+		ctx.HTML(200, "user/login", ctx)
 	}
 }
 
-func RegisterHandler(resp middleware.Response, formErr binding.Errors, user model.UserRegisterForm) {
-	switch resp.Req().Method {
+func RegisterHandler(ctx *middleware.Context, formErr binding.Errors, user model.UserRegisterForm) {
+	switch ctx.Method {
 	case "POST":
-		log.Println(formErr)
-		resp.SetFormErrors(formErr)
-		log.Println(resp.FieldErrors())
-		if !resp.HasError() {
+		ctx.JoinFormErrors(formErr)
+		if !ctx.HasError() {
 			dbUser := model.User{Username: user.Username, Password: user.Password, Email: user.Email}
 
 			if exist, err := dbUser.ExistUsername(); exist {
 				util.PanicIf(err)
-				resp.AddFieldError("username", "This username already exists.")
+				ctx.AddFieldError("username", "This username already exists.")
 			}
 
 			if exist, err := dbUser.ExistEmail(); exist {
 				util.PanicIf(err)
-				resp.AddFieldError("email", "This email already exists.")
+				ctx.AddFieldError("email", "This email already exists.")
 			}
 
-			log.Println(resp.FieldErrors())
-			if !resp.HasError() {
+			if !ctx.HasError() {
 				err := dbUser.Insert()
 				util.PanicIf(err)
-				resp.AddMessage("Register successfully!")
+				ctx.AddMessage("Register successfully!")
 			} else {
-				resp.Set("user", user)
+				ctx.Set("user", user)
 			}
-			resp.Render().HTML(200, "user/register", resp)
+			ctx.HTML(200, "user/register", ctx)
 		}else {
-			resp.Set("user", user)
-			resp.Render().HTML(200, "user/register", resp)
+			ctx.Set("user", user)
+			ctx.HTML(200, "user/register", ctx)
 		}
 	default:
-		resp.Render().HTML(200, "user/register", resp)
+		ctx.HTML(200, "user/register", ctx)
 	}
 }
