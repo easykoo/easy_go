@@ -19,7 +19,7 @@ _cgo_gotypes.go
 _cgo_export.*
 session_*
 _testmain.go
-src
+log.txt
 *.exe
 *.test
 *.iml
