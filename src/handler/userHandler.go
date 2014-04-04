@@ -21,15 +21,13 @@ func LoginHandler(ctx *middleware.Context, formErr binding.Errors, loginUser mod
 		if !ctx.HasError() {
 			if has, err := user.Exist(); has {
 				PanicIf(err)
-				var result *model.User
-				result, err = user.GetUser()
 				PanicIf(err)
-				ctx.SessionSet("SignedUser", result)
+				ctx.SessionSet("SignedUser", user)
 				var users []model.User
 				users, err = user.SelectAll()
 				PanicIf(err)
 				ctx.Set("users", users)
-				Log.Info(result.Username, " login")
+				Log.Info(user.Username, " login")
 				ctx.Redirect("/admin/dashboard")
 			} else {
 				ctx.Set("user", user)
@@ -75,5 +73,23 @@ func RegisterHandler(ctx *middleware.Context, formErr binding.Errors, user model
 		}
 	default:
 		ctx.HTML(200, "user/register", ctx)
+	}
+}
+
+func ProfileHandler(ctx *middleware.Context, formErr binding.Errors, user model.User) {
+	switch ctx.R.Method {
+	case "POST":
+		ctx.JoinFormErrors(formErr)
+		if !ctx.HasError() {
+			err := user.Update()
+			PanicIf(err)
+			dbUser, err := user.GetUserById(user.Id)
+			PanicIf(err)
+			ctx.AddMessage("Profile changed successfully!")
+			ctx.SessionSet("SignedUser", dbUser)
+		}
+		ctx.HTML(200, "profile/profile", ctx)
+	default:
+		ctx.HTML(200, "profile/profile", ctx)
 	}
 }

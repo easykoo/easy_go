@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Page-Level Plugin CSS - Tables -->
+    <link href="/css/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- SB Admin CSS - Include with every page -->
+    <link href="/css/admin.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div id="wrapper">
+    {{template "layout/head" .}}
+    {{template "layout/left" .}}
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Profile</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <form id="profileForm" role="form" class="form-horizontal" method="post"
+                      action="/profile/profile">
+
+                    <input type="text"id="id" name="id" value="{{.Session.SignedUser.Id}}" hidden>
+
+                    <input type="text" id="version" value="{{.Session.SignedUser.Version}}" name="version" hidden>
+                    {{with .Messages}}
+                    <div class="form-group alert alert-success fade in">
+                        <button id='alert1' type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">&times;</button>
+                        {{range .}}
+                        {{.}}
+                        {{end}}
+                    </div>
+                    {{end}}
+                    </c:if>
+                    <div class="form-group">
+                        <label for="fullName" class="col-sm-2 control-label"><span style="color: red">*</span> FullName
+                        </label>
+
+                        <div class="col-sm-6">
+                            <input type="text" id="fullName" class="form-control" name="fullName"
+                                   value="{{.Session.SignedUser.FullName}}">
+                        </div>
+                        <div class="col-sm-4 control-label"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span style="color: red">*</span> Gender </label>
+
+                        <div class="col-sm-1">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="gender" id="gender1" value="1" {{checked .Session.SignedUser.Gender 1}}> Male </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="gender" id="gender2" value="0" {{checked .Session.SignedUser.Gender 0}}> Female </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 control-label gender"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="qq" class="col-sm-2 control-label"> QQ </label>
+
+                        <div class="col-sm-6">
+                            <input type="text" id="qq" class="form-control" name="qq"
+                                   value="{{.Session.SignedUser.Qq}}">
+                        </div>
+                        <div class="col-sm-4 control-label"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tel" class="col-sm-2 control-label"> Tel </label>
+
+                        <div class="col-sm-6">
+                            <input type="text" id="tel" class="form-control" name="tel"
+                                   value="{{.Session.SignedUser.Tel}}">
+                        </div>
+                        <div class="col-sm-4 control-label"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-2 control-label">Email </label>
+
+                        <div class="col-sm-6">
+                            <input type="text" id="email" class="form-control" name="email"
+                                   value="{{.Session.SignedUser.Email}}">
+                        </div>
+                        <div class="col-sm-4 control-label"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="postcode" class="col-sm-2 control-label">Postcode </label>
+
+                        <div class="col-sm-6">
+                            <input type="text" id="postcode" class="form-control" name="postcode"
+                                   value="{{.Session.SignedUser.Postcode}}">
+                        </div>
+                        <div class="col-sm-4 control-label"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address" class="col-sm-2 control-label">Address</label>
+
+                        <div class="col-sm-6">
+                            <input type="text" id="address" class="form-control" name="address"
+                                   value="{{.Session.SignedUser.Address}}">
+                        </div>
+                        <div class="col-sm-4 control-label"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-6">
+                            <button type="submit" class="btn btn-success btn-block">Change</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Core Scripts - Include with every page -->
+<script src="/js/jquery-1.10.2.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script src="/js/jquery.validate.method.js"></script>
+<script src="/js/jquery.metisMenu.js"></script>
+<script src="/js/admin.js"></script>
+<script src="/js/easykoo.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#profile').toggleClass('active').children('ul').collapse('toggle');
+        $('#changeProfile').css({"background": "#DDDDDD"});
+
+        $("#profileForm").validate({
+            rules: {
+                /*nickname: {
+                    required: true,
+                    minlength: 4,
+                    stringCheck: true
+                },*/
+                gender: {
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+//                    remote: "profile/ajax/checkEmail"
+                }
+            },
+            messages: {
+                nickname: {
+                    required: '<spring:message code="message.error.required"/>',
+                    minlength: '<spring:message code="message.error.min.length"/>',
+                    stringCheck: '<spring:message code="message.error.string.check"/>'
+                },
+                gender: '<spring:message code="message.error.required"/>',
+                email: {
+                    required: '<spring:message code="message.error.required"/>',
+                    email: '<spring:message code="message.error.wrong.email.format"/>',
+                    remote: '<spring:message code="message.error.already.exists"/>'
+                }
+            },
+            focusInvalid: true,
+            onkeyup: false,
+            errorClass: "error",
+            errorPlacement: function (error, element) {
+                if (element.attr("name") == "verifyCode")
+                    error.appendTo(element.parent("div").next("div").next("div"));
+                else if (element.attr("name") == "gender") {
+                    error.appendTo($(".gender"));
+                } else
+                    error.appendTo(element.parent("div").next("div"));
+            },
+            highlight: function (element, errorClass) {
+                if ($(element).attr("name") == "gender") {
+                    $(".gender").parent("div").addClass("has-error").removeClass("has-success");
+                } else
+                    $(element).parent("div").parent("div").addClass("has-error").removeClass("has-success");
+            },
+            success: function (label) {
+                label.parent("div").parent("div").removeClass("has-error").addClass("has-success");
+            },
+            submitHandler: function (form) {
+                form.submit();
+                return false;
+            }
+        });
+        setCheckSession();
+    })
+</script>
+</body>
+</html>

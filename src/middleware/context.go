@@ -11,35 +11,6 @@ import (
 
 var sessionProperties []string
 
-/*
-type Context interface {
-	Get(key string) interface{}
-	Set(key string, val interface{})
-	SessionSet(key string, val interface{})
-	Delete(key string)
-	Clear()
-	AddMessage(message string)
-	ClearMessages()
-	HasMessage() bool
-	SetFormErrors(err binding.Errors)
-	JoinFormErrors(err binding.Errors)
-	AddError(err string)
-	AddFieldError(field string, err string)
-	ClearError()
-	HasError() bool
-	HasCommonError() bool
-	HasFieldError() bool
-	HasOverallError() bool
-	OverallErrors() map[string]string
-	FieldErrors() map[string]string
-	initIf()
-	Render() render.Render
-	Req() *http.Request
-	Sn() sessions.Session
-	RegisterSessionProperty(property string)
-	TransferSessionProperties(s sessions.Session)
-}*/
-
 type Context struct {
 	render.Render
 	C        martini.Context

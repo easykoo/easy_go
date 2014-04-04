@@ -11,12 +11,12 @@ import (
 )
 
 type User struct {
-	Id         int       `form:"id" xorm:"int(11) not null autoincr"`
+	Id         int       `form:"id" xorm:"int(11) pk not null autoincr"`
 	Username   string    `form:"username" xorm:"varchar(20) not null"`
 	Password   string    `form:"password" xorm:"varchar(60) not null"`
 	FullName   string    `form:"fullName" xorm:"varchar(20) null"`
 	Gender     int       `form:"gender" xorm:"int(1) default 0"`
-	Qq         int       `form:"qq" xorm:"varchar(16) default null"`
+	Qq         string    `form:"qq" xorm:"varchar(16) default null"`
 	Tel        string    `form:"tel" xorm:"varchar(20) null"`
 	Postcode   string    `form:"postcode" xorm:"varchar(10) default null"`
 	Address    string    `form:"address" xorm:"varchar(80) default null"`
@@ -30,43 +30,55 @@ type User struct {
 	CreateDate time.Time `xorm:"datetime created"`
 	UpdateUser string    `xorm:"varchar(20) default 'SYSTEM'"`
 	UpdateDate time.Time `xorm:"datetime updated"`
-	Version    int       `xorm:"int(11) version"`
+	Version    int       `form:"version" xorm:"int(11) version"`
 }
 
-func (user *User) Exist() (bool, error) {
-	return orm.Get(user)
+func (self *User) Exist() (bool, error) {
+	return orm.Get(self)
 }
 
-func (user *User) ExistUsername() (bool, error) {
-	return orm.Get(&User{Username: user.Username})
+func (self *User) ExistUsername() (bool, error) {
+	return orm.Get(&User{Username: self.Username})
 }
 
-func (user *User) ExistEmail() (bool, error) {
-	return orm.Get(&User{Email: user.Email})
+func (self *User) ExistEmail() (bool, error) {
+	return orm.Get(&User{Email: self.Email})
 }
 
-func (user *User) GetUser() (*User, error) {
+func (self *User) GetUser() (*User, error) {
+	_, err := orm.Id(self.Id).Get(self)
+	return self, err
+}
+
+func (self *User) GetUserById(id int) (*User, error) {
+	user := &User{Id: id}
 	_, err := orm.Get(user)
 	return user, err
 }
 
-func (user *User) Insert() error {
-	user.DeptId = 1
-	user.RoleId = 3
-	user.CreateUser = "SYSTEM"
-	user.UpdateUser = "SYSTEM"
-	_, err := orm.InsertOne(user)
-	Log.Info(user.Username, "inserted")
+func (self *User) Insert() error {
+	self.DeptId = 1
+	self.RoleId = 3
+	self.CreateUser = "SYSTEM"
+	self.UpdateUser = "SYSTEM"
+	_, err := orm.InsertOne(self)
+	Log.Info(self.Username, "inserted")
 	return err
 }
 
-func (user *User) Delete() error {
-	_, err := orm.Delete(user)
-	Log.Info(user.Username, "deleted")
+func (self *User) Update() error {
+	_, err := orm.Id(self.Id).Update(self)
+	Log.Info(self.Username, "updated")
 	return err
 }
 
-func (user *User) SelectAll() ([]User, error) {
+func (self *User) Delete() error {
+	_, err := orm.Delete(self)
+	Log.Info(self.Username, "deleted")
+	return err
+}
+
+func (self *User) SelectAll() ([]User, error) {
 	var users []User
 	err := orm.Find(&users)
 	return users, err

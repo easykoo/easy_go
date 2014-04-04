@@ -6,11 +6,11 @@ import (
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
 
+	. "auth"
+	. "common"
 	"handler"
 	"middleware"
 	"model"
-	"auth"
-	. "common"
 
 	"encoding/gob"
 	"html/template"
@@ -21,7 +21,6 @@ import (
 func init() {
 	gob.Register(model.User{})
 	Log.Debug("server initializing...")
-	Log.Debugf("server initializing...%d",50)
 }
 
 func newMartini() *martini.ClassicMartini {
@@ -50,6 +49,12 @@ func newMartini() *martini.ClassicMartini {
 				"unescaped": func(args ...interface{}) template.HTML {
 					return template.HTML(args[0].(string))
 				},
+				"checked": func(args ...interface{}) string {
+					if args[0] == args[1] {
+						return "checked"
+					}
+					return ""
+				},
 			},
 		},
 	}))
@@ -66,9 +71,17 @@ func main() {
 	m.Get("/index", handler.IndexHandler)
 
 	m.Group("/user", func(r martini.Router) {
-		r.Any("/logout", auth.AuthRequest(auth.SignInRequire), handler.LogoutHandler)
-		r.Any("/login", auth.AuthRequest(auth.SignOutRequire), binding.Form(model.UserLoginForm{}), handler.LoginHandler)
-		r.Any("/register", auth.AuthRequest(auth.SignOutRequire), binding.Form(model.UserRegisterForm{}), handler.RegisterHandler)
+		r.Any("/logout", handler.LogoutHandler)
+		r.Any("/login", binding.Form(model.UserLoginForm{}), handler.LoginHandler)
+		r.Any("/register", binding.Form(model.UserRegisterForm{}), handler.RegisterHandler)
+		//		r.Get("/:id", GetBooks)
+		//		r.Post("/new", NewBook)
+		//		r.Put("/update/:id", UpdateBook)
+		//		r.Delete("/delete/:id", DeleteBook)
+	})
+
+	m.Group("/profile", func(r martini.Router) {
+		r.Any("/profile", AuthRequest(SignInRequired), binding.Form(model.User{}), handler.ProfileHandler)
 		//		r.Get("/:id", GetBooks)
 		//		r.Post("/new", NewBook)
 		//		r.Put("/update/:id", UpdateBook)
@@ -76,11 +89,11 @@ func main() {
 	})
 
 	m.Group("/admin", func(r martini.Router) {
-			r.Get("/dashboard", auth.AuthRequest(auth.SignInRequire), handler.DashboardHandler)
-			r.Get("/settings", auth.AuthRequest(auth.Module_Account), handler.DashboardHandler)
+		r.Get("/dashboard", AuthRequest(SignInRequired), handler.DashboardHandler)
+		r.Get("/settings", AuthRequest(Module_Account), handler.DashboardHandler)
 	})
 
 	Log.Info("server is started...")
-	os.Setenv("PORT", "80")
+	os.Setenv("PORT", Cfg.MustValue("", "http_port"))
 	m.Run()
 }
