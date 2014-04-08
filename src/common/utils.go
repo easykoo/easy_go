@@ -3,13 +3,8 @@ package common
 import (
 	"io"
 	"os"
+	"strconv"
 )
-
-func PanicIf(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
 
 var Log *Logger
 
@@ -22,4 +17,18 @@ func init() {
 		w = os.Stdout
 	}
 	Log = New(w, "", Lshortfile|Ldate|Lmicroseconds)
+}
+
+func PanicIf(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+func ParseInt(value string) int {
+	if value == "" {
+		return 0
+	}
+	val, _ := strconv.Atoi(value)
+	return val
 }

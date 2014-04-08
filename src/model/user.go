@@ -31,6 +31,7 @@ type User struct {
 	UpdateUser string    `json:"update_user" xorm:"varchar(20) default 'SYSTEM'"`
 	UpdateDate time.Time `json:"update_date" xorm:"datetime updated"`
 	Version    int       `form:"version" xorm:"int(11) version"`
+	Page       `xorm:"-"`
 }
 
 func (self *User) Exist() (bool, error) {
@@ -78,10 +79,34 @@ func (self *User) Delete() error {
 	return err
 }
 
+func (self *User) SetRole(roleId int) error {
+	var err error
+	self, err = self.GetUser()
+	_, err = orm.Update(&User{RoleId: roleId, Version: self.Version}, self)
+	return err
+}
+
+func (self *User) SetLock(lock bool) error {
+	var err error
+	self, err = self.GetUser()
+	_, err = orm.Update(&User{Locked: lock, Version: self.Version}, self)
+	return err
+}
+
 func (self *User) SelectAll() ([]User, error) {
 	var users []User
 	err := orm.Find(&users)
 	return users, err
+}
+
+func (self *User) SearchByPage() ([]User, int, error) {
+	var totalRecords int
+	var users []User
+	err := orm.Find(&users, self)
+	totalRecords = len(users)
+	users = users[:0]
+	err = orm.OrderBy(self.GetSortProperties()[0].Column+" "+self.GetSortProperties()[0].Direction).Limit(self.GetPageSize(), self.GetDisplayStart()).Find(&users, self)
+	return users, totalRecords, err
 }
 
 type UserLoginForm struct {

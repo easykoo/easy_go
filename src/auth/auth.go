@@ -48,13 +48,19 @@ func AuthRequest(privilege interface{}) martini.Handler {
 			return
 		case Url:
 			Log.Info("Checking style: ", "Url")
-			//todo check privilege
+			if user := ctx.SessionGet("SignedUser"); user != nil {
+				//todo check privilege
+				return
+			}
+			ctx.HTML(403, "error/403", ctx)
 			return
 		default:
 			Log.Info("Checking style: ", "Module")
-			if reflect.TypeOf(privilege).Kind() == reflect.Int {
-				//todo check privilege
-				return
+			if user := ctx.SessionGet("SignedUser"); user != nil {
+				if reflect.TypeOf(privilege).Kind() == reflect.Int {
+					//todo check privilege
+					return
+				}
 			}
 			ctx.HTML(403, "error/403", ctx)
 			return

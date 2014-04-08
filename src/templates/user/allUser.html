@@ -82,6 +82,7 @@
 <script src="/js/jquery.validate.min.js"></script>
 <script src="/js/jquery.validate.method.js"></script>
 <script src="/js/jquery.metisMenu.js"></script>
+<script src="/js/bootbox.min.js"></script>
 <!-- Page-Level Plugin Scripts - Tables -->
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
@@ -108,12 +109,9 @@ function deleteAccount(accountID) {
                 className: "btn-danger",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('account/ajax/deleteAccount.do', {
+                        $.ajax('/user/delete/'+accountID, {
                             dataType: 'json',
-                            type: "POST",
-                            data: {
-                                accountId: accountID
-                            },
+                            type: "GET",
                             success: function (data) {
                                 if (!data.success) {
                                     bootbox.alert(data.message, null);
@@ -144,12 +142,9 @@ function banAccount(accountID) {
                 className: "btn-danger",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('account/ajax/banAccount.do', {
+                        $.ajax('/user/ban/'+accountID, {
                             dataType: 'json',
-                            type: "POST",
-                            data: {
-                                accountId: accountID
-                            },
+                            type: "GET",
                             success: function (data) {
                                 if (!data.success) {
                                     bootbox.alert(data.message, null);
@@ -180,12 +175,9 @@ function unbanAccount(accountID) {
                 className: "btn-success",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('account/ajax/unbanAccount.do', {
+                        $.ajax('/user/lift/' + accountID, {
                             dataType: 'json',
-                            type: "POST",
-                            data: {
-                                accountId: accountID
-                            },
+                            type: "GET",
                             success: function (data) {
                                 if (!data.success) {
                                     bootbox.alert(data.message, null);
@@ -216,12 +208,9 @@ function makeAdmin(accountID) {
                 className: "btn-danger",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('account/ajax/makeAdmin.do', {
+                        $.ajax('/user/admin/' + accountID, {
                             dataType: 'json',
-                            type: "POST",
-                            data: {
-                                accountId: accountID
-                            },
+                            type: "GET",
                             success: function (data) {
                                 if (!data.success) {
                                     bootbox.alert(data.message, null);
@@ -252,12 +241,9 @@ function hire(accountID) {
                 className: "btn-danger",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('account/ajax/hire.do', {
+                        $.ajax('/user/hire/' + accountID, {
                             dataType: 'json',
-                            type: "POST",
-                            data: {
-                                accountId: accountID
-                            },
+                            type: "GET",
                             success: function (data) {
                                 if (!data.success) {
                                     bootbox.alert(data.message, null);
@@ -288,12 +274,9 @@ function fire(accountID) {
                 className: "btn-danger",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('user/fire/'+accountId, {
+                        $.ajax('/user/fire/' + accountID, {
                             dataType: 'json',
-                            type: "POST",
-                            data: {
-                                accountId: accountID
-                            },
+                            type: "GET",
                             success: function (data) {
                                 if (!data.success) {
                                     bootbox.alert(data.message, null);
@@ -358,6 +341,9 @@ var getAllAccounts = function () {
                 bLengthChange: true,
                 sPaginationType: 'full_numbers',
                 sAjaxSource: '/user',
+                aaSorting: [
+                    [1, 'asc']
+                ],
                 fnServerData: function (sSource, aoData, fnCallback) {
                     $.ajax({
                         dataType: "json",
@@ -405,7 +391,7 @@ var getAllAccounts = function () {
                 + '<strong> {{tsl .Session.Lang "label.unban"}}</strong>'
                 + '</a></li>';
     }
-    if (aData.RoleId != 1) {
+    if (aData.RoleId == 2) {
         html += '<li class="divider"></li><li><a href="javascript:makeAdmin(' + aData.Id + ')"><i class="i"></i>'
                 + '<strong> {{tsl .Session.Lang "label.make.admin"}}</strong>'
                 + '</a></li>';
@@ -440,7 +426,7 @@ var getAllAccounts = function () {
 $(document).ready(function () {
     $('#account').css({"background": "#DDDDDD"});
     getAllAccounts();
-    setCheckSession();
+//    setCheckSession();
 
     $('#delete').click(function () {
         if (accountArray.length <= 1) {

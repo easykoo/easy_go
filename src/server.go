@@ -77,22 +77,23 @@ func main() {
 	m.Get("/index", handler.IndexHandler)
 
 	m.Group("/user", func(r martini.Router) {
-		r.Any("", AuthRequest(Module_Account), binding.Form(model.User{}), handler.AllUserHandler)
+		r.Any("", AuthRequest(Module_Account), handler.AllUserHandler)
 		r.Any("/logout", handler.LogoutHandler)
 		r.Any("/login", binding.Form(model.UserLoginForm{}), handler.LoginHandler)
 		r.Any("/register", binding.Form(model.UserRegisterForm{}), handler.RegisterHandler)
-		//		r.Get("/:id", GetBooks)
-		//		r.Post("/new", NewBook)
-		//		r.Put("/update/:id", UpdateBook)
-		//		r.Delete("/delete/:id", DeleteBook)
+		r.Any("/delete/:id", AuthRequest(Module_Account), handler.DeleteUser)
+		r.Any("/admin/:id", AuthRequest(Module_Account), handler.AdminUser)
+		r.Any("/hire/:id", AuthRequest(Module_Account), handler.HireUser)
+		r.Any("/fire/:id", AuthRequest(Module_Account), handler.FireUser)
+		r.Any("/ban/:id", AuthRequest(Module_Account), handler.BanUser)
+		r.Any("/lift/:id", AuthRequest(Module_Account), handler.LiftUser)
+		//		r.Any("/:id", GetUser)
+		//		r.Any("/new", NewUser)
+		//		r.Any("/update/:id", UpdateUser)
 	})
 
 	m.Group("/profile", func(r martini.Router) {
 		r.Any("/profile", AuthRequest(SignInRequired), binding.Form(model.User{}), handler.ProfileHandler)
-		//		r.Get("/:id", GetBooks)
-		//		r.Post("/new", NewBook)
-		//		r.Put("/update/:id", UpdateBook)
-		//		r.Delete("/delete/:id", DeleteBook)
 	})
 
 	m.Group("/admin", func(r martini.Router) {

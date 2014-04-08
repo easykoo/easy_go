@@ -1,9 +1,9 @@
 package common
 
 import (
+	"fmt"
 	cfg "github.com/Unknwon/goconfig"
 	"strings"
-	"fmt"
 )
 
 var Tsl *cfg.ConfigFile
