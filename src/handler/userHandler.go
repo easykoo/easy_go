@@ -93,3 +93,17 @@ func ProfileHandler(ctx *middleware.Context, formErr binding.Errors, user model.
 		ctx.HTML(200, "profile/profile", ctx)
 	}
 }
+
+func AllUserHandler(ctx *middleware.Context, user model.User) {
+	switch ctx.R.Method {
+	case "POST":
+		users, err := user.SelectAll()
+		PanicIf(err)
+		ctx.Set("aaData", users);
+		ctx.Set("iTotalDisplayRecords", len(users));
+		ctx.Set("iTotalRecords", len(users));
+		ctx.JSON(200, ctx.Response)
+	default:
+		ctx.HTML(200, "user/allUser", ctx)
+	}
+}

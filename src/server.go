@@ -77,6 +77,7 @@ func main() {
 	m.Get("/index", handler.IndexHandler)
 
 	m.Group("/user", func(r martini.Router) {
+		r.Any("", AuthRequest(Module_Account), binding.Form(model.User{}), handler.AllUserHandler)
 		r.Any("/logout", handler.LogoutHandler)
 		r.Any("/login", binding.Form(model.UserLoginForm{}), handler.LoginHandler)
 		r.Any("/register", binding.Form(model.UserRegisterForm{}), handler.RegisterHandler)

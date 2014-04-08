@@ -26,10 +26,10 @@ type User struct {
 	Active     bool      `xorm:"tinyint(1) default 0"`
 	Locked     bool      `xorm:"tinyint(1) default 0"`
 	FailTime   int       `xorm:"int(1) default 0"`
-	CreateUser string    `xorm:"varchar(20) default 'SYSTEM'"`
-	CreateDate time.Time `xorm:"datetime created"`
-	UpdateUser string    `xorm:"varchar(20) default 'SYSTEM'"`
-	UpdateDate time.Time `xorm:"datetime updated"`
+	CreateUser string    `json:"create_user" xorm:"varchar(20) default 'SYSTEM'"`
+	CreateDate time.Time `json:"create_date" xorm:"datetime created"`
+	UpdateUser string    `json:"update_user" xorm:"varchar(20) default 'SYSTEM'"`
+	UpdateDate time.Time `json:"update_date" xorm:"datetime updated"`
 	Version    int       `form:"version" xorm:"int(11) version"`
 }
 
