@@ -55,6 +55,12 @@ func newMartini() *martini.ClassicMartini {
 					}
 					return ""
 				},
+				"tsl": func(lang string, format string) string {
+					return Translate(lang, format)
+				},
+				"tslf": func(lang string, format string, args ...interface{}) string {
+					return Translatef(lang, format, args...)
+				},
 			},
 		},
 	}))

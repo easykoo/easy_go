@@ -24,6 +24,8 @@
     <script src="/js/html5shiv.js"></script>
     <script src="/js/respond.min.js"></script>
     <![endif]-->
+
+    <script src="/js/jquery-1.10.2.min.js"></script>
 </head>
 
 <body>
@@ -67,18 +69,18 @@
                         <div class="col-sm-4 control-label"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"><span style="color: red">*</span> Gender </label>
+                        <label for="gender" class="col-sm-2 control-label"><span style="color: red">*</span> Gender </label>
 
-                        <div class="col-sm-1">
+                        <div class="col-sm-3">
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="gender" id="gender1" value="1" {{checked .Session.SignedUser.Gender 1}}> Male </label>
                             </div>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-sm-3">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="gender" id="gender2" value="0" {{checked .Session.SignedUser.Gender 0}}> Female </label>
+                                    <input type="radio" name="gender" id="gender2" value="2" {{checked .Session.SignedUser.Gender 2}}> Female </label>
                             </div>
                         </div>
                         <div class="col-sm-4 control-label gender"></div>
@@ -139,7 +141,6 @@
     </div>
 </div>
 <!-- Core Scripts - Include with every page -->
-<script src="/js/jquery-1.10.2.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.validate.min.js"></script>
 <script src="/js/jquery.validate.method.js"></script>
@@ -156,32 +157,30 @@
 
         $("#profileForm").validate({
             rules: {
-                /*nickname: {
+                fullName: {
                     required: true,
-                    minlength: 4,
                     stringCheck: true
-                },*/
+                },
                 gender: {
                     required: true
-                },
+                }/*,
                 email: {
                     required: true,
                     email: true
 //                    remote: "profile/ajax/checkEmail"
-                }
+                }*/
             },
             messages: {
-                nickname: {
-                    required: '<spring:message code="message.error.required"/>',
-                    minlength: '<spring:message code="message.error.min.length"/>',
-                    stringCheck: '<spring:message code="message.error.string.check"/>'
+                fullName: {
+                    required: '{{tsl .Session.Lang "message.error.required"}}',
+                    stringCheck: '{{tsl .Session.Lang "message.error.string.check"}}'
                 },
-                gender: '<spring:message code="message.error.required"/>',
+                gender: '{{tsl .Session.Lang "message.error.required"}}'/*,
                 email: {
                     required: '<spring:message code="message.error.required"/>',
                     email: '<spring:message code="message.error.wrong.email.format"/>',
                     remote: '<spring:message code="message.error.already.exists"/>'
-                }
+                }*/
             },
             focusInvalid: true,
             onkeyup: false,

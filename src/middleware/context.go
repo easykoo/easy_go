@@ -6,6 +6,8 @@ import (
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
 
+	. "common"
+
 	"net/http"
 )
 
@@ -163,6 +165,12 @@ func (self *Context) FieldErrors() map[string]string {
 }
 
 func (self *Context) TransferSessionProperties(s sessions.Session) {
+	lang := s.Get("lang")
+	if lang == nil {
+		self.SessionSet("Lang", Cfg.MustValue("", "locale"))
+	} else {
+		self.SessionSet("Lang", lang)
+	}
 	for _, val := range sessionProperties {
 		self.SessionSet(val, s.Get(val))
 	}
