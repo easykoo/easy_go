@@ -132,7 +132,6 @@ func DeleteUsers(ctx *middleware.Context) {
 	users:=ctx.R.FormValue("users")
 	var res []int
 	json.Unmarshal([]byte(users), &res)
-
 	user := new(model.User)
 	err := user.DeleteUsers(res)
 	PanicIf(err)
