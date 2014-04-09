@@ -3,8 +3,8 @@ package handler
 import (
 	"github.com/go-martini/martini"
 
-	"middleware"
 	. "common"
+	"middleware"
 )
 
 func IndexHandler(ctx *middleware.Context) {

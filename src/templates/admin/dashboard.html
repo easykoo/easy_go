@@ -89,8 +89,8 @@
                                     <td></td>
                                     <td></td>
                                     <td id="{.Response.status.index}">
-                                        <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={.Response.sessionLog.ip}"></script><script type="text/javascript">
-                                        $('#{.Response.status.index+1}').text(remote_ip_info.country + remote_ip_info.province + remote_ip_info.city + remote_ip_info.district)</script>
+                                        {{with .Response.SessionLog.Ip}}<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={{.}}"></script><script type="text/javascript">
+                                        $('#{.Response.status.index+1}').text(remote_ip_info.country + remote_ip_info.province + remote_ip_info.city + remote_ip_info.district)</script>{{end}}
                                     </td>
                                 </tr>
                             <!--</c:forEach>-->

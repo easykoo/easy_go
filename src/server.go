@@ -100,7 +100,7 @@ func main() {
 
 	m.Group("/admin", func(r martini.Router) {
 		r.Get("/dashboard", AuthRequest(SignInRequired), handler.DashboardHandler)
-		r.Get("/settings", AuthRequest(Module_Account), handler.DashboardHandler)
+		r.Get("/settings", AuthRequest(Module_Admin), handler.DashboardHandler)
 	})
 
 	Log.Info("server is started...")

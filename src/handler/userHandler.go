@@ -8,9 +8,9 @@ import (
 	"middleware"
 	"model"
 
-	"encoding/json"
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 )
 
 func LogoutHandler(ctx *middleware.Context) {
@@ -136,7 +136,7 @@ func DeleteUser(ctx *middleware.Context, params martini.Params) {
 }
 
 func DeleteUsers(ctx *middleware.Context) {
-	users:=ctx.R.FormValue("users")
+	users := ctx.R.FormValue("users")
 	var res []int
 	json.Unmarshal([]byte(users), &res)
 	user := new(model.User)

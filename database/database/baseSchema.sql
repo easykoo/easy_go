@@ -81,9 +81,8 @@ CREATE TABLE function (
 
 DROP TABLE IF EXISTS module;
 CREATE TABLE module (
-  id          INT(3)      NOT NULL AUTO_INCREMENT,
-  description VARCHAR(50) NOT NULL,
-  permission  VARCHAR(60) DEFAULT NULL,
+  id          INT(3)      NOT NULL,
+  description VARCHAR(40) NOT NULL,
   create_user VARCHAR(20) DEFAULT NULL,
   create_date DATETIME DEFAULT NULL,
   update_user VARCHAR(20) DEFAULT NULL,
@@ -93,16 +92,13 @@ CREATE TABLE module (
 
 DROP TABLE IF EXISTS privilege;
 CREATE TABLE privilege (
-  id            INT(3)  NOT NULL AUTO_INCREMENT,
-  external_id   INT(11) NOT NULL,
-  type          INT(1)  NOT NULL,
+  module_id   INT(11) NOT NULL,
   role_id       INT(11) NOT NULL,
-  department_id INT(11) NOT NULL,
+  dept_id INT(11) NOT NULL,
   create_user   VARCHAR(20) DEFAULT NULL,
   create_date   DATETIME DEFAULT NULL,
   update_user   VARCHAR(20) DEFAULT NULL,
-  update_date   DATETIME DEFAULT NULL,
-  PRIMARY KEY (id)
+  update_date   DATETIME DEFAULT NULL
 );
 
 DROP TABLE IF EXISTS role;

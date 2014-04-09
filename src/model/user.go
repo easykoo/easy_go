@@ -7,8 +7,8 @@ import (
 
 	"net/http"
 	"regexp"
-	"time"
 	"strconv"
+	"time"
 )
 
 type User struct {
@@ -60,7 +60,7 @@ func (self *User) GetUserById(id int) (*User, error) {
 
 func (self *User) Insert() error {
 	self.DeptId = 1
-	self.RoleId = 3
+	self.RoleId = 4
 	self.Active = true
 	self.CreateUser = "SYSTEM"
 	self.UpdateUser = "SYSTEM"
@@ -84,14 +84,14 @@ func (self *User) Delete() error {
 func (self *User) DeleteUsers(array []int) error {
 	_, err := orm.In("id", array).Delete(&User{})
 	sql := "delete from `user` where id in ("
-	for index,val:= range array{
+	for index, val := range array {
 		sql += strconv.Itoa(val)
-		if index < len(array) -1 {
+		if index < len(array)-1 {
 			sql += ","
 		}
 	}
-	sql+= ")"
-	_,err = orm.Exec(sql)
+	sql += ")"
+	_, err = orm.Exec(sql)
 	Log.Info("users: ", array, " deleted")
 	return err
 }
