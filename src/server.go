@@ -81,6 +81,7 @@ func main() {
 		r.Any("/logout", handler.LogoutHandler)
 		r.Any("/login", binding.Form(model.UserLoginForm{}), handler.LoginHandler)
 		r.Any("/register", binding.Form(model.UserRegisterForm{}), handler.RegisterHandler)
+		r.Any("/delete", AuthRequest(Module_Account), handler.DeleteUsers)
 		r.Any("/delete/:id", AuthRequest(Module_Account), handler.DeleteUser)
 		r.Any("/admin/:id", AuthRequest(Module_Account), handler.AdminUser)
 		r.Any("/hire/:id", AuthRequest(Module_Account), handler.HireUser)

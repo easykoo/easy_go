@@ -84,8 +84,9 @@
 <script src="/js/jquery.metisMenu.js"></script>
 <script src="/js/bootbox.min.js"></script>
 <!-- Page-Level Plugin Scripts - Tables -->
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
+<script src="/js/jquery.dataTables.js"></script>
+<script src="/js/dataTables.bootstrap.js"></script>
+<script src="/js/jquery.json.js"></script>
 
 <script src="/js/admin.js"></script>
 <script src="/js/easykoo.js"></script>
@@ -447,11 +448,12 @@ $(document).ready(function () {
                     className: "btn-danger",
                     callback: function (result) {
                         if (result) {
+                            alert($.toJSON(accountArray))
                             $.ajax({
                                 dataType: "json",
                                 type: "POST",
                                 url: 'user/delete',
-                                data: {accounts: accountArray},
+                                data: {users: $.toJSON(accountArray)},
                                 traditional: true,
                                 success: function (data) {
                                     if (!data.success) {

@@ -7,6 +7,8 @@ import (
 	"github.com/go-martini/martini"
 	"middleware"
 	"model"
+
+	"encoding/json"
 )
 
 func LogoutHandler(ctx *middleware.Context) {
@@ -121,6 +123,18 @@ func DeleteUser(ctx *middleware.Context, params martini.Params) {
 	user := new(model.User)
 	user.Id = ParseInt(id)
 	err := user.Delete()
+	PanicIf(err)
+	ctx.Set("success", true)
+	ctx.JSON(200, ctx.Response)
+}
+
+func DeleteUsers(ctx *middleware.Context) {
+	users:=ctx.R.FormValue("users")
+	var res []int
+	json.Unmarshal([]byte(users), &res)
+
+	user := new(model.User)
+	err := user.DeleteUsers(res)
 	PanicIf(err)
 	ctx.Set("success", true)
 	ctx.JSON(200, ctx.Response)
