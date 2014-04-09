@@ -61,6 +61,7 @@ func (self *User) GetUserById(id int) (*User, error) {
 func (self *User) Insert() error {
 	self.DeptId = 1
 	self.RoleId = 3
+	self.Active = true
 	self.CreateUser = "SYSTEM"
 	self.UpdateUser = "SYSTEM"
 	_, err := orm.InsertOne(self)

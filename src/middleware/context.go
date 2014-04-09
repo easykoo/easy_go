@@ -165,7 +165,7 @@ func (self *Context) FieldErrors() map[string]string {
 }
 
 func (self *Context) TransferSessionProperties(s sessions.Session) {
-	lang := s.Get("lang")
+	lang := s.Get("Lang")
 	if lang == nil {
 		self.SessionSet("Lang", Cfg.MustValue("", "locale"))
 	} else {

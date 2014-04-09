@@ -75,6 +75,7 @@ func main() {
 
 	m.Get("/", handler.IndexHandler)
 	m.Get("/index", handler.IndexHandler)
+	m.Get("/language/change/:lang", handler.LangHandler)
 
 	m.Group("/user", func(r martini.Router) {
 		r.Any("", AuthRequest(Module_Account), handler.AllUserHandler)

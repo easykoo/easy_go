@@ -38,12 +38,15 @@ var timeStamp2String = function (time) {
 
 var changeLanguage = function (lang) {
     var url = window.location.href;
-    url = url.replace('&locale=en', '').replace('&locale=zh_CN', '');
-    if (url.endWith("?locale=en") || url.endWith("?locale=zh_CN")) {
-        url = url.replace('?locale=en', '').replace('?locale=zh_CN', '');
-    }
-    url += (url.indexOf('?') > 0 ? '&' : '?') + 'locale=' + lang;
-    window.location.href = url;
+    $.ajax('/language/change/' + lang, {
+        dataType: 'json',
+        type: "GET",
+        success: function (data) {
+            if (data.success) {
+                window.location.href = url;
+            }
+        }
+    });
 }
 
 var filterSqlStr = function (value) {

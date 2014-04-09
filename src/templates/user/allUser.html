@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Easy Go - All User</title>
+    <title>{{tsl .Session.Lang "main.title"}} - {{tsl .Session.Lang "label.all.users"}}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -36,7 +36,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">{{tsl .Session.Lang "label.all.account"}}</h1>
+                <h1 class="page-header">{{tsl .Session.Lang "label.all.users"}}</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -56,10 +56,13 @@
                                     <th><input type="checkbox" id="selectAll"/></th>
                                     <th>{{tsl .Session.Lang "label.id"}}</th>
                                     <th>{{tsl .Session.Lang "label.username"}}</th>
+                                    <th>{{tsl .Session.Lang "label.full.name"}}</th>
+                                    <th>{{tsl .Session.Lang "label.gender"}}</th>
                                     <th>{{tsl .Session.Lang "label.qq"}}</th>
                                     <th>{{tsl .Session.Lang "label.telephone"}}</th>
                                     <th>{{tsl .Session.Lang "label.email"}}</th>
                                     <th>{{tsl .Session.Lang "label.address"}}</th>
+                                    <th>{{tsl .Session.Lang "label.create.date"}}</th>
                                     <th>{{tsl .Session.Lang "label.actions"}}</th>
                                 </tr>
                                 </thead>
@@ -357,12 +360,18 @@ var getAllAccounts = function () {
                 "aoColumns": [
                     { "sTitle": "<input id='selectAll' onchange='selectAll(this)' type='checkbox'/>",
                         "mData": "Username"},
+                    { "sTitle": "{{tsl .Session.Lang "label.id"}}",
+                        "mData": "Id"},
                     { "sTitle": "{{tsl .Session.Lang "label.username"}}",
-                    "mData": "Username"},
+                        "mData": "Username"},
+                    { "sTitle": "{{tsl .Session.Lang "label.full.name"}}",
+                        "mData": "FullName"},
+                    { "sTitle": "{{tsl .Session.Lang "label.gender"}}",
+                        "mData": "Gender"},
                     { "sTitle": "{{tsl .Session.Lang "label.qq"}}",
-                    "mData": "Qq"},
+                        "mData": "Qq"},
                     { "sTitle": "{{tsl .Session.Lang "label.telephone"}}",
-                            "mData": "Tel"},
+                        "mData": "Tel"},
                     { "sTitle": "{{tsl .Session.Lang "label.email"}}",
                             "mData": "Email"},
                     { "sTitle": "{{tsl .Session.Lang "label.address"}}",
@@ -372,56 +381,63 @@ var getAllAccounts = function () {
                     { "sTitle": "{{tsl .Session.Lang "label.actions"}}",
                             "mData": "Locked"}
                     ],
-"fnRowCallback": function (nRow, aData, iDisplayIndex) {
-    $('td:eq(0)', nRow).html('<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + aData.Id + ')"/>');
-//    var createDate = timeStamp2String(aData.CreateDate);
-//    $('td:eq(6)', nRow).text(createDate);
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $('td:eq(0)', nRow).html('<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + aData.Id + ')"/>');
+            gender = '{{tsl .Session.Lang "label.secret"}}'
+            if (aData.Gender == 1) {
+                gender = '{{tsl .Session.Lang "label.male"}}'
+            } else if (aData.Gender == 2) {
+                gender = '{{tsl .Session.Lang "label.female"}}'
+            }
+            $('td:eq(4)', nRow).text(gender);
+        //    var createDate = timeStamp2String(aData.CreateDate);
+        //    $('td:eq(6)', nRow).text(createDate);
 
-    var html = '<div class="btn-group "><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
-            '<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:"><span class="fa fa-caret-down"></span></a>' +
-            '<ul class="dropdown-menu">' +
-            '<li><a href="javascript:deleteAccount(' + aData.Id + ')"><i class="fa fa-trash-o fa-fw"></i>'
-            + '<strong> {{tsl .Session.Lang "label.delete"}}</strong>'
-            + '</a></li>';
-    if (!aData.Locked) {
-        html += '<li><a href="javascript:banAccount(' + aData.Id + ')"><i class="fa fa-ban fa-fw"></i>'
-                + '<strong> {{tsl .Session.Lang "label.ban"}}</strong>'
-                + '</a></li>';
-    } else {
-        html += '<li><a href="javascript:unbanAccount(' + aData.Id + ')"><i class="fa fa-ban fa-fw"></i>'
-                + '<strong> {{tsl .Session.Lang "label.unban"}}</strong>'
-                + '</a></li>';
-    }
-    if (aData.RoleId == 2) {
-        html += '<li class="divider"></li><li><a href="javascript:makeAdmin(' + aData.Id + ')"><i class="i"></i>'
-                + '<strong> {{tsl .Session.Lang "label.make.admin"}}</strong>'
-                + '</a></li>';
-    }
-    if (aData.RoleId == 3) {
-        html += '<li class="divider"></li><li><a href="javascript:hire(' + aData.Id + ')"><i class="i"></i>'
-                + '<strong> {{tsl .Session.Lang "label.hire"}}</strong>'
-                + '</a></li>';
-    } else {
-        html += '<li class="divider"></li><li><a href="javascript:fire(' + aData.Id + ')"><i class="i"></i>'
-                + '<strong> {{tsl .Session.Lang "label.fire"}}</strong>'
-                + '</a></li>';
-    }
-    html += '</ul></div>';
-    $('td:eq(7)', nRow).html(html);
+            var html = '<div class="btn-group "><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
+                    '<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:"><span class="fa fa-caret-down"></span></a>' +
+                    '<ul class="dropdown-menu">' +
+                    '<li><a href="javascript:deleteAccount(' + aData.Id + ')"><i class="fa fa-trash-o fa-fw"></i>'
+                    + '<strong> {{tsl .Session.Lang "label.delete"}}</strong>'
+                    + '</a></li>';
+            if (!aData.Locked) {
+                html += '<li><a href="javascript:banAccount(' + aData.Id + ')"><i class="fa fa-ban fa-fw"></i>'
+                        + '<strong> {{tsl .Session.Lang "label.ban"}}</strong>'
+                        + '</a></li>';
+            } else {
+                html += '<li><a href="javascript:unbanAccount(' + aData.Id + ')"><i class="fa fa-ban fa-fw"></i>'
+                        + '<strong> {{tsl .Session.Lang "label.unban"}}</strong>'
+                        + '</a></li>';
+            }
+            if (aData.RoleId == 2) {
+                html += '<li class="divider"></li><li><a href="javascript:makeAdmin(' + aData.Id + ')"><i class="i"></i>'
+                        + '<strong> {{tsl .Session.Lang "label.make.admin"}}</strong>'
+                        + '</a></li>';
+            }
+            if (aData.RoleId == 3) {
+                html += '<li class="divider"></li><li><a href="javascript:hire(' + aData.Id + ')"><i class="i"></i>'
+                        + '<strong> {{tsl .Session.Lang "label.hire"}}</strong>'
+                        + '</a></li>';
+            } else {
+                html += '<li class="divider"></li><li><a href="javascript:fire(' + aData.Id + ')"><i class="i"></i>'
+                        + '<strong> {{tsl .Session.Lang "label.fire"}}</strong>'
+                        + '</a></li>';
+            }
+            html += '</ul></div>';
+            $('td:eq(10)', nRow).html(html);
 
-    if (aData.Locked) {
-        $(nRow).css({"color": "#BBBBBB"})
-    }
-    return nRow;
-},
-"oLanguage": {
-    sUrl: [ "/css/{{tsl .Session.Lang "language"}}.txt"]
-},
-"aoColumnDefs": [
-    { "bSortable": false, "aTargets": [ 0 ] },
-    { "bSortable": false, "aTargets": [ 7 ] }
-]
-});
+            if (aData.Locked) {
+                $(nRow).css({"color": "#BBBBBB"})
+            }
+            return nRow;
+        },
+        "oLanguage": {
+            sUrl: [ "/css/{{tsl .Session.Lang "language"}}.txt"]
+        },
+        "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [ 0 ] },
+            { "bSortable": false, "aTargets": [ 10 ] }
+        ]
+    });
 }
 
 $(document).ready(function () {

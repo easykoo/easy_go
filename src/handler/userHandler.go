@@ -9,6 +9,8 @@ import (
 	"model"
 
 	"encoding/json"
+	"crypto/md5"
+	"encoding/hex"
 )
 
 func LogoutHandler(ctx *middleware.Context) {
@@ -20,10 +22,12 @@ func LoginHandler(ctx *middleware.Context, formErr binding.Errors, loginUser mod
 	switch ctx.R.Method {
 	case "POST":
 		ctx.JoinFormErrors(formErr)
-		user := &model.User{Username: loginUser.Username, Password: loginUser.Password}
+		h := md5.New()
+		h.Write([]byte(loginUser.Password))
+		password := hex.EncodeToString(h.Sum(nil))
+		user := &model.User{Username: loginUser.Username, Password: password}
 		if !ctx.HasError() {
 			if has, err := user.Exist(); has {
-				PanicIf(err)
 				PanicIf(err)
 				ctx.SessionSet("SignedUser", user)
 				var users []model.User
@@ -63,6 +67,9 @@ func RegisterHandler(ctx *middleware.Context, formErr binding.Errors, user model
 			}
 
 			if !ctx.HasError() {
+				h := md5.New()
+				h.Write([]byte(user.Password))
+				dbUser.Password = hex.EncodeToString(h.Sum(nil))
 				err := dbUser.Insert()
 				PanicIf(err)
 				ctx.AddMessage("Register successfully!")

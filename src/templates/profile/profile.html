@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Easy Go - Profile</title>
+    <title>{{tsl .Session.Lang "main.title"}} - {{tsl .Session.Lang "label.profile"}}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -36,7 +36,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Profile</h1>
+                <h1 class="page-header">{{tsl .Session.Lang "label.profile"}}</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -59,7 +59,7 @@
                     {{end}}
                     </c:if>
                     <div class="form-group">
-                        <label for="fullName" class="col-sm-2 control-label"><span style="color: red">*</span> FullName
+                        <label for="fullName" class="col-sm-2 control-label"><span style="color: red">*</span> {{tsl .Session.Lang "label.full.name"}}
                         </label>
 
                         <div class="col-sm-6">
@@ -69,30 +69,30 @@
                         <div class="col-sm-4 control-label"></div>
                     </div>
                     <div class="form-group">
-                        <label for="gender" class="col-sm-2 control-label"><span style="color: red">*</span> Gender </label>
+                        <label for="gender" class="col-sm-2 control-label"><span style="color: red">*</span> {{tsl .Session.Lang "label.gender"}} </label>
 
                         <div class="col-sm-2">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="gender" id="gender1" value="1" {{checked .Session.SignedUser.Gender 1}}> Male </label>
+                                    <input type="radio" name="gender" id="gender1" value="1" {{checked .Session.SignedUser.Gender 1}}> {{tsl .Session.Lang "label.male"}} </label>
                             </div>
                         </div>
                         <div class="col-sm-2">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="gender" id="gender2" value="2" {{checked .Session.SignedUser.Gender 2}}> Female </label>
+                                    <input type="radio" name="gender" id="gender2" value="2" {{checked .Session.SignedUser.Gender 2}}> {{tsl .Session.Lang "label.female"}} </label>
                             </div>
                         </div>
                         <div class="col-sm-2">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="gender" id="gender3" value="0" {{checked .Session.SignedUser.Gender 0}}> Secret </label>
+                                    <input type="radio" name="gender" id="gender3" value="0" {{checked .Session.SignedUser.Gender 0}}> {{tsl .Session.Lang "label.secret"}} </label>
                             </div>
                         </div>
                         <div class="col-sm-4 control-label gender"></div>
                     </div>
                     <div class="form-group">
-                        <label for="qq" class="col-sm-2 control-label"> QQ </label>
+                        <label for="qq" class="col-sm-2 control-label"> {{tsl .Session.Lang "label.qq"}} </label>
 
                         <div class="col-sm-6">
                             <input type="text" id="qq" class="form-control" name="qq"
@@ -101,7 +101,7 @@
                         <div class="col-sm-4 control-label"></div>
                     </div>
                     <div class="form-group">
-                        <label for="tel" class="col-sm-2 control-label"> Tel </label>
+                        <label for="tel" class="col-sm-2 control-label"> {{tsl .Session.Lang "label.tel"}} </label>
 
                         <div class="col-sm-6">
                             <input type="text" id="tel" class="form-control" name="tel"
@@ -110,7 +110,7 @@
                         <div class="col-sm-4 control-label"></div>
                     </div>
                     <div class="form-group">
-                        <label for="email" class="col-sm-2 control-label">Email </label>
+                        <label for="email" class="col-sm-2 control-label"> {{tsl .Session.Lang "label.email"}} </label>
 
                         <div class="col-sm-6">
                             <input type="text" id="email" class="form-control" name="email"
@@ -119,7 +119,7 @@
                         <div class="col-sm-4 control-label"></div>
                     </div>
                     <div class="form-group">
-                        <label for="postcode" class="col-sm-2 control-label">Postcode </label>
+                        <label for="postcode" class="col-sm-2 control-label"> {{tsl .Session.Lang "label.postcode"}} </label>
 
                         <div class="col-sm-6">
                             <input type="text" id="postcode" class="form-control" name="postcode"
@@ -128,7 +128,7 @@
                         <div class="col-sm-4 control-label"></div>
                     </div>
                     <div class="form-group">
-                        <label for="address" class="col-sm-2 control-label">Address</label>
+                        <label for="address" class="col-sm-2 control-label"> {{tsl .Session.Lang "label.address"}} </label>
 
                         <div class="col-sm-6">
                             <input type="text" id="address" class="form-control" name="address"
@@ -138,7 +138,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-6">
-                            <button type="submit" class="btn btn-success btn-block">Change</button>
+                            <button type="submit" class="btn btn-success btn-block">{{tsl .Session.Lang "label.change"}}</button>
                         </div>
                     </div>
                 </form>

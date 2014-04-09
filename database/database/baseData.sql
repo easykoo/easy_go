@@ -1,9 +1,6 @@
-delete from sec_account;
-delete from sec_acc_security;
-insert into sec_account (account_id, username, full_name, nick_name, gender, qq, telephone, postcode,address, email, role_id, department_id, permission, active, locked, create_user,create_date, update_user, update_date)
-values(1,'admin','admin','Admin',1,111111,'11122233344','123456','长江西路130号','admin@easykoo.com',1,1,null,1,0,'SYSTEM',now(),'SYSTEM',now());
-INSERT INTO sec_acc_security (account_id,username,password,effective_date,create_user,create_date,update_user,update_date)
-VALUES (1,'admin','C4CA4238A0B923820DCC509A6F75849B',now(),'SYSTEM',now(),'SYSTEM',now());
+delete from user;
+insert into user (id, username, password, full_name, gender, qq, tel, postcode,address, email, role_id, dept_id, active, locked, create_user,create_date, update_user, update_date, version)
+values(1,'admin','b0baee9d279d34fa1dfd71aadb908c3f','Admin',1,111111,'11122233344','123456','长江西路130号','admin@easykoo.com',1,1,1,0,'SYSTEM',now(),'SYSTEM',now(),1);
 
 delete from category;
 insert into category (category_id,  description, cn_description, parent_category, create_user, create_date, update_user, update_date)

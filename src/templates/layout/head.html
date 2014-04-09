@@ -13,11 +13,11 @@
         <div class="navbar-header">
         <ul class="nav navbar-top-links navbar-right" style="float:right">
             <li class="dropdown">
-                <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">language
+                <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">{{tsl .Session.Lang "label.language"}}
                     <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="javascript:changeLanguage('zh_CN')">中文/简体</a></li>
-                    <li><a href="javascript:changeLanguage('en')">English</a></li>
+                    <li><a href="javascript:changeLanguage('zh')"> 中文/简体</a></li>
+                    <li><a href="javascript:changeLanguage('en')"> English</a></li>
                 </ul>
             </li>
                 <li class="dropdown">
@@ -34,12 +34,12 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:">
                     <i class="fa fa-user fa-fw"></i> {{.Session.SignedUser.Username}} <i class="fa fa-caret-down"></i></a>
                 <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/admin/settings"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="/admin/settings"><i class="fa fa-gear fa-fw"></i> {{tsl .Session.Lang "label.settings"}}</a>
                         </li>
-                        <li><a href="/profile/profile"><i class="fa fa-user fa-fw"></i>Profile</a>
+                        <li><a href="/profile/profile"><i class="fa fa-user fa-fw"></i> {{tsl .Session.Lang "label.profile"}}</a>
                         </li>
                     <li class="divider"></li>
-                    <li><a href="/user/logout"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                    <li><a href="/user/logout"><i class="fa fa-sign-out fa-fw"></i> {{tsl .Session.Lang "label.logout"}}</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->

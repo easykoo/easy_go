@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Easy Go - Login</title>
+    <title>{{tsl .Session.Lang "main.title"}} - {{tsl .Session.Lang "label.sign.in"}}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -36,7 +36,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/#page-top">Easy Go</a>
+            <a class="navbar-brand" href="/#page-top">{{tsl .Session.Lang "main.title"}}</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse-in navbar-collapse navbar-ex1-collapse">
@@ -46,13 +46,13 @@
                     <a href="/#page-top"></a>
                 </li>
                 <li class="page-scroll">
-                    <a href="/#about">About</a>
+                    <a href="/#about">{{tsl .Session.Lang "label.about.us"}}</a>
                 </li>
                 <li class="page-scroll">
                     <a href="/#services">Services</a>
                 </li>
                 <li class="page-scroll">
-                    <a href="/#contact">Contact</a>
+                    <a href="/#contact">{{tsl .Session.Lang "label.contact.us"}}</a>
                 </li>
                 {{if .Session.SignedUser}}
 
@@ -61,25 +61,25 @@
                     <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">{{.Session.SignedUser.Username}}
                         <b class="caret"></b></a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/admin/dashboard"><i class="fa fa-user fa-fw"></i> Dashboard</a>
+                        <li><a href="/admin/dashboard"><i class="fa fa-user fa-fw"></i> {{tsl .Session.Lang "label.dashboard"}}</a>
                         </li>
-                        <li><a href="/admin/settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="/profile/profile"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="/admin/settings"><i class="fa fa-gear fa-fw"></i> {{tsl .Session.Lang "label.settings"}}</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="/user/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/profile/profile"><i class="fa fa-user fa-fw"></i> {{tsl .Session.Lang "label.profile"}}</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="/user/logout"><i class="fa fa-sign-out fa-fw"></i> {{tsl .Session.Lang "label.logout"}}</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
                 {{else}}
                 <li class="page-scroll">
-                    <a href="/user/login">Login</a>
+                    <a href="/user/login">{{tsl .Session.Lang "label.sign.in"}}</a>
                 </li>
                 <li class="page-scroll">
-                    <a href="/user/register">Register</a>
+                    <a href="/user/register">{{tsl .Session.Lang "label.sign.up"}}</a>
                 </li>
                 {{end}}
             </ul>
@@ -93,7 +93,7 @@
     <div style="margin-top:100px;margin-bottom:200px;max-width: 400px;text-align: left" class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h1>Please sign in</h1>
+                <h1>{{tsl .Session.Lang "label.please.sign.in"}}</h1>
 
                 <form role="form" action="/user/login" method="post">
                     {{with .Errors}}
@@ -104,14 +104,14 @@
                     {{end}}
                     {{end}}
                     <div class="form-group">
-                        <input type="text" class="form-control" id="username" placeholder="username" name="username"
+                        <input type="text" class="form-control" id="username" placeholder='{{tsl .Session.Lang "label.username"}}' name="username"
                                required>
                         {{with .FieldErrors.username}}
                         <div class="text-danger">{{.}}</div>
                         {{end}}
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="password" placeholder="password"
+                        <input type="password" class="form-control" id="password" placeholder='{{tsl .Session.Lang "label.password"}}'
                                name="password" required>
                         {{with .FieldErrors.password}}
                         <div class="text-danger">{{.}}</div>
@@ -119,11 +119,11 @@
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="rememberMe" value="1"> remember username
+                            <input type="checkbox" name="rememberMe" value="1"> {{tsl .Session.Lang "label.auto.login"}}
                         </label>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">{{tsl .Session.Lang "label.sign.in"}}</button>
                     </div>
                     <div class="form-group">
                         Need an account? <a href="/user/register">Sign up now.</a>

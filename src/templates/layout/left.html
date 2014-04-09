@@ -14,73 +14,61 @@
                 <!-- /input-group -->
             </li>
                 <li id="dashboard">
-                    <a href="/admin/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a href="/admin/dashboard"><i class="fa fa-dashboard fa-fw"></i> {{tsl .Session.Lang "label.dashboard"}}</a>
                 </li>
                 <li id="user">
-                    <a href="/user"><i class="fa fa-users fa-fw"></i> User</a>
+                    <a href="/user"><i class="fa fa-users fa-fw"></i> {{tsl .Session.Lang "label.user"}}</a>
                 </li>
                 <li id="feedback">
-                    <a href="/feedback/allFeedback"><i class="fa fa-edit fa-fw"></i> Feedback</a>
-                </li>
-                <li id="notice">
-                    <a href="javascript:"><i class="fa fa-volume-up fa-fw"></i> Notice<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                            <li id="allAnnouncement">
-                                <a href="/notice/allNotice"> All Notice</a>
-                            </li>
-                            <li id="announce">
-                                <a href="/notice/publishNotice"> Publish Notice</a>
-                            </li>
-                    </ul>
-                    <!-- /.nav-second-level -->
+                    <a href="/feedback/allFeedback"><i class="fa fa-edit fa-fw"></i> {{tsl .Session.Lang "label.feedback"}}</a>
                 </li>
                 <li id="product">
-                    <a href="javascript:"><i class="fa fa-lightbulb-o fa-fw"></i> Product<span class="fa arrow"></span></a>
+                    <a href="javascript:"><i class="fa fa-lightbulb-o fa-fw"></i> {{tsl .Session.Lang "label.product"}}<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                             <li id="allProduct">
-                                <a href="/product/allProduct"> All Product</a>
+                                <a href="/product/allProduct"> {{tsl .Session.Lang "label.all.products"}}</a>
                             </li>
                             <li id="publishProduct">
-                                <a href="/product/publishProduct"> Publish Product</a>
+                                <a href="/product/publishProduct"> {{tsl .Session.Lang "label.publish.product"}}</a>
                             </li>
                             <li id="editCategory">
-                                <a href="/product/editCategory"> Manage Category</a>
+                                <a href="/product/editCategory"> {{tsl .Session.Lang "label.manage.category"}}</a>
                             </li>
                             <li id="createCategory">
-                                <a href="/product/createCategory"> Create Category</a>
+                                <a href="/product/createCategory"> {{tsl .Session.Lang "label.create.category"}}</a>
                             </li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
                 <li id="news">
-                    <a href="javascript:"><i class="fa fa-file-text-o fa-fw"></i> News<span class="fa arrow"></span></a>
+                    <a href="javascript:"><i class="fa fa-file-text-o fa-fw"></i> {{tsl .Session.Lang "label.news"}}<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                             <li id="allNews">
-                                <a href="/news/allNews"> News</a>
+                                <a href="/news/allNews"> {{tsl .Session.Lang "label.all.news"}}</a>
                             </li>
                             <li id="publishNews">
-                                <a href="/news/publishNews">Publish News</a>
+                                <a href="/news/publishNews"> {{tsl .Session.Lang "label.publish.news"}}</a>
                             </li>
                             <li id="allNotice">
-                                <a href="/news/allNotice"> All Notice</a>
+                                <a href="/news/allNotice"> {{tsl .Session.Lang "label.all.notices"}}</a>
                             </li>
                             <li id="publishNotice">
-                                <a href="/news/publishNotice"> Publish Notice</a>
+                                <a href="/news/publishNotice"> {{tsl .Session.Lang "label.publish.notice"}}</a>
                             </li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
                 <li id="profile">
-                    <a href="javascript:"><i class="fa fa-wrench fa-fw"></i> Profile<span class="fa arrow"></span></a>
+                    <a href="javascript:"><i class="fa fa-wrench fa-fw"></i> {{tsl .Session.Lang "label.profile"}}<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li id="changeProfile">
-                            <a href="/profile/profile"> Change Profile</a>
+                            <a href="/profile/profile"> {{tsl .Session.Lang "label.change.profile"}}</a>
                         </li>
                         <li id="preferences">
-                            <a href="/profile/preferences"> Preferences</a>
+                            <a href="/profile/preferences"> {{tsl .Session.Lang "label.preferences"}}</a>
                         </li>
                         <li id="password">
-                            <a href="/profile/password"> Change Password</a>
+                            <a href="/profile/password"> {{tsl .Session.Lang "label.change.password"}}</a>
                         </li>
                             <!--<li>
                                 <a href="javascript:">Third Level <span class="fa arrow"></span></a>
@@ -98,7 +86,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li id="settings">
-                    <a href="/admin/settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    <a href="/admin/settings"><i class="fa fa-gear fa-fw"></i> {{tsl .Session.Lang "label.settings"}}</a>
                 </li>
         </ul>
         <!-- /#side-menu -->
