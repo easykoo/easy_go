@@ -71,16 +71,22 @@
                     <div class="form-group">
                         <label for="gender" class="col-sm-2 control-label"><span style="color: red">*</span> Gender </label>
 
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="gender" id="gender1" value="1" {{checked .Session.SignedUser.Gender 1}}> Male </label>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="gender" id="gender2" value="2" {{checked .Session.SignedUser.Gender 2}}> Female </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="gender" id="gender3" value="0" {{checked .Session.SignedUser.Gender 0}}> Secret </label>
                             </div>
                         </div>
                         <div class="col-sm-4 control-label gender"></div>

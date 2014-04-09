@@ -68,7 +68,7 @@ func (self *User) Insert() error {
 }
 
 func (self *User) Update() error {
-	_, err := orm.Id(self.Id).Update(self)
+	_, err := orm.Id(self.Id).MustCols("gender").Update(self)
 	Log.Info(self.Username, "updated")
 	return err
 }
@@ -89,7 +89,7 @@ func (self *User) SetRole(roleId int) error {
 func (self *User) SetLock(lock bool) error {
 	var err error
 	self, err = self.GetUser()
-	_, err = orm.Update(&User{Locked: lock, Version: self.Version}, self)
+	_, err = orm.UseBool("locked").Update(&User{Locked: lock, Version: self.Version}, self)
 	return err
 }
 
