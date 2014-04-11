@@ -53,8 +53,5 @@ func CheckPermission(user model.User, module int) bool {
 	privilege := &model.Privilege{ModuleId: module, RoleId: user.RoleId, DeptId: user.DeptId}
 	exist, err := privilege.CheckModulePrivilege()
 	PanicIf(err)
-	if exist {
-		return true
-	}
-	return false
+	return exist
 }
