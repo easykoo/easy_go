@@ -73,19 +73,19 @@ func (self *User) Insert() error {
 	self.CreateUser = "SYSTEM"
 	self.UpdateUser = "SYSTEM"
 	_, err := orm.InsertOne(self)
-	Log.Info(self.Username, "inserted")
+	Log.Info(self.Username, " inserted")
 	return err
 }
 
 func (self *User) Update() error {
 	_, err := orm.Id(self.Id).MustCols("gender").Update(self)
-	Log.Info(self.Username, "updated")
+	Log.Info(self.Username, " updated")
 	return err
 }
 
 func (self *User) Delete() error {
 	_, err := orm.Delete(self)
-	Log.Info(self.Username, "deleted")
+	Log.Info(self.Username, " deleted")
 	return err
 }
 
