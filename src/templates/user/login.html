@@ -36,13 +36,7 @@
                 <h1>{{tsl .Session.Lang "label.please.sign.in"}}</h1>
 
                 <form role="form" action="/user/login" method="post">
-                    {{with .Errors}}
-                    {{range . }}
-                    <div>
-                        {{.}}
-                    </div>
-                    {{end}}
-                    {{end}}
+                    {{template "layout/message" .}}
                     <div class="form-group">
                         <input type="text" class="form-control" id="username" placeholder='{{tsl .Session.Lang "label.username"}}' name="username"
                                required>

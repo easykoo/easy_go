@@ -145,6 +145,12 @@ type UserRegisterForm struct {
 	Email    string `form:"email" binding:"required"`
 }
 
+type Password struct {
+	Id              int       `form:"id" binding:"required"`
+	CurrentPassword string `form:"currentPassword" binding:"required"`
+	ConfirmPassword string `form:"confirmPassword" binding:"required"`
+}
+
 func (user UserRegisterForm) Validate(errors *binding.Errors, r *http.Request) {
 	if len(user.Username) < 5 {
 		errors.Fields["username"] = "Length of username should be longer than 5."
@@ -156,5 +162,11 @@ func (user UserRegisterForm) Validate(errors *binding.Errors, r *http.Request) {
 	matched := re.Match([]byte(user.Email))
 	if matched == false {
 		errors.Fields["email"] = "Please enter a valid email address."
+	}
+}
+
+func (password Password) Validate(errors *binding.Errors, r *http.Request) {
+	if len(password.ConfirmPassword) < 5 {
+		errors.Fields["confirmPassword"] = "Length of password should be longer than 5."
 	}
 }

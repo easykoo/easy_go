@@ -4,6 +4,8 @@ import (
 	"io"
 	"os"
 	"strconv"
+	"crypto/md5"
+	"encoding/hex"
 )
 
 var Log *Logger
@@ -31,4 +33,10 @@ func ParseInt(value string) int {
 	}
 	val, _ := strconv.Atoi(value)
 	return val
+}
+
+func Md5(str string) string {
+	h := md5.New()
+	h.Write([]byte(str))
+	return hex.EncodeToString(h.Sum(nil))
 }

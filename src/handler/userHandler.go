@@ -8,8 +8,6 @@ import (
 	"middleware"
 	"model"
 
-	"crypto/md5"
-	"encoding/hex"
 	"encoding/json"
 )
 
@@ -22,9 +20,7 @@ func LoginHandler(ctx *middleware.Context, formErr binding.Errors, loginUser mod
 	switch ctx.R.Method {
 	case "POST":
 		ctx.JoinFormErrors(formErr)
-		h := md5.New()
-		h.Write([]byte(loginUser.Password))
-		password := hex.EncodeToString(h.Sum(nil))
+		password := Md5(loginUser.Password)
 		user := &model.User{Username: loginUser.Username, Password: password}
 		if !ctx.HasError() {
 			if has, err := user.Exist(); has {
@@ -67,9 +63,7 @@ func RegisterHandler(ctx *middleware.Context, formErr binding.Errors, user model
 			}
 
 			if !ctx.HasError() {
-				h := md5.New()
-				h.Write([]byte(user.Password))
-				dbUser.Password = hex.EncodeToString(h.Sum(nil))
+				dbUser.Password = Md5(user.Password)
 				err := dbUser.Insert()
 				PanicIf(err)
 				ctx.AddMessage("Register successfully!")
@@ -102,6 +96,32 @@ func ProfileHandler(ctx *middleware.Context, formErr binding.Errors, user model.
 	default:
 		ctx.HTML(200, "profile/profile", ctx)
 	}
+}
+
+func PasswordHandler(ctx *middleware.Context, formErr binding.Errors, password model.Password) {
+	switch ctx.R.Method {
+	case "POST":
+		ctx.JoinFormErrors(formErr)
+		if !ctx.HasError() {
+			if password.CurrentPassword == password.ConfirmPassword {
+				ctx.AddError("New password should be different from current password!")
+			} else {
+				user := &model.User{Id:password.Id}
+				dbUser, err := user.GetUserById(user.Id)
+				PanicIf(err)
+				if dbUser.Password ==  Md5(password.CurrentPassword) {
+					dbUser.Password = Md5(password.ConfirmPassword)
+					err := dbUser.Update()
+					PanicIf(err)
+					ctx.AddMessage("Password changed successfully!")
+				} else {
+					ctx.AddError("Current password is wrong!")
+				}
+			}
+		}
+	default:
+	}
+	ctx.HTML(200, "profile/password", ctx)
 }
 
 func AllUserHandler(ctx *middleware.Context) {
