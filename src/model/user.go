@@ -35,6 +35,14 @@ type User struct {
 	Page       `xorm:"-"`
 }
 
+func (self *User) ShowName() string {
+	Log.Debug("FullName: ", self.FullName)
+	if self.FullName != "" {
+		return self.FullName
+	}
+	return self.Username
+}
+
 func (self *User) Exist() (bool, error) {
 	return orm.Get(self)
 }

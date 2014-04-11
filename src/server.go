@@ -61,6 +61,9 @@ func newMartini() *martini.ClassicMartini {
 				"tslf": func(lang string, format string, args ...interface{}) string {
 					return Translatef(lang, format, args...)
 				},
+				"privilege": func(user model.User, module int) bool {
+					return CheckPermission(user, module)
+				},
 			},
 		},
 	}))

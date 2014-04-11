@@ -16,12 +16,37 @@
                 <li id="dashboard">
                     <a href="/admin/dashboard"><i class="fa fa-dashboard fa-fw"></i> {{tsl .Session.Lang "label.dashboard"}}</a>
                 </li>
+            {{if privilege .Session.SignedUser 2}}
                 <li id="user">
                     <a href="/user"><i class="fa fa-users fa-fw"></i> {{tsl .Session.Lang "label.user"}}</a>
                 </li>
+            {{end}}
+            {{if privilege .Session.SignedUser 3}}
                 <li id="feedback">
                     <a href="/feedback/allFeedback"><i class="fa fa-edit fa-fw"></i> {{tsl .Session.Lang "label.feedback"}}</a>
                 </li>
+            {{end}}
+            {{if privilege .Session.SignedUser 4}}
+            <li id="news">
+                <a href="javascript:"><i class="fa fa-file-text-o fa-fw"></i> {{tsl .Session.Lang "label.news"}}<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li id="allNews">
+                        <a href="/news/allNews"> {{tsl .Session.Lang "label.all.news"}}</a>
+                    </li>
+                    <li id="publishNews">
+                        <a href="/news/publishNews"> {{tsl .Session.Lang "label.publish.news"}}</a>
+                    </li>
+                    <li id="allNotice">
+                        <a href="/news/allNotice"> {{tsl .Session.Lang "label.all.notices"}}</a>
+                    </li>
+                    <li id="publishNotice">
+                        <a href="/news/publishNotice"> {{tsl .Session.Lang "label.publish.notice"}}</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            {{end}}
+            {{if privilege .Session.SignedUser 5}}
                 <li id="product">
                     <a href="javascript:"><i class="fa fa-lightbulb-o fa-fw"></i> {{tsl .Session.Lang "label.product"}}<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
@@ -40,24 +65,7 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
-                <li id="news">
-                    <a href="javascript:"><i class="fa fa-file-text-o fa-fw"></i> {{tsl .Session.Lang "label.news"}}<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                            <li id="allNews">
-                                <a href="/news/allNews"> {{tsl .Session.Lang "label.all.news"}}</a>
-                            </li>
-                            <li id="publishNews">
-                                <a href="/news/publishNews"> {{tsl .Session.Lang "label.publish.news"}}</a>
-                            </li>
-                            <li id="allNotice">
-                                <a href="/news/allNotice"> {{tsl .Session.Lang "label.all.notices"}}</a>
-                            </li>
-                            <li id="publishNotice">
-                                <a href="/news/publishNotice"> {{tsl .Session.Lang "label.publish.notice"}}</a>
-                            </li>
-                    </ul>
-                    <!-- /.nav-second-level -->
-                </li>
+            {{end}}
                 <li id="profile">
                     <a href="javascript:"><i class="fa fa-wrench fa-fw"></i> {{tsl .Session.Lang "label.profile"}}<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
@@ -85,9 +93,11 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
+            {{if privilege .Session.SignedUser 1}}
                 <li id="settings">
                     <a href="/admin/settings"><i class="fa fa-gear fa-fw"></i> {{tsl .Session.Lang "label.settings"}}</a>
                 </li>
+            {{end}}
         </ul>
         <!-- /#side-menu -->
     </div>

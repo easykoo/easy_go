@@ -33,10 +33,7 @@ func AuthRequest(req interface{}) martini.Handler {
 			Log.Info("Checking style: ", "Module")
 			if user := ctx.SessionGet("SignedUser"); user != nil {
 				if reflect.TypeOf(req).Kind() == reflect.Int {
-					privilege := &model.Privilege{ModuleId: req.(int), RoleId: user.(model.User).RoleId, DeptId: user.(model.User).DeptId}
-					exist, err := privilege.CheckModulePrivilege()
-					PanicIf(err)
-					if exist {
+					if CheckPermission(user.(model.User), req.(int)) {
 						return
 					}
 					ctx.HTML(403, "error/403", ctx)
@@ -50,4 +47,14 @@ func AuthRequest(req interface{}) martini.Handler {
 			return
 		}
 	}
+}
+
+func CheckPermission(user model.User, module int) bool {
+	privilege := &model.Privilege{ModuleId: module, RoleId: user.RoleId, DeptId: user.DeptId}
+	exist, err := privilege.CheckModulePrivilege()
+	PanicIf(err)
+	if exist {
+		return true
+	}
+	return false
 }

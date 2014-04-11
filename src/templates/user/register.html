@@ -27,67 +27,7 @@
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/#page-top">{{tsl .Session.Lang "main.title"}}</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse-in navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                <li class="hidden">
-                    <a href="/#page-top"></a>
-                </li>
-                <li class="page-scroll">
-                    <a href="/#about">{{tsl .Session.Lang "label.about.us"}}</a>
-                </li>
-                <li class="page-scroll">
-                    <a href="/#services">Services</a>
-                </li>
-                <li class="page-scroll">
-                    <a href="/#contact">{{tsl .Session.Lang "label.contact.us"}}</a>
-                </li>
-                {{if .Session.SignedUser}}
-
-                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                <li class="dropdown">
-                    <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">{{.Session.SignedUser.Username}}
-                        <b class="caret"></b></a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/admin/dashboard"><i class="fa fa-user fa-fw"></i> {{tsl .Session.Lang "label.dashboard"}}</a>
-                        </li>
-                        <li><a href="/admin/settings"><i class="fa fa-gear fa-fw"></i> {{tsl .Session.Lang "label.settings"}}</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="/profile/profile"><i class="fa fa-user fa-fw"></i> {{tsl .Session.Lang "label.profile"}}</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="/user/logout"><i class="fa fa-sign-out fa-fw"></i> {{tsl .Session.Lang "label.logout"}}</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                {{else}}
-                <li class="page-scroll">
-                    <a href="/user/login">{{tsl .Session.Lang "label.sign.in"}}</a>
-                </li>
-                <li class="page-scroll">
-                    <a href="/user/register">{{tsl .Session.Lang "label.sign.up"}}</a>
-                </li>
-                {{end}}
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
+{{template "layout/nav" .}}
 
 <section id="login" class="login-section">
     <div style="margin-top:100px;margin-bottom:200px;max-width: 400px;text-align: left" class="container">
