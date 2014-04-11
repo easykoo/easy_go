@@ -159,24 +159,24 @@
                 },
                 gender: {
                     required: true
-                }/*,
+                },
                 email: {
                     required: true,
-                    email: true
-//                    remote: "profile/ajax/checkEmail"
-                }*/
+                    email: true,
+                    remote: "/profile/checkEmail"
+                }
             },
             messages: {
                 fullName: {
                     required: '{{tsl .Session.Lang "message.error.required"}}',
                     stringCheck: '{{tsl .Session.Lang "message.error.string.check"}}'
                 },
-                gender: '{{tsl .Session.Lang "message.error.required"}}'/*,
+                gender: '{{tsl .Session.Lang "message.error.required"}}',
                 email: {
-                    required: '<spring:message code="message.error.required"/>',
-                    email: '<spring:message code="message.error.wrong.email.format"/>',
-                    remote: '<spring:message code="message.error.already.exists"/>'
-                }*/
+                    required: '{{tsl .Session.Lang "message.error.required"}}',
+                    email: '{{tsl .Session.Lang "message.error.wrong.email.format"}}',
+                    remote: '{{tsl .Session.Lang "message.error.already.exists"}}'
+                }
             },
             focusInvalid: true,
             onkeyup: false,

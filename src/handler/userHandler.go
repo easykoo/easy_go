@@ -124,6 +124,17 @@ func PasswordHandler(ctx *middleware.Context, formErr binding.Errors, password m
 	ctx.HTML(200, "profile/password", ctx)
 }
 
+func CheckEmail(ctx *middleware.Context, params martini.Params) {
+	if user := ctx.SessionGet("SignedUser"); user.(model.User).Email != ctx.R.Form["email"][0] {
+		test := &model.User{Email:ctx.R.Form["email"][0]}
+		if exist, _ := test.ExistEmail(); exist {
+			ctx.JSON(200, Translate(ctx.SessionGet("Lang").(string), "message.error.already.exists"))
+			return
+		}
+	}
+	ctx.JSON(200, true)
+}
+
 func AllUserHandler(ctx *middleware.Context) {
 	switch ctx.R.Method {
 	case "POST":

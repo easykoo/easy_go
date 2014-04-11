@@ -100,6 +100,7 @@ func main() {
 	m.Group("/profile", func(r martini.Router) {
 		r.Any("/profile", AuthRequest(SignInRequired), binding.Form(model.User{}), handler.ProfileHandler)
 		r.Any("/password", AuthRequest(SignInRequired), binding.Form(model.Password{}), handler.PasswordHandler)
+		r.Any("/checkEmail", AuthRequest(SignInRequired), binding.Form(model.User{}), handler.CheckEmail)
 	})
 
 	m.Group("/admin", func(r martini.Router) {
