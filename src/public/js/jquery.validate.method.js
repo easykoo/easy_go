@@ -2,7 +2,7 @@ jQuery.validator.addMethod("username", function (value, element) {
     var username = /^[a-zA-Z][\w]{3,18}[a-zA-Z0-9]$/;
     return this.optional(element) || (username.test(value));
 }, "5-20, begin with a letter, end with a letter or number, include letter, numbers and underscore.");
-jQuery.validator.addMethod("password", function (value, element) {
+jQuery.validator.addMethod("myPassword", function (value, element) {
     return this.optional(element) || value.length >= 6 && value.length <= 20 && /\d/.test(value) && /[a-z]/i.test(value);
 }, "6-20, contain at least one number and one letter.");
 jQuery.validator.addMethod("fileType", function (value, element, param) {
