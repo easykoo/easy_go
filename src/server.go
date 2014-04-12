@@ -75,6 +75,7 @@ func main() {
 
 	m.Get("/", handler.IndexHandler)
 	m.Get("/index", handler.IndexHandler)
+	m.Post("/contact", binding.Form(model.Feedback{}), handler.Contact)
 	m.Get("/language/change/:lang", handler.LangHandler)
 
 	m.Group("/user", func(r martini.Router) {

@@ -5,6 +5,7 @@ import (
 
 	. "common"
 	"middleware"
+	"model"
 )
 
 func IndexHandler(ctx *middleware.Context) {
@@ -13,9 +14,15 @@ func IndexHandler(ctx *middleware.Context) {
 
 func LangHandler(ctx *middleware.Context, params martini.Params) {
 	lang := params["lang"]
-	Log.Debug("before: ", ctx.Session["Lang"])
 	ctx.SessionSet("Lang", lang)
-	Log.Debug("after: ", ctx.Session["Lang"])
 	ctx.Set("success", true)
+	ctx.JSON(200, ctx.Response)
+}
+
+func Contact(ctx *middleware.Context, feedback model.Feedback) {
+	err := feedback.Insert()
+	PanicIf(err)
+	ctx.Set("success", true)
+	ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.send.success"))
 	ctx.JSON(200, ctx.Response)
 }
