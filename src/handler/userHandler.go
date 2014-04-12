@@ -25,6 +25,12 @@ func LoginHandler(ctx *middleware.Context, formErr binding.Errors, loginUser mod
 		if !ctx.HasError() {
 			if has, err := user.Exist(); has {
 				PanicIf(err)
+				if user.Locked {
+					ctx.Set("user", user)
+					ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.invalid.username.or.password"))
+					ctx.HTML(200, "user/login", ctx)
+					return
+				}
 				ctx.SessionSet("SignedUser", user)
 				var users []model.User
 				users, err = user.SelectAll()
@@ -34,7 +40,7 @@ func LoginHandler(ctx *middleware.Context, formErr binding.Errors, loginUser mod
 				ctx.Redirect("/admin/dashboard")
 			} else {
 				ctx.Set("user", user)
-				ctx.AddError("invalid username or password")
+				ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.invalid.username.or.password"))
 				ctx.HTML(200, "user/login", ctx)
 			}
 		} else {
@@ -54,19 +60,19 @@ func RegisterHandler(ctx *middleware.Context, formErr binding.Errors, user model
 
 			if exist, err := dbUser.ExistUsername(); exist {
 				PanicIf(err)
-				ctx.AddFieldError("username", "This username already exists.")
+				ctx.AddFieldError("username", Translate(ctx.SessionGet("Lang").(string), "message.error.already.exists"))
 			}
 
 			if exist, err := dbUser.ExistEmail(); exist {
 				PanicIf(err)
-				ctx.AddFieldError("email", "This email already exists.")
+				ctx.AddFieldError("email", Translate(ctx.SessionGet("Lang").(string), "message.error.already.exists"))
 			}
 
 			if !ctx.HasError() {
 				dbUser.Password = Md5(user.Password)
 				err := dbUser.Insert()
 				PanicIf(err)
-				ctx.AddMessage("Register successfully!")
+				ctx.AddMessage(Translate(ctx.SessionGet("Lang").(string), "message.register.success"))
 			} else {
 				ctx.Set("user", user)
 			}
@@ -89,7 +95,7 @@ func ProfileHandler(ctx *middleware.Context, formErr binding.Errors, user model.
 			PanicIf(err)
 			dbUser, err := user.GetUserById(user.Id)
 			PanicIf(err)
-			ctx.AddMessage("Profile changed successfully!")
+			ctx.AddMessage(Translate(ctx.SessionGet("Lang").(string), "message.change.success"))
 			ctx.SessionSet("SignedUser", dbUser)
 		}
 		ctx.HTML(200, "profile/profile", ctx)
@@ -104,7 +110,7 @@ func PasswordHandler(ctx *middleware.Context, formErr binding.Errors, password m
 		ctx.JoinFormErrors(formErr)
 		if !ctx.HasError() {
 			if password.CurrentPassword == password.ConfirmPassword {
-				ctx.AddError("New password should be different from current password!")
+				ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.password.not.changed"))
 			} else {
 				user := &model.User{Id: password.Id}
 				dbUser, err := user.GetUserById(user.Id)
@@ -113,9 +119,9 @@ func PasswordHandler(ctx *middleware.Context, formErr binding.Errors, password m
 					dbUser.Password = Md5(password.ConfirmPassword)
 					err := dbUser.Update()
 					PanicIf(err)
-					ctx.AddMessage("Password changed successfully!")
+					ctx.AddMessage(Translate(ctx.SessionGet("Lang").(string), "message.change.success"))
 				} else {
-					ctx.AddError("Current password is wrong!")
+					ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.wrong.password"))
 				}
 			}
 		}
