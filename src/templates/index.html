@@ -48,6 +48,8 @@
                 <li class="page-scroll">
                     <a href="#contact">{{tsl .Session.Lang "label.contact.us"}}</a>
                 </li>
+            </ul>
+            <ul class="nav navbar-nav pull-right">
                 {{if .Session.SignedUser}}
                 <li class="dropdown">
                     <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">
@@ -94,8 +96,6 @@
                     <a href="/user/register">{{tsl .Session.Lang "label.sign.up"}}</a>
                 </li>
                 {{end}}
-            </ul>
-            <ul class="nav navbar-nav pull-right">
                 <li class="dropdown">
                     <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">
                         {{if equal .Session.Lang "en"}}En{{else}}Zh{{end}}
