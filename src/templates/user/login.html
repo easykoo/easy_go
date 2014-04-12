@@ -10,11 +10,8 @@
 
     <title>{{tsl .Session.Lang "main.title"}} - {{tsl .Session.Lang "label.sign.in"}}</title>
 
-    <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- Custom CSS -->
     <link href="/css/scrolling-nav.css" rel="stylesheet" type="text/css">
 
     <!--[if lt IE 9]>
@@ -24,7 +21,6 @@
 
 </head>
 
-<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
 {{template "layout/nav" .}}
@@ -38,14 +34,16 @@
                 <form role="form" action="/user/login" method="post">
                     {{template "layout/message" .}}
                     <div class="form-group">
-                        <input type="text" class="form-control" id="username" placeholder='{{tsl .Session.Lang "label.username"}}' name="username"
-                               required>
+                        <input type="text" class="form-control" id="username"
+                               placeholder='{{tsl .Session.Lang "label.username"}}'
+                               name="username" required>
                         {{with .FieldErrors.username}}
                         <div class="text-danger">{{.}}</div>
                         {{end}}
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="password" placeholder='{{tsl .Session.Lang "label.password"}}'
+                        <input type="password" class="form-control" id="password"
+                               placeholder='{{tsl .Session.Lang "label.password"}}'
                                name="password" required>
                         {{with .FieldErrors.password}}
                         <div class="text-danger">{{.}}</div>
@@ -53,14 +51,18 @@
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="rememberMe" value="1"> {{tsl .Session.Lang "label.auto.login"}}
+                            <input type="checkbox" name="rememberMe" value="1">
+                            {{tsl .Session.Lang "label.auto.login"}}
                         </label>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">{{tsl .Session.Lang "label.sign.in"}}</button>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">
+                            {{tsl .Session.Lang "label.sign.in"}}
+                        </button>
                     </div>
                     <div class="form-group">
-                        {{tsl .Session.Lang "label.need.an.account"}}? <a href="/user/register">{{tsl .Session.Lang "label.sign.up.now"}}.</a>
+                        {{tsl .Session.Lang "label.need.an.account"}}?
+                        <a href="/user/register"> {{tsl .Session.Lang "label.sign.up.now"}}.</a>
                     </div>
                 </form>
 
@@ -70,12 +72,9 @@
     </div>
 </section>
 
-<!-- Core JavaScript Files -->
 <script src="/js/jquery-1.10.2.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.easing.min.js"></script>
-
-<!-- Custom Theme JavaScript -->
 <script src="/js/scrolling-nav.js"></script>
 <script src="/js/easykoo.js"></script>
 

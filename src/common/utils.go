@@ -1,11 +1,11 @@
 package common
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"io"
 	"os"
 	"strconv"
-	"crypto/md5"
-	"encoding/hex"
 )
 
 var Log *Logger

@@ -8,22 +8,6 @@ String.prototype.endWith = function (s) {
     return true;
 };
 
-var setCheckSession = function () {
-    setInterval(checkSession, 60000);
-}
-
-var checkSession = function () {
-    $.ajax('common/checkSession', {
-        dataType: 'json',
-        type: "POST",
-        success: function (data) {
-            if (!data.success) {
-                window.location.href = "index.jsp";
-            }
-        }
-    });
-}
-
 var timeStamp2String = function (time) {
     var datetime = new Date();
     datetime.setTime(time);

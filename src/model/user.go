@@ -146,7 +146,7 @@ type UserRegisterForm struct {
 }
 
 type Password struct {
-	Id              int       `form:"id" binding:"required"`
+	Id              int    `form:"id" binding:"required"`
 	CurrentPassword string `form:"currentPassword" binding:"required"`
 	ConfirmPassword string `form:"confirmPassword" binding:"required"`
 }

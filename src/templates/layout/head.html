@@ -1,60 +1,70 @@
-
-    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/index"><strong>{{tsl .Session.Lang "main.title"}}</strong></a>
-        </div>
-        <!-- /.navbar-header -->
-        <div class="collapse-in navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                <li class="dropdown" >
-                    <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">{{if equal .Session.Lang "en"}}En{{else}}Zh{{end}}
-                        <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="javascript:changeLanguage('en')"> English</a></li>
-                        <li><a href="javascript:changeLanguage('zh')"> 中文/简体</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <ul class="nav navbar-top-links pull-right">
-                {{if privilege .Session.SignedUser 3}}
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:">
-                        <span id="feedbackCount" class="badge"></span>
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul id="feedback_notification" class="dropdown-menu dropdown-messages">
-                    </ul>
-                    <!-- /.dropdown-messages -->
-                </li>
-                {{end}}
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/index"><strong>{{tsl .Session.Lang "main.title"}}</strong></a>
+    </div>
+    <!-- /.navbar-header -->
+    <div class="collapse-in navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">
+                    {{if equal .Session.Lang "en"}}En{{else}}Zh{{end}}
+                    <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:changeLanguage('en')"> English</a></li>
+                    <li><a href="javascript:changeLanguage('zh')"> 中文/简体</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav navbar-top-links pull-right">
+            {{if privilege .Session.SignedUser 3}}
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:">
+                    <span id="feedbackCount" class="badge"></span>
+                    <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul id="feedback_notification" class="dropdown-menu dropdown-messages">
+                    <li>
+                        <a class="text-center" href="javascript:viewAllFeedback()">
+                            <strong>{{tsl .Session.Lang "label.view.all.message"}}</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-messages -->
+            </li>
+            {{end}}
             <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:">
-                        <i class="fa fa-user fa-fw"></i> {{.Session.SignedUser.Username}} <i class="fa fa-caret-down"></i></a>
-                    <ul class="dropdown-menu dropdown-user">
-                        {{if privilege .Session.SignedUser 1}}
-                            <li><a href="/admin/settings"><i class="fa fa-gear fa-fw"></i> {{tsl .Session.Lang "label.settings"}}</a>
-                            </li>
-                        {{end}}
-                            <li><a href="/profile/profile"><i class="fa fa-user fa-fw"></i> {{tsl .Session.Lang "label.profile"}}</a>
-                            </li>
-                        <li class="divider"></li>
-                        <li><a href="/user/logout"><i class="fa fa-sign-out fa-fw"></i> {{tsl .Session.Lang "label.logout"}}</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:">
+                    <i class="fa fa-user fa-fw"></i> {{.Session.SignedUser.Username}}
+                    <i class="fa fa-caret-down"></i></a>
+                <ul class="dropdown-menu dropdown-user">
+                    {{if privilege .Session.SignedUser 1}}
+                    <li><a href="/admin/settings"><i class="fa fa-gear fa-fw"></i>
+                        {{tsl .Session.Lang "label.settings"}}</a>
+                    </li>
+                    {{end}}
+                    <li><a href="/profile/profile"><i class="fa fa-user fa-fw"></i>
+                        {{tsl .Session.Lang "label.profile"}}</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="/user/logout"><i class="fa fa-sign-out fa-fw"></i>
+                        {{tsl .Session.Lang "label.logout"}}</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
             <!-- /.dropdown -->
-            </ul>
+        </ul>
         <!-- /.navbar-top-links -->
-        </div>
-    </nav>
+    </div>
+</nav>
 
 {{if privilege .Session.SignedUser 3}}
 <script type="text/javascript">
@@ -65,7 +75,7 @@
         $.ajax({
             dataType: "json",
             type: "POST",
-            url: 'feedback/ajax/getTop5Feedback',
+            url: 'feedback/getTop5Feedback',
             data: null,
             success: function (data) {
                 $('#feedback_notification').empty();
@@ -89,7 +99,7 @@
 
                     html += '<li>'
                             + '<a class="text-center" href="javascript:viewAllFeedback()">'
-                            + '<strong><spring:message code="label.view.all.message"/></strong>'
+                            + '<strong>{{tsl .Session.Lang "label.view.all.message"}}</strong>'
                             + ' <i class="fa fa-angle-right"></i>'
                             + '</a>'
                             + '</li>'
@@ -135,7 +145,7 @@
                     title: feedback.name,
                     buttons: {
                         success: {
-                            label: '<spring:message code="label.ok" />',
+                            label: '{{tsl .Session.Lang "label.ok"}}',
                             className: "btn-success",
                             callback: function () {
                                 $.ajax({
@@ -165,10 +175,10 @@
     $(document).ready(function () {
 
         /*getFeedbackCount();
-        setInterval(getFeedbackCount, 10000);
-        getTop5Feedback();
-        setInterval(getTop5Feedback, 10000);*/
+         setInterval(getFeedbackCount, 10000);
+         getTop5Feedback();
+         setInterval(getTop5Feedback, 10000);*/
     });
 
 </script>
-            {{end}}
+{{end}}

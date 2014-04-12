@@ -10,42 +10,39 @@
 
     <title>{{tsl .Session.Lang "main.title"}} - {{tsl .Session.Lang "label.dashboard"}}</title>
 
-    <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-
-    <!-- Page-Level Plugin CSS - Tables -->
     <link href="/css/dataTables.bootstrap.css" rel="stylesheet">
-
-    <!-- SB Admin CSS - Include with every page -->
     <link href="/css/admin.css" rel="stylesheet">
+
     <script src="/js/jquery-1.10.2.min.js"></script>
 
     <!--[if lt IE 9]>
     <script src="/js/html5shiv.js"></script>
     <script src="/js/respond.min.js"></script>
     <![endif]-->
+
     <script type="text/javascript">
         var pageNo = '{.Response.page.pageNo}';
         var pageSize = '{.Response.page.pageSize}';
 
         var previousPage = function () {
-            var url = '/admin/dashboard.do?pageNo=' + (parseInt(pageNo) - 1) + '&pageSize=' + pageSize;
+            var url = '/admin/dashboard?pageNo=' + (parseInt(pageNo) - 1) + '&pageSize=' + pageSize;
             window.location.href = url;
         }
 
         var refresh = function () {
-            var url = '/admin/dashboard.do?pageNo=' + parseInt(pageNo) + '&pageSize=' + pageSize;
+            var url = '/admin/dashboard?pageNo=' + parseInt(pageNo) + '&pageSize=' + pageSize;
             window.location.href = url;
         }
 
         var nextPage = function () {
-            var url = '/admin/dashboard.do?pageNo=' + (parseInt(pageNo) + 1) + '&pageSize=' + pageSize;
+            var url = '/admin/dashboard?pageNo=' + (parseInt(pageNo) + 1) + '&pageSize=' + pageSize;
             window.location.href = url;
         }
 
         var goPage = function (pageNo) {
-            var url = '/admin/dashboard.do?pageNo=' + pageNo + '&pageSize=' + pageSize;
+            var url = '/admin/dashboard?pageNo=' + pageNo + '&pageSize=' + pageSize;
             window.location.href = url;
         }
     </script>
@@ -53,146 +50,146 @@
 
 <body>
 <div id="wrapper">
-{{template "layout/head" .}}
-{{template "layout/left" .}}
+    {{template "layout/head" .}}
+    {{template "layout/left" .}}
     <div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Dashboard</h1>
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Dashboard</h1>
+            </div>
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.col-lg-12 -->
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Recent Visit
-                </div>
-                <!-- /.panel-heading -->
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <div id="go"></div>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>IP</th>
-                                <th>Visit Time</th>
-                                <th>Address</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <!--<c:forEach items="{.Response.page.results}" var="sessionLog" varStatus="status">-->
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {{tsl .Session.Lang "label.recent.visit"}}
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div id="go"></div>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>IP</th>
+                                    <th>{{tsl .Session.Lang "label.visit.time"}}</th>
+                                    <th>{{tsl .Session.Lang "label.address"}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!--<c:forEach items="{.Response.page.results}" var="sessionLog" varStatus="status">-->
                                 <tr>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td id="{.Response.status.index}">
-                                        {{with .Response.SessionLog.Ip}}<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={{.}}"></script><script type="text/javascript">
-                                        $('#{.Response.status.index+1}').text(remote_ip_info.country + remote_ip_info.province + remote_ip_info.city + remote_ip_info.district)</script>{{end}}
+                                        {{with .Response.SessionLog.Ip}}
+                                        <script type="text/javascript"
+                                                src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={{.}}"></script>
+                                        <script type="text/javascript">
+                                            $('#{.Response.status.index+1}').text(remote_ip_info.country + remote_ip_info.province + remote_ip_info.city + remote_ip_info.district)</script>
+                                        {{end}}
                                     </td>
                                 </tr>
-                            <!--</c:forEach>-->
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.table-responsive -->
-                </div>
-                <!-- /.panel-body -->
-                <!--<div class="panel-heading">
-                    <c:if test="{.Response.page.totalPage > 1}">
-                        <div align="center" class="clearpagination">
-                            <a class="page_prev" href="javascript:previousPage()"><i class="fa fa-angle-left"></i></a>
-                            <c:forEach begin="1" step="1" end="{.Response.page.totalPage}" var="pageNo">
-                                <c:if test="{.Response.pageNo == page.pageNo}">{.Response.pageNo}</c:if>
-                                <c:if test="{.Response.pageNo != page.pageNo}">
-                                    <c:choose>
-                                        <c:when test="{.Response.pageNo < page.pageNo - 5}">
-                                            <c:choose>
-                                                <c:when test="{.Response.pageNo == 1}"><a
-                                                        href="javascript:goPage({.Response.pageNo})">{.Response.pageNo}</a></c:when>
-                                                <c:when test="{.Response.pageNo == page.pageNo - 6}">...</c:when>
-                                            </c:choose>
-                                        </c:when>
-                                        <c:when test="{.Response.pageNo > page.pageNo + 5}">
-                                            <c:choose>
-                                                <c:when test="{.Response.pageNo == page.totalPage}"><a
-                                                        href="javascript:goPage({.Response.pageNo})">{.Response.pageNo}</a></c:when>
-                                                <c:when test="{.Response.pageNo == page.pageNo + 6}">...</c:when>
-                                            </c:choose>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="javascript:goPage({.Response.pageNo})">{.Response.pageNo}</a>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:if>
-                            </c:forEach>
-                            <a class="page_next" href="javascript:nextPage()"><i class="fa fa-angle-right"></i></a>
+                                <!--</c:forEach>-->
+                                </tbody>
+                            </table>
                         </div>
-                    </c:if>
-                </div>-->
-            </div>
-            <!-- /.panel -->
-        </div>
-        <!-- /.col-lg-6 -->
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Statistics
-                </div>
-                <!-- /.panel-heading -->
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Total Count</th>
-                                <th>Month Count</th>
-                                <th>Day Count</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>#</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <!-- /.table-responsive -->
                     </div>
-                    <!-- /.table-responsive -->
+                    <!-- /.panel-body -->
+                    <!--<div class="panel-heading">
+                        <c:if test="{.Response.page.totalPage > 1}">
+                            <div align="center" class="clearpagination">
+                                <a class="page_prev" href="javascript:previousPage()"><i class="fa fa-angle-left"></i></a>
+                                <c:forEach begin="1" step="1" end="{.Response.page.totalPage}" var="pageNo">
+                                    <c:if test="{.Response.pageNo == page.pageNo}">{.Response.pageNo}</c:if>
+                                    <c:if test="{.Response.pageNo != page.pageNo}">
+                                        <c:choose>
+                                            <c:when test="{.Response.pageNo < page.pageNo - 5}">
+                                                <c:choose>
+                                                    <c:when test="{.Response.pageNo == 1}"><a
+                                                            href="javascript:goPage({.Response.pageNo})">{.Response.pageNo}</a></c:when>
+                                                    <c:when test="{.Response.pageNo == page.pageNo - 6}">...</c:when>
+                                                </c:choose>
+                                            </c:when>
+                                            <c:when test="{.Response.pageNo > page.pageNo + 5}">
+                                                <c:choose>
+                                                    <c:when test="{.Response.pageNo == page.totalPage}"><a
+                                                            href="javascript:goPage({.Response.pageNo})">{.Response.pageNo}</a></c:when>
+                                                    <c:when test="{.Response.pageNo == page.pageNo + 6}">...</c:when>
+                                                </c:choose>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="javascript:goPage({.Response.pageNo})">{.Response.pageNo}</a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:if>
+                                </c:forEach>
+                                <a class="page_next" href="javascript:nextPage()"><i class="fa fa-angle-right"></i></a>
+                            </div>
+                        </c:if>
+                    </div>-->
                 </div>
-                <!-- /.panel-body -->
+                <!-- /.panel -->
             </div>
-            <!-- /.panel -->
+            <!-- /.col-lg-6 -->
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {{tsl .Session.Lang "label.statistics"}}
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{{tsl .Session.Lang "label.total.count"}}</th>
+                                    <th>{{tsl .Session.Lang "label.month.count"}}</th>
+                                    <th>{{tsl .Session.Lang "label.day.count"}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>#</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-6 -->
         </div>
-        <!-- /.col-lg-6 -->
+        <!-- /.row -->
     </div>
-    <!-- /.row -->
 </div>
-</div>
-<!-- Core Scripts - Include with every page -->
+
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/bootbox.min.js"></script>
 <script src="/js/jquery.metisMenu.js"></script>
-
-<!-- Page-Level Plugin Scripts - Tables -->
 <script src="/js/jquery.dataTables.js"></script>
 <script src="/js/dataTables.bootstrap.js"></script>
-
-<!-- Custom Scripts - Include with every page -->
 <script src="/js/admin.js"></script>
 <script src="/js/easykoo.js"></script>
-<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+
 <script>
     $(document).ready(function () {
         $('#dashboard').css({"background": "#DDDDDD"});
         $('#dataTable').dataTable();
-//        setCheckSession();
     });
 </script>
+
 </body>
 </html>

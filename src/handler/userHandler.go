@@ -106,10 +106,10 @@ func PasswordHandler(ctx *middleware.Context, formErr binding.Errors, password m
 			if password.CurrentPassword == password.ConfirmPassword {
 				ctx.AddError("New password should be different from current password!")
 			} else {
-				user := &model.User{Id:password.Id}
+				user := &model.User{Id: password.Id}
 				dbUser, err := user.GetUserById(user.Id)
 				PanicIf(err)
-				if dbUser.Password ==  Md5(password.CurrentPassword) {
+				if dbUser.Password == Md5(password.CurrentPassword) {
 					dbUser.Password = Md5(password.ConfirmPassword)
 					err := dbUser.Update()
 					PanicIf(err)
@@ -126,7 +126,7 @@ func PasswordHandler(ctx *middleware.Context, formErr binding.Errors, password m
 
 func CheckEmail(ctx *middleware.Context) {
 	if user := ctx.SessionGet("SignedUser"); user.(model.User).Email != ctx.R.Form["email"][0] {
-		test := &model.User{Email:ctx.R.Form["email"][0]}
+		test := &model.User{Email: ctx.R.Form["email"][0]}
 		if exist, _ := test.ExistEmail(); exist {
 			ctx.JSON(200, Translate(ctx.SessionGet("Lang").(string), "message.error.already.exists"))
 			return

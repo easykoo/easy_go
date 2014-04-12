@@ -10,14 +10,9 @@
 
     <title>{{tsl .Session.Lang "main.title"}} - {{tsl .Session.Lang "label.all.users"}}</title>
 
-    <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-
-    <!-- Page-Level Plugin CSS - Tables -->
     <link href="/css/dataTables.bootstrap.css" rel="stylesheet">
-
-    <!-- SB Admin CSS - Include with every page -->
     <link href="/css/admin.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
@@ -45,7 +40,8 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a class="btn btn-danger" id="delete"><i class="fa fa-trash-o fa-fw"></i>{{tsl .Session.Lang "label.delete"}}</a>
+                        <a class="btn btn-danger" id="delete"><i class="fa fa-trash-o fa-fw"></i>
+                            {{tsl .Session.Lang "label.delete"}}</a>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -80,17 +76,13 @@
         <!-- /.col-lg-12 -->
     </div>
 </div>
-<!-- Core Scripts - Include with every page -->
+
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.validate.min.js"></script>
-<script src="/js/jquery.validate.method.js"></script>
 <script src="/js/jquery.metisMenu.js"></script>
 <script src="/js/bootbox.min.js"></script>
-<!-- Page-Level Plugin Scripts - Tables -->
 <script src="/js/jquery.dataTables.js"></script>
 <script src="/js/dataTables.bootstrap.js"></script>
 <script src="/js/jquery.json.js"></script>
-
 <script src="/js/admin.js"></script>
 <script src="/js/easykoo.js"></script>
 
@@ -113,7 +105,7 @@ function deleteAccount(accountID) {
                 className: "btn-danger",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('/user/delete/'+accountID, {
+                        $.ajax('/user/delete/' + accountID, {
                             dataType: 'json',
                             type: "GET",
                             success: function (data) {
@@ -146,7 +138,7 @@ function banAccount(accountID) {
                 className: "btn-danger",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('/user/ban/'+accountID, {
+                        $.ajax('/user/ban/' + accountID, {
                             dataType: 'json',
                             type: "GET",
                             success: function (data) {
@@ -333,54 +325,54 @@ var unSelectAll = function () {
 }
 
 var getAllAccounts = function () {
-            accountTable = $('#dataTable').dataTable({
-                bPaginate: true,
-                bProcessing: true,
-                bServerSide: true,
-                bSort: true,
-                bFilter: false,
-                bAutoWidth: true,
-                iDisplayStart: 0,
-                iDisplayLength: 10,
-                bLengthChange: true,
-                sPaginationType: 'full_numbers',
-                sAjaxSource: '/user',
-                aaSorting: [
-                    [1, 'asc']
-                ],
-                fnServerData: function (sSource, aoData, fnCallback) {
-                    $.ajax({
-                        dataType: "json",
-                        type: "POST",
-                        "url": sSource,
-                        "data": aoData,
-                        "success": fnCallback
-                    });
-                },
-                "aoColumns": [
-                    { "sTitle": "<input id='selectAll' onchange='selectAll(this)' type='checkbox'/>",
-                        "mData": "Username"},
-                    { "sTitle": "{{tsl .Session.Lang "label.id"}}",
-                        "mData": "Id"},
-                    { "sTitle": "{{tsl .Session.Lang "label.username"}}",
-                        "mData": "Username"},
-                    { "sTitle": "{{tsl .Session.Lang "label.full.name"}}",
-                        "mData": "FullName"},
-                    { "sTitle": "{{tsl .Session.Lang "label.gender"}}",
-                        "mData": "Gender"},
-                    { "sTitle": "{{tsl .Session.Lang "label.qq"}}",
-                        "mData": "Qq"},
-                    { "sTitle": "{{tsl .Session.Lang "label.tel"}}",
-                        "mData": "Tel"},
-                    { "sTitle": "{{tsl .Session.Lang "label.email"}}",
-                            "mData": "Email"},
-                    { "sTitle": "{{tsl .Session.Lang "label.address"}}",
-                            "mData": "Address"},
-                    { "sTitle": "{{tsl .Session.Lang "label.create.date"}}",
-                            "mData": "create_date"},
-                    { "sTitle": "{{tsl .Session.Lang "label.actions"}}",
-                            "mData": "Locked"}
-                    ],
+    accountTable = $('#dataTable').dataTable({
+        bPaginate: true,
+        bProcessing: true,
+        bServerSide: true,
+        bSort: true,
+        bFilter: false,
+        bAutoWidth: true,
+        iDisplayStart: 0,
+        iDisplayLength: 10,
+        bLengthChange: true,
+        sPaginationType: 'full_numbers',
+        sAjaxSource: '/user',
+        aaSorting: [
+            [1, 'asc']
+        ],
+        fnServerData: function (sSource, aoData, fnCallback) {
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                "url": sSource,
+                "data": aoData,
+                "success": fnCallback
+            });
+        },
+        "aoColumns": [
+            { "sTitle": "<input id='selectAll' onchange='selectAll(this)' type='checkbox'/>",
+                "mData": "Username"},
+            { "sTitle": '{{tsl .Session.Lang "label.id"}}',
+                "mData": "Id"},
+            { "sTitle": '{{tsl .Session.Lang "label.username"}}',
+                "mData": "Username"},
+            { "sTitle": '{{tsl .Session.Lang "label.full.name"}}',
+                "mData": "FullName"},
+            { "sTitle": '{{tsl .Session.Lang "label.gender"}}',
+                "mData": "Gender"},
+            { "sTitle": '{{tsl .Session.Lang "label.qq"}}',
+                "mData": "Qq"},
+            { "sTitle": '{{tsl .Session.Lang "label.tel"}}',
+                "mData": "Tel"},
+            { "sTitle": '{{tsl .Session.Lang "label.email"}}',
+                "mData": "Email"},
+            { "sTitle": '{{tsl .Session.Lang "label.address"}}',
+                "mData": "Address"},
+            { "sTitle": '{{tsl .Session.Lang "label.create.date"}}',
+                "mData": "create_date"},
+            { "sTitle": '{{tsl .Session.Lang "label.actions"}}',
+                "mData": "Locked"}
+        ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
             $('td:eq(0)', nRow).html('<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + aData.Id + ')"/>');
             gender = '{{tsl .Session.Lang "label.secret"}}'
@@ -390,8 +382,8 @@ var getAllAccounts = function () {
                 gender = '{{tsl .Session.Lang "label.female"}}'
             }
             $('td:eq(4)', nRow).text(gender);
-        //    var createDate = timeStamp2String(aData.CreateDate);
-        //    $('td:eq(6)', nRow).text(createDate);
+            //    var createDate = timeStamp2String(aData.CreateDate);
+            //    $('td:eq(6)', nRow).text(createDate);
 
             var html = '<div class="btn-group "><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
                     '<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:"><span class="fa fa-caret-down"></span></a>' +
@@ -431,7 +423,7 @@ var getAllAccounts = function () {
             return nRow;
         },
         "oLanguage": {
-            sUrl: [ "/css/{{tsl .Session.Lang "language"}}.txt"]
+            sUrl: [ '/css/{{tsl .Session.Lang "language"}}.txt']
         },
         "aoColumnDefs": [
             { "bSortable": false, "aTargets": [ 0 ] },
@@ -443,7 +435,6 @@ var getAllAccounts = function () {
 $(document).ready(function () {
     $('#account').css({"background": "#DDDDDD"});
     getAllAccounts();
-//    setCheckSession();
 
     $('#delete').click(function () {
         if (accountArray.length <= 1) {
