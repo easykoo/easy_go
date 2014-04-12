@@ -79,13 +79,13 @@ func (self *User) Insert() error {
 
 func (self *User) Update() error {
 	_, err := orm.Id(self.Id).MustCols("gender").Update(self)
-	Log.Info(self.Username, " updated")
+	Log.Info("User ", self.Username, " updated")
 	return err
 }
 
 func (self *User) Delete() error {
 	_, err := orm.Delete(self)
-	Log.Info(self.Username, " deleted")
+	Log.Info("User ", self.Username, " deleted")
 	return err
 }
 
@@ -100,21 +100,26 @@ func (self *User) DeleteUsers(array []int) error {
 	}
 	sql += ")"
 	_, err = orm.Exec(sql)
-	Log.Info("users: ", array, " deleted")
+	Log.Info("Users: ", array, " deleted")
 	return err
 }
 
 func (self *User) SetRole(roleId int) error {
 	var err error
-	self, err = self.GetUser()
-	_, err = orm.Update(&User{RoleId: roleId, Version: self.Version}, self)
+	_, err = orm.Id(self.Id).Update(&User{RoleId: roleId, Version: self.Version})
+	Log.Info("User ", self.Username, " roleId set to ", roleId)
 	return err
 }
 
 func (self *User) SetLock(lock bool) error {
 	var err error
 	self, err = self.GetUser()
-	_, err = orm.UseBool("locked").Update(&User{Locked: lock, Version: self.Version}, self)
+	_, err = orm.Id(self.Id).UseBool("locked").Update(&User{Locked: lock, Version: self.Version})
+	if lock {
+		Log.Info("User ", self.Username, " locked")
+	} else {
+		Log.Info("User ", self.Username, " unlocked")
+	}
 	return err
 }
 
