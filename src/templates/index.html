@@ -85,6 +85,16 @@
                 </li>
                 {{end}}
             </ul>
+            <ul class="nav navbar-nav pull-right">
+                <li class="dropdown" >
+                    <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">{{if equal .Session.Lang "en"}}En{{else}}Zh{{end}}
+                        <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:changeLanguage('en')"> English</a></li>
+                        <li><a href="javascript:changeLanguage('zh')"> 中文/简体</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
 
         <!-- /.navbar-collapse -->
@@ -150,6 +160,7 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="/js/scrolling-nav.js"></script>
+<script src="/js/easykoo.js"></script>
 
 </body>
 

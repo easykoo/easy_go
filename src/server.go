@@ -49,11 +49,8 @@ func newMartini() *martini.ClassicMartini {
 				"unescaped": func(args ...interface{}) template.HTML {
 					return template.HTML(args[0].(string))
 				},
-				"checked": func(args ...interface{}) string {
-					if args[0] == args[1] {
-						return "checked"
-					}
-					return ""
+				"equal": func(args ...interface{}) bool {
+					return args[0] == args[1]
 				},
 				"tsl": func(lang string, format string) string {
 					return Translate(lang, format)
