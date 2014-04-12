@@ -78,7 +78,8 @@
 }
 
 .navbar-top-links .dropdown-messages {
-    margin-left: 5px;
+    right: 0;
+    left: auto;
 }
 
 .navbar-top-links .dropdown-tasks {

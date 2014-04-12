@@ -26,27 +26,39 @@
                     <a href="/#contact">{{tsl .Session.Lang "label.contact.us"}}</a>
                 </li>
                 {{if .Session.SignedUser}}
-
-                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
                 <li class="dropdown">
-                    <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">{{.Session.SignedUser.Username}}
-                        <b class="caret"></b></a>
+                    <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">
+                        {{.Session.SignedUser.Username}}
+                        <b class="caret"></b>
+                    </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/admin/dashboard"><i class="fa fa-user fa-fw"></i> {{tsl .Session.Lang
-                            "label.dashboard"}}</a>
+                        <li>
+                            <a href="/admin/dashboard">
+                                <i class="fa fa-user fa-fw"></i>
+                                {{tsl .Session.Lang "label.dashboard"}}
+                            </a>
                         </li>
                         {{if privilege .Session.SignedUser 1}}
-                        <li><a href="/admin/settings"><i class="fa fa-gear fa-fw"></i> {{tsl .Session.Lang
-                            "label.settings"}}</a>
+                        <li>
+                            <a href="/admin/settings">
+                                <i class="fa fa-gear fa-fw"></i>
+                                {{tsl .Session.Lang "label.settings"}}
+                            </a>
                         </li>
                         {{end}}
                         <li class="divider"></li>
-                        <li><a href="/profile/profile"><i class="fa fa-user fa-fw"></i> {{tsl .Session.Lang
-                            "label.profile"}}</a>
+                        <li>
+                            <a href="/profile/profile">
+                                <i class="fa fa-user fa-fw"></i>
+                                {{tsl .Session.Lang "label.profile"}}
+                            </a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="/user/logout"><i class="fa fa-sign-out fa-fw"></i> {{tsl .Session.Lang
-                            "label.logout"}}</a>
+                        <li>
+                            <a href="/user/logout">
+                                <i class="fa fa-sign-out fa-fw"></i>
+                                {{tsl .Session.Lang "label.logout"}}
+                            </a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
