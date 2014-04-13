@@ -3,19 +3,19 @@ package model
 import (
 	. "common"
 
-	"time"
 	"strconv"
+	"time"
 )
 
 type Feedback struct {
-	Id           int       `xorm:"int(11) pk not null autoincr"`
-	Name         string    `form:"name" xorm:"varchar(20) not null"`
-	Email        string    `form:"email" xorm:"varchar(45) unique"`
-	Content      string    `form:"content" xorm:"varchar(45) unique"`
-	Viewed       bool `xorm:"tinyint(1) default 0"`
-	CreateDate   time.Time `json:"create_date" xorm:"datetime created"`
-	ViewDate     time.Time `json:"view_date" xorm:"datetime updated"`
-	Page `xorm:"-"`
+	Id         int       `xorm:"int(11) pk not null autoincr"`
+	Name       string    `form:"name" xorm:"varchar(20) not null"`
+	Email      string    `form:"email" xorm:"varchar(45) unique"`
+	Content    string    `form:"content" xorm:"varchar(45) unique"`
+	Viewed     bool      `xorm:"tinyint(1) default 0"`
+	CreateDate time.Time `json:"create_date" xorm:"datetime created"`
+	ViewDate   time.Time `json:"view_date" xorm:"datetime updated"`
+	Page       `xorm:"-"`
 }
 
 func (self *Feedback) Insert() error {

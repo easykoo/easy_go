@@ -105,12 +105,17 @@ func main() {
 	})
 
 	m.Group("/feedback", func(r martini.Router) {
-			r.Any("", AuthRequest(Module_Feedback), handler.AllFeedback)
-			r.Any("/info", AuthRequest(Module_Feedback), handler.FeedbackInfo)
-			r.Any("/delete", AuthRequest(Module_Feedback), handler.DeleteFeedbackArray)
-			r.Any("/delete/:id", AuthRequest(Module_Feedback), handler.DeleteFeedback)
-			r.Any("/view/:id", AuthRequest(Module_Feedback), handler.ViewFeedback)
-		})
+		r.Any("", AuthRequest(Module_Feedback), handler.AllFeedback)
+		r.Any("/info", AuthRequest(Module_Feedback), handler.FeedbackInfo)
+		r.Any("/delete", AuthRequest(Module_Feedback), handler.DeleteFeedbackArray)
+		r.Any("/delete/:id", AuthRequest(Module_Feedback), handler.DeleteFeedback)
+		r.Any("/view/:id", AuthRequest(Module_Feedback), handler.ViewFeedback)
+	})
+
+	m.Group("/blog", func(r martini.Router) {
+		r.Any("/publish", AuthRequest(Module_Blog), binding.Form(model.Blog{}), handler.PublishBlog)
+		r.Any("/view/:id", AuthRequest(Module_Blog), handler.ViewBlog)
+	})
 
 	Log.Info("server is started...")
 	os.Setenv("PORT", Cfg.MustValue("", "http_port"))

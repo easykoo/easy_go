@@ -12,7 +12,7 @@ import (
 
 func FeedbackInfo(ctx *middleware.Context) {
 	feedback := new(model.Feedback)
-	feedback.Viewed = false;
+	feedback.Viewed = false
 	feedbackArray, count, err := feedback.Info()
 	PanicIf(err)
 	ctx.Set("array", feedbackArray)

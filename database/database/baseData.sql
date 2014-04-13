@@ -23,6 +23,7 @@ insert into module(id, description, create_user, create_date, update_user, updat
 insert into module(id, description, create_user, create_date, update_user, update_date) values (3,'Feedback','SYSTEM',now(),'SYSTEM',now());
 insert into module(id, description, create_user, create_date, update_user, update_date) values (4,'News','SYSTEM',now(),'SYSTEM',now());
 insert into module(id, description, create_user, create_date, update_user, update_date) values (5,'Product','SYSTEM',now(),'SYSTEM',now());
+insert into module(id, description, create_user, create_date, update_user, update_date) values (6,'Blog','SYSTEM',now(),'SYSTEM',now());
 
 insert into privilege ( module_id, role_id,dept_id, create_user, create_date, update_user, update_date) values (1,1,1,'SYSTEM',now(),'SYSTEM',now());
 insert into privilege ( module_id, role_id,dept_id, create_user, create_date, update_user, update_date) values (2,1,1,'SYSTEM',now(),'SYSTEM',now());
@@ -35,5 +36,8 @@ insert into privilege ( module_id, role_id,dept_id, create_user, create_date, up
 insert into privilege ( module_id, role_id,dept_id, create_user, create_date, update_user, update_date) values (4,3,1,'SYSTEM',now(),'SYSTEM',now());
 insert into privilege ( module_id, role_id,dept_id, create_user, create_date, update_user, update_date) values (5,1,1,'SYSTEM',now(),'SYSTEM',now());
 insert into privilege ( module_id, role_id,dept_id, create_user, create_date, update_user, update_date) values (5,2,1,'SYSTEM',now(),'SYSTEM',now());
+insert into privilege ( module_id, role_id,dept_id, create_user, create_date, update_user, update_date) values (6,1,1,'SYSTEM',now(),'SYSTEM',now());
+insert into privilege ( module_id, role_id,dept_id, create_user, create_date, update_user, update_date) values (6,2,1,'SYSTEM',now(),'SYSTEM',now());
+insert into privilege ( module_id, role_id,dept_id, create_user, create_date, update_user, update_date) values (6,3,1,'SYSTEM',now(),'SYSTEM',now());
 
 

@@ -11,11 +11,12 @@ import (
 
 const (
 	SignInRequired = 9
-	Module_Admin   = 1 + iota
+	Module_Admin   = iota
 	Module_Account
 	Module_Feedback
 	Module_News
 	Module_Product
+	Module_Blog
 )
 
 func AuthRequest(req interface{}) martini.Handler {
@@ -25,15 +26,17 @@ func AuthRequest(req interface{}) martini.Handler {
 		case SignInRequired:
 			Log.Info("Checking style: ", "SignInRequired")
 			if user := ctx.SessionGet("SignedUser"); user != nil {
+				Log.Info("Pass!")
 				return
 			}
 			ctx.Redirect("/user/login")
 			return
 		default:
-			Log.Info("Checking style: ", "Module")
+			Log.Info("Checking style: ", "Module ", req.(int))
 			if user := ctx.SessionGet("SignedUser"); user != nil {
 				if reflect.TypeOf(req).Kind() == reflect.Int {
 					if CheckPermission(user.(model.User), req.(int)) {
+						Log.Info("Pass!")
 						return
 					}
 					ctx.HTML(403, "error/403", ctx)
