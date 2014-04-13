@@ -22,7 +22,7 @@
             {{end}}
             {{if privilege .Session.SignedUser 3}}
             <li id="feedback">
-                <a href="/feedback/allFeedback"><i class="fa fa-edit fa-fw"></i> {{tsl .Session.Lang "label.feedback"}}</a>
+                <a href="/feedback"><i class="fa fa-edit fa-fw"></i> {{tsl .Session.Lang "label.feedback"}}</a>
             </li>
             {{end}}
             {{if privilege .Session.SignedUser 4}}
@@ -31,13 +31,13 @@
                     <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li id="allNews">
-                        <a href="/news/allNews"> {{tsl .Session.Lang "label.all.news"}}</a>
+                        <a href="/news"> {{tsl .Session.Lang "label.all.news"}}</a>
                     </li>
                     <li id="publishNews">
                         <a href="/news/publishNews"> {{tsl .Session.Lang "label.publish.news"}}</a>
                     </li>
                     <li id="allNotice">
-                        <a href="/news/allNotice"> {{tsl .Session.Lang "label.all.notices"}}</a>
+                        <a href="/news"> {{tsl .Session.Lang "label.all.notices"}}</a>
                     </li>
                     <li id="publishNotice">
                         <a href="/news/publishNotice"> {{tsl .Session.Lang "label.publish.notice"}}</a>
@@ -52,7 +52,7 @@
                     <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li id="allProduct">
-                        <a href="/product/allProduct"> {{tsl .Session.Lang "label.all.products"}}</a>
+                        <a href="/product"> {{tsl .Session.Lang "label.all.products"}}</a>
                     </li>
                     <li id="publishProduct">
                         <a href="/product/publishProduct"> {{tsl .Session.Lang "label.publish.product"}}</a>

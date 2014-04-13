@@ -14,6 +14,7 @@ type Feedback struct {
 	Content      string    `form:"content" xorm:"varchar(45) unique"`
 	Viewed       bool `xorm:"tinyint(1) default 0"`
 	CreateDate   time.Time `json:"create_date" xorm:"datetime created"`
+	ViewDate     time.Time `json:"view_date" xorm:"datetime updated"`
 	Page `xorm:"-"`
 }
 
@@ -31,7 +32,7 @@ func (self *Feedback) Delete() error {
 
 func (self *Feedback) SetViewed(view bool) error {
 	var err error
-	_, err = orm.Id(self.Id).UseBool("locked").Update(&Feedback{Viewed: view}, self)
+	_, err = orm.Id(self.Id).UseBool("viewed").Update(&Feedback{Viewed: view})
 	return err
 }
 
@@ -48,6 +49,16 @@ func (self *Feedback) DeleteFeedbackArray(array []int) error {
 	_, err = orm.Exec(sql)
 	Log.Info("Feedback array: ", array, " deleted")
 	return err
+}
+
+func (self *Feedback) Info() ([]Feedback, int, error) {
+	var totalRecords int
+	var feedback []Feedback
+	err := orm.UseBool("viewed").MustCols("viewed").Find(&feedback, self)
+	totalRecords = len(feedback)
+	feedback = feedback[:0]
+	err = orm.UseBool("viewed").MustCols("viewed").OrderBy("create_date desc").Limit(5, 0).Find(&feedback, self)
+	return feedback, totalRecords, err
 }
 
 func (self *Feedback) SearchByPage() ([]Feedback, int, error) {

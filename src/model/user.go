@@ -104,10 +104,10 @@ func (self *User) DeleteUsers(array []int) error {
 	return err
 }
 
-func (self *User) SetRole(roleId int) error {
+func (self *User) SetRole() error {
 	var err error
-	_, err = orm.Id(self.Id).Update(&User{RoleId: roleId, Version: self.Version})
-	Log.Info("User ", self.Username, " roleId set to ", roleId)
+	_, err = orm.Id(self.Id).MustCols("role_id").Update(&User{RoleId: self.RoleId, Version: self.Version})
+	Log.Info("User ", self.Username, " roleId set to ", self.RoleId)
 	return err
 }
 

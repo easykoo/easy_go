@@ -121,6 +121,7 @@ CREATE TABLE feedback (
   content     VARCHAR(200) NOT NULL,
   viewed      TINYINT(1) DEFAULT '0',
   create_date DATETIME     NULL,
+  view_date DATETIME     NULL,
   PRIMARY KEY (id)
 );
 

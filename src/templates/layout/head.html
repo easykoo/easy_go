@@ -83,27 +83,27 @@
 
     var feedbackList = null;
 
-    var getTop5Feedback = function () {
+    var getFeedbackInfo = function () {
         $.ajax({
             dataType: "json",
             type: "POST",
-            url: 'feedback/getTop5Feedback',
+            url: '/feedback/info',
             data: null,
             success: function (data) {
                 $('#feedback_notification').empty();
                 var html = '';
-                if (data != null) {
-                    feedbackList = data;
-                    $.each(data, function (index, feedback) {
+                if (data.array != null) {
+                    feedbackList = data.array;
+                    $.each(feedbackList, function (index, feedback) {
                         html += '<li>'
-                                + '<a href="javascript:readFeedbackWithCallback(' + feedback.feedbackId + ',getTop5Feedback, getFeedbackCount)">'
+                                + '<a href="javascript:readFeedbackWithCallback(' + feedback.Id + ',getTop5Feedback, getFeedbackCount)">'
                                 + '<div>'
-                                + '<strong>' + (feedback.name.length <= 5 ? feedback.name : (feedback.name.substr(0, 5) + '... ')) + '</strong>'
+                                + '<strong>' + (feedback.Name.length <= 10 ? feedback.Name : (feedback.Name.substr(0, 10) + '... ')) + '</strong>'
                                 + '<span class="pull-right text-muted">'
-                                + '<em>' + timeStamp2String(feedback.createDate) + '</em>'
+                                + '<em>' + feedback.create_date + '</em>'
                                 + '</span>'
                                 + '</div>'
-                                + '<div>' + (feedback.content.length <= 30 ? feedback.content : (feedback.content.substr(0, 30) + '... ')) + '</div>'
+                                + '<div>' + (feedback.Content.length <= 30 ? feedback.Content : (feedback.Content.substr(0, 30) + '... ')) + '</div>'
                                 + '</a>'
                                 + '</li>'
                                 + '<li class="divider"></li>'
@@ -117,21 +117,10 @@
                             + '</li>'
                     $('#feedback_notification').html(html);
                 }
-            }
-        });
-    };
-
-    var getFeedbackCount = function () {
-        $.ajax({
-            dataType: "json",
-            type: "POST",
-            url: 'feedback/ajax/getFeedbackCount',
-            data: null,
-            success: function (data) {
-                if (data == 0) {
+                if (data.count == 0) {
                     $('#feedbackCount').empty();
                 } else {
-                    $('#feedbackCount').text(data);
+                    $('#feedbackCount').text(data.count);
                 }
             }
         });
@@ -151,10 +140,10 @@
 
     var readFeedbackWithCallback = function (id, fnCallback1, fnCallback2) {
         $.each(feedbackList, function (index, feedback) {
-            if (feedback.feedbackId == id) {
+            if (feedback.Id == id) {
                 bootbox.dialog({
-                    message: feedback.content,
-                    title: feedback.name,
+                    message: feedback.Content,
+                    title: feedback.Name,
                     buttons: {
                         success: {
                             label: '{{tsl .Session.Lang "label.ok"}}',
@@ -163,7 +152,7 @@
                                 $.ajax({
                                     dataType: "json",
                                     type: "POST",
-                                    url: 'feedback/ajax/readFeedback',
+                                    url: '/feedback/' + id,
                                     data: {id: id},
                                     success: function (data) {
                                         if (data.success) {
@@ -181,15 +170,12 @@
     };
 
     var viewAllFeedback = function () {
-        location.href = "feedback/allFeedback";
+        location.href = "/feedback";
     }
 
     $(document).ready(function () {
-
-        /*getFeedbackCount();
-         setInterval(getFeedbackCount, 10000);
-         getTop5Feedback();
-         setInterval(getTop5Feedback, 10000);*/
+        getFeedbackInfo();
+        setInterval(getFeedbackInfo, 60000);
     });
 
 </script>

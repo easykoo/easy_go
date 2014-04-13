@@ -219,11 +219,13 @@
             rules: {
                 name: {
                     required: true,
-                    minlength: 4
+                    minlength: 4,
+                    maxlength: 20
                 },
                 email: {
                     required: true,
-                    email: true
+                    email: true,
+                    maxlength: 45
                 },
                 content: {
                     required: true,
@@ -234,11 +236,13 @@
             messages: {
                 name: {
                     required: '{{tsl .Session.Lang "message.error.required"}}',
-                    minlength: '{{tsl .Session.Lang "message.error.min.length"}}'
+                    minlength: '{{tsl .Session.Lang "message.error.min.length"}}',
+                    maxlength: '{{tsl .Session.Lang "message.error.max.length"}}'
                 },
                 email: {
                     required: '{{tsl .Session.Lang "message.error.required"}}',
-                    email: '{{tsl .Session.Lang "message.error.wrong.email.format"}}'
+                    email: '{{tsl .Session.Lang "message.error.wrong.email.format"}}',
+                    maxlength: '{{tsl .Session.Lang "message.error.max.length"}}'
                 },
                 content: {
                     required: '{{tsl .Session.Lang "message.error.required"}}',
@@ -269,15 +273,12 @@
                         content: $('#content').val()
                     },
                     success: function (data) {
-                        alert(data.success)
                         if (data.success) {
                             $('#name').val("");
                             $('#email').val("");
                             $('#content').val("")
-                            alert(data.message)
-                        } else {
-                            alert(data.message)
                         }
+                        alert(data.message)
                     }
                 });
                 return false;

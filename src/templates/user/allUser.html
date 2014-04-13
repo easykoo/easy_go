@@ -52,6 +52,8 @@
                                     <th><input type="checkbox" id="selectAll"/></th>
                                     <th>{{tsl .Session.Lang "label.id"}}</th>
                                     <th>{{tsl .Session.Lang "label.username"}}</th>
+                                    <th>{{tsl .Session.Lang "label.role"}}</th>
+                                    <th>{{tsl .Session.Lang "label.dept"}}</th>
                                     <th>{{tsl .Session.Lang "label.full.name"}}</th>
                                     <th>{{tsl .Session.Lang "label.gender"}}</th>
                                     <th>{{tsl .Session.Lang "label.qq"}}</th>
@@ -88,12 +90,12 @@
 
 <script type="text/javascript" charset="utf-8">
 
-var accountTable;
+var userTable;
 
-function deleteAccount(accountID) {
+function deleteAccount(userId) {
     bootbox.dialog({
-        message: "Are you sure to delete this account?",
-        title: "Delete Account",
+        message: '{{tsl .Session.Lang "message.sure.delete.record"}}',
+        title: '{{tsl .Session.Lang "label.delete.record"}}',
         buttons: {
             main: {
                 label: '{{tsl .Session.Lang "label.cancel"}}',
@@ -105,15 +107,15 @@ function deleteAccount(accountID) {
                 className: "btn-danger",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('/user/delete/' + accountID, {
+                        $.ajax('/user/delete/' + userId, {
                             dataType: 'json',
                             type: "GET",
                             success: function (data) {
                                 if (!data.success) {
                                     bootbox.alert(data.message, null);
                                 }
-                                accountTable.fnClearTable(0);
-                                accountTable.fnDraw();
+                                userTable.fnClearTable(0);
+                                userTable.fnDraw();
                             }
                         });
                     }
@@ -123,10 +125,10 @@ function deleteAccount(accountID) {
     });
 }
 
-function banAccount(accountID) {
+function ban(userId) {
     bootbox.dialog({
-        message: "Are you sure to ban this account?",
-        title: "Ban Account",
+        message: '{{tsl .Session.Lang "message.sure.ban.user"}}',
+        title: '{{tsl .Session.Lang "title.ban.user"}}',
         buttons: {
             main: {
                 label: '{{tsl .Session.Lang "label.cancel"}}',
@@ -138,15 +140,15 @@ function banAccount(accountID) {
                 className: "btn-danger",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('/user/ban/' + accountID, {
+                        $.ajax('/user/ban/' + userId, {
                             dataType: 'json',
                             type: "GET",
                             success: function (data) {
                                 if (!data.success) {
                                     bootbox.alert(data.message, null);
                                 }
-                                accountTable.fnClearTable(0);
-                                accountTable.fnDraw();
+                                userTable.fnClearTable(0);
+                                userTable.fnDraw();
                             }
                         });
                     }
@@ -156,10 +158,10 @@ function banAccount(accountID) {
     });
 }
 
-function unbanAccount(accountID) {
+function lift(userId) {
     bootbox.dialog({
-        message: "Are you sure to unban this account?",
-        title: "Unban Account",
+        message: '{{tsl .Session.Lang "message.sure.lift.user"}}',
+        title: '{{tsl .Session.Lang "title.lift.user"}}',
         buttons: {
             main: {
                 label: '{{tsl .Session.Lang "label.cancel"}}',
@@ -171,15 +173,15 @@ function unbanAccount(accountID) {
                 className: "btn-success",
                 callback: function (result) {
                     if (result) {
-                        $.ajax('/user/lift/' + accountID, {
+                        $.ajax('/user/lift/' + userId, {
                             dataType: 'json',
                             type: "GET",
                             success: function (data) {
                                 if (!data.success) {
                                     bootbox.alert(data.message, null);
                                 }
-                                accountTable.fnClearTable(0);
-                                accountTable.fnDraw();
+                                userTable.fnClearTable(0);
+                                userTable.fnDraw();
                             }
                         });
                     }
@@ -189,101 +191,45 @@ function unbanAccount(accountID) {
     });
 }
 
-function makeAdmin(accountID) {
-    bootbox.dialog({
-        message: "Are you sure to make this account administrator?",
-        title: "Make Admin",
-        buttons: {
-            main: {
-                label: '{{tsl .Session.Lang "label.cancel"}}',
-                className: "btn-default",
-                callback: null
-            },
-            danger: {
-                label: '{{tsl .Session.Lang "label.yes"}}',
-                className: "btn-danger",
-                callback: function (result) {
-                    if (result) {
-                        $.ajax('/user/admin/' + accountID, {
-                            dataType: 'json',
-                            type: "GET",
-                            success: function (data) {
-                                if (!data.success) {
-                                    bootbox.alert(data.message, null);
-                                }
-                                accountTable.fnClearTable(0);
-                                accountTable.fnDraw();
+function setRole(id, promte) {
+    var users = userTable.fnGetData();
+    $.each(users, function (index, user) {
+        if (user.Id == id) {
+            bootbox.dialog({
+                message: promte ? '{{tsl .Session.Lang "message.sure.promote"}}' : '{{tsl .Session.Lang "message.sure.demote"}}',
+                title: promte ? '{{tsl .Session.Lang "title.promotion"}}' : '{{tsl .Session.Lang "title.demotion"}}',
+                buttons: {
+                    main: {
+                        label: '{{tsl .Session.Lang "label.confirm"}}',
+                        className: "btn-danger",
+                        callback: function (result) {
+                            if (result) {
+                                $.ajax('/user/role', {
+                                    dataType: 'json',
+                                    type: "POST",
+                                    data: {
+                                        Id: user.Id,
+                                        RoleId: promte ? user.RoleId - 1 : user.RoleId + 1,
+                                        Version: user.Version
+                                    },
+                                    success: function (data) {
+                                        if (!data.success) {
+                                            bootbox.alert(data.message, null);
+                                        }
+                                        userTable.fnClearTable(0);
+                                        userTable.fnDraw();
+                                    }
+                                });
                             }
-                        });
+                        }
+                    },
+                    danger: {
+                        label: '{{tsl .Session.Lang "label.cancel"}}',
+                        className: "btn-default",
+                        callback: null
                     }
                 }
-            }
-        }
-    });
-}
-
-function hire(accountID) {
-    bootbox.dialog({
-        message: "Are you sure to hire this user?",
-        title: "Hire",
-        buttons: {
-            main: {
-                label: '{{tsl .Session.Lang "label.cancel"}}',
-                className: "btn-default",
-                callback: null
-            },
-            danger: {
-                label: '{{tsl .Session.Lang "label.yes"}}',
-                className: "btn-danger",
-                callback: function (result) {
-                    if (result) {
-                        $.ajax('/user/hire/' + accountID, {
-                            dataType: 'json',
-                            type: "GET",
-                            success: function (data) {
-                                if (!data.success) {
-                                    bootbox.alert(data.message, null);
-                                }
-                                accountTable.fnClearTable(0);
-                                accountTable.fnDraw();
-                            }
-                        });
-                    }
-                }
-            }
-        }
-    });
-}
-
-function fire(accountID) {
-    bootbox.dialog({
-        message: "Are you sure to fire this employee?",
-        title: "Fire Employee",
-        buttons: {
-            main: {
-                label: '{{tsl .Session.Lang "label.cancel"}}',
-                className: "btn-default",
-                callback: null
-            },
-            danger: {
-                label: '{{tsl .Session.Lang "label.yes"}}',
-                className: "btn-danger",
-                callback: function (result) {
-                    if (result) {
-                        $.ajax('/user/fire/' + accountID, {
-                            dataType: 'json',
-                            type: "GET",
-                            success: function (data) {
-                                if (!data.success) {
-                                    bootbox.alert(data.message, null);
-                                }
-                                accountTable.fnClearTable(0);
-                                accountTable.fnDraw();
-                            }
-                        });
-                    }
-                }
-            }
+            });
         }
     });
 }
@@ -325,7 +271,7 @@ var unSelectAll = function () {
 }
 
 var getAllAccounts = function () {
-    accountTable = $('#dataTable').dataTable({
+    userTable = $('#dataTable').dataTable({
         bPaginate: true,
         bProcessing: true,
         bServerSide: true,
@@ -356,6 +302,10 @@ var getAllAccounts = function () {
                 "mData": "Id"},
             { "sTitle": '{{tsl .Session.Lang "label.username"}}',
                 "mData": "Username"},
+            { "sTitle": '{{tsl .Session.Lang "label.role"}}',
+                "mData": "RoleId"},
+            { "sTitle": '{{tsl .Session.Lang "label.dept"}}',
+                "mData": "DeptId"},
             { "sTitle": '{{tsl .Session.Lang "label.full.name"}}',
                 "mData": "FullName"},
             { "sTitle": '{{tsl .Session.Lang "label.gender"}}',
@@ -381,7 +331,7 @@ var getAllAccounts = function () {
             } else if (aData.Gender == 2) {
                 gender = '{{tsl .Session.Lang "label.female"}}'
             }
-            $('td:eq(4)', nRow).text(gender);
+            $('td:eq(6)', nRow).text(gender);
             //    var createDate = timeStamp2String(aData.CreateDate);
             //    $('td:eq(6)', nRow).text(createDate);
 
@@ -392,34 +342,39 @@ var getAllAccounts = function () {
                     + '<strong> {{tsl .Session.Lang "label.delete"}}</strong>'
                     + '</a></li>';
             if (!aData.Locked) {
-                html += '<li><a href="javascript:banAccount(' + aData.Id + ')"><i class="fa fa-ban fa-fw"></i>'
+                html += '<li><a href="javascript:ban(' + aData.Id + ')"><i class="fa fa-ban fa-fw"></i>'
                         + '<strong> {{tsl .Session.Lang "label.ban"}}</strong>'
                         + '</a></li>';
             } else {
-                html += '<li><a href="javascript:unbanAccount(' + aData.Id + ')"><i class="fa fa-ban fa-fw"></i>'
-                        + '<strong> {{tsl .Session.Lang "label.unban"}}</strong>'
+                html += '<li><a href="javascript:lift(' + aData.Id + ')"><i class="fa fa-ban fa-fw"></i>'
+                        + '<strong> {{tsl .Session.Lang "label.lift"}}</strong>'
                         + '</a></li>';
             }
-            if (aData.RoleId == 2) {
-                html += '<li class="divider"></li><li><a href="javascript:makeAdmin(' + aData.Id + ')"><i class="i"></i>'
-                        + '<strong> {{tsl .Session.Lang "label.make.admin"}}</strong>'
+            if (aData.RoleId > 1) {
+                html += '<li class="divider"></li><li><a href="javascript:setRole(' + aData.Id + ', true)"><i class="i"></i>'
+                        + '<strong> {{tsl .Session.Lang "label.promote"}}</strong>'
                         + '</a></li>';
             }
-            if (aData.RoleId == 3) {
-                html += '<li class="divider"></li><li><a href="javascript:hire(' + aData.Id + ')"><i class="i"></i>'
-                        + '<strong> {{tsl .Session.Lang "label.hire"}}</strong>'
-                        + '</a></li>';
-            } else {
-                html += '<li class="divider"></li><li><a href="javascript:fire(' + aData.Id + ')"><i class="i"></i>'
-                        + '<strong> {{tsl .Session.Lang "label.fire"}}</strong>'
+            if (aData.RoleId < 4) {
+                html += '<li class="divider"></li><li><a href="javascript:setRole(' + aData.Id + ', false)"><i class="i"></i>'
+                        + '<strong> {{tsl .Session.Lang "label.demote"}}</strong>'
                         + '</a></li>';
             }
             html += '</ul></div>';
-            $('td:eq(10)', nRow).html(html);
+            $('td:eq(12)', nRow).html(html);
 
             if (aData.Locked) {
                 $(nRow).css({"color": "#BBBBBB"})
             }
+            $('td:eq(0)', nRow).width(20);
+            $('td:eq(1)', nRow).width(30);
+            $('td:eq(2)', nRow).width(90);
+            $('td:eq(3)', nRow).width(50);
+            $('td:eq(4)', nRow).width(50);
+            $('td:eq(6)', nRow).width(70);
+            $('td:eq(8)', nRow).width(120);
+            $('td:eq(11)', nRow).width(150);
+            $('td:eq(12)', nRow).width(80);
             return nRow;
         },
         "oLanguage": {
@@ -427,7 +382,7 @@ var getAllAccounts = function () {
         },
         "aoColumnDefs": [
             { "bSortable": false, "aTargets": [ 0 ] },
-            { "bSortable": false, "aTargets": [ 10 ] }
+            { "bSortable": false, "aTargets": [ 12 ] }
         ]
     });
 }
@@ -467,8 +422,8 @@ $(document).ready(function () {
                                     }
                                     unSelectAll();
                                     accountArray = [0];
-                                    accountTable.fnClearTable(0);
-                                    accountTable.fnDraw();
+                                    userTable.fnClearTable(0);
+                                    userTable.fnDraw();
                                 }
                             });
                         }

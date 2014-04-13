@@ -1,10 +1,10 @@
 package handler
 
 import (
+	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 
 	. "common"
-	"github.com/go-martini/martini"
 	"middleware"
 	"model"
 
@@ -183,33 +183,18 @@ func DeleteUsers(ctx *middleware.Context) {
 	ctx.JSON(200, ctx.Response)
 }
 
-func AdminUser(ctx *middleware.Context, params martini.Params) {
-	id := params["id"]
+func SetRole(ctx *middleware.Context) {
+	id := ctx.R.PostFormValue("Id")
+	roleId := ctx.R.PostFormValue("RoleId")
+	version := ctx.R.PostFormValue("Version")
 	user := new(model.User)
 	user.Id = ParseInt(id)
-	err := user.SetRole(1)
+	user.RoleId = ParseInt(roleId)
+	user.Version = ParseInt(version)
+	err := user.SetRole()
 	PanicIf(err)
 	ctx.Set("success", true)
-	ctx.JSON(200, ctx.Response)
-}
-
-func HireUser(ctx *middleware.Context, params martini.Params) {
-	id := params["id"]
-	user := new(model.User)
-	user.Id = ParseInt(id)
-	err := user.SetRole(2)
-	PanicIf(err)
-	ctx.Set("success", true)
-	ctx.JSON(200, ctx.Response)
-}
-
-func FireUser(ctx *middleware.Context, params martini.Params) {
-	id := params["id"]
-	user := new(model.User)
-	user.Id = ParseInt(id)
-	err := user.SetRole(3)
-	PanicIf(err)
-	ctx.Set("success", true)
+	Log.Debug("User: ", user.Id, " roleId set to ", roleId)
 	ctx.JSON(200, ctx.Response)
 }
 

@@ -85,9 +85,7 @@ func main() {
 		r.Any("/register", binding.Form(model.UserRegisterForm{}), handler.RegisterHandler)
 		r.Any("/delete", AuthRequest(Module_Account), handler.DeleteUsers)
 		r.Any("/delete/:id", AuthRequest(Module_Account), handler.DeleteUser)
-		r.Any("/admin/:id", AuthRequest(Module_Account), handler.AdminUser)
-		r.Any("/hire/:id", AuthRequest(Module_Account), handler.HireUser)
-		r.Any("/fire/:id", AuthRequest(Module_Account), handler.FireUser)
+		r.Any("/role", AuthRequest(Module_Account), handler.SetRole)
 		r.Any("/ban/:id", AuthRequest(Module_Account), handler.BanUser)
 		r.Any("/lift/:id", AuthRequest(Module_Account), handler.LiftUser)
 		//		r.Any("/:id", GetUser)
@@ -105,6 +103,14 @@ func main() {
 		r.Get("/dashboard", AuthRequest(SignInRequired), handler.DashboardHandler)
 		r.Get("/settings", AuthRequest(Module_Admin), handler.DashboardHandler)
 	})
+
+	m.Group("/feedback", func(r martini.Router) {
+			r.Any("", AuthRequest(Module_Feedback), handler.AllFeedback)
+			r.Any("/info", AuthRequest(Module_Feedback), handler.FeedbackInfo)
+			r.Any("/delete", AuthRequest(Module_Feedback), handler.DeleteFeedbackArray)
+			r.Any("/delete/:id", AuthRequest(Module_Feedback), handler.DeleteFeedback)
+			r.Any("/view/:id", AuthRequest(Module_Feedback), handler.ViewFeedback)
+		})
 
 	Log.Info("server is started...")
 	os.Setenv("PORT", Cfg.MustValue("", "http_port"))
