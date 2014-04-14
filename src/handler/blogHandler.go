@@ -5,6 +5,7 @@ import (
 	"github.com/go-martini/martini"
 	"middleware"
 	"model"
+	"time"
 )
 
 func PublishBlog(ctx *middleware.Context, blog model.Blog) {
@@ -14,9 +15,19 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 			ctx.Set("success", false)
 			ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.error.publish.failed"))
 		} else {
-			err := blog.Insert()
-			PanicIf(err)
-			ctx.Set("id", blog.Id)
+			blog.PublishDate = time.Now()
+			blog.State = "PUBLISHED"
+			blog.UpdateUser = ctx.SessionGet("SignedUser").(model.User).Username
+			if blog.Id == 0 {
+				blog.Priority = 5
+				blog.CreateUser = ctx.SessionGet("SignedUser").(model.User).Username
+				err := blog.Insert()
+				PanicIf(err)
+			} else {
+				err := blog.Update()
+				PanicIf(err)
+			}
+			ctx.Set("blog", blog)
 			ctx.Set("success", true)
 			ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.publish.success"))
 		}
@@ -24,6 +35,29 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 	default:
 		ctx.HTML(200, "blog/publish", ctx)
 	}
+}
+
+func SaveBlog(ctx *middleware.Context, blog model.Blog) {
+	if blog.Title == "" || blog.Content == "" {
+		ctx.Set("success", false)
+		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.error.save.failed"))
+	} else {
+		blog.State = "DRAFT"
+		blog.UpdateUser = ctx.SessionGet("SignedUser").(model.User).Username
+		if blog.Id == 0 {
+			blog.Priority = 5
+			blog.CreateUser = ctx.SessionGet("SignedUser").(model.User).Username
+			err := blog.Insert()
+			PanicIf(err)
+		} else {
+			err := blog.Update()
+			PanicIf(err)
+		}
+		ctx.Set("blog", blog)
+		ctx.Set("success", true)
+		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.save.success"))
+	}
+	ctx.JSON(200, ctx.Response)
 }
 
 func AllBlog(ctx *middleware.Context) {

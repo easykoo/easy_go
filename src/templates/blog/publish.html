@@ -46,7 +46,7 @@
         </div>
         {{template "layout/message" .}}
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-10">
                 <form id="profileForm" role="form" class="form-horizontal" method="post" action="/blog/publish">
 
                     <div class="form-group">
@@ -62,12 +62,17 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-2">
-                            <button type="button" onclick="save()" class="btn btn-success btn-block">
+                            <button type="button" onclick="save(true)" class="btn btn-primary btn-block">
                                 {{tsl .Session.Lang "label.publish"}}
                             </button>
                         </div>
-                        <div id="viewBtn" class="col-sm-2" hidden="true">
-                            <button type="button" onclick="view()" class="btn btn-primary btn-block">
+                        <div class="col-sm-2">
+                            <button type="button" onclick="save(false)" class="btn btn-success btn-block">
+                                {{tsl .Session.Lang "label.save"}}
+                            </button>
+                        </div>
+                        <div class="col-sm-2">
+                            <button id="viewBtn"  type="button" onclick="viewToggle()" class="btn btn-default btn-block">
                                 {{tsl .Session.Lang "label.view"}}
                             </button>
                         </div>
@@ -83,34 +88,45 @@
 <script src="/js/jquery.validate.min.js"></script>
 <script src="/js/jquery.validate.method.js"></script>
 <script src="/js/jquery.metisMenu.js"></script>
+<script src="/js/jquery.json.js"></script>
 <script src="/js/admin.js"></script>
 <script src="/js/easykoo.js"></script>
 
 <script type="text/javascript">
     var blogId = 0;
-    var view = function () {
-        if (blogId > 0) {
-            window.location.href = "/blog/view/" + blogId;
+    var version = 1;
+    var state = "EDIT";
+    var viewToggle = function () {
+        if (state == "EDIT"){
+            view();
+            state = "VIEW";
+            $('#viewBtn').text('{{tsl .Session.Lang "label.edit"}}')
+        } else {
+            edit();
+            state = "EDIT";
+            $('#viewBtn').text('{{tsl .Session.Lang "label.view"}}')
         }
     }
-    var save = function () {
+    var save = function (publish) {
         var content = $('.summernote').code();
         $.ajax({
             dataType: "json",
             type: "POST",
-            url: '/blog/publish',
+            url: publish ? '/blog/publish' : '/blog/save',
             data: {
+                id: blogId,
                 title: $('#title').val(),
-                content: content
+                content: content,
+                version: version
             },
             success: function (data) {
                 if (data.success) {
-                    blogId = data.id
-                    $('#viewBtn').show()
-//                    $('.summernote').destroy();
+                    blogId = data.blog.Id;
+                    version = data.blog.Version;
+                    alert($.toJSON(data.blog))
                     bootbox.dialog({
-                        title: '{{tsl .Session.Lang "message.publish.success"}}',
-                        message: '{{tsl .Session.Lang "message.publish.success"}}',
+                        title: data.message,
+                        message: data.message,
                         buttons: {
                             main: {
                                 label: '{{tsl .Session.Lang "label.confirm"}}',
@@ -127,15 +143,25 @@
         });
     };
 
-    $(document).ready(function () {
-        $('#blog').toggleClass('active').children('ul').collapse('toggle');
-        $('#publishBlog').css({"background": "#DDDDDD"});
+    var view = function(){
+        //todo handle title
+        $('.summernote').destroy();
+    }
+
+    var edit = function(){
+        //todo handle title
         $('.summernote').summernote({
-            height: 500,
+            height: 400,
             codemirror: {
                 theme: 'monokai'
             }
         });
+    }
+
+    $(document).ready(function () {
+        $('#blog').toggleClass('active').children('ul').collapse('toggle');
+        $('#publishBlog').css({"background": "#DDDDDD"});
+        edit();
     })
 </script>
 </body>

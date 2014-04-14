@@ -109,6 +109,7 @@ CREATE TABLE blog (
   content     BLOB        NOT NULL,
   state      VARCHAR(10) NOT NULL,
   priority    INT(1)      NULL DEFAULT 5,
+  publish_date DATETIME DEFAULT NULL,
   create_user VARCHAR(20) DEFAULT NULL,
   create_date DATETIME DEFAULT NULL,
   update_user VARCHAR(20) DEFAULT NULL,

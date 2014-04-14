@@ -8,11 +8,12 @@ import (
 )
 
 type Blog struct {
-	Id         int       `xorm:"int(11) pk not null autoincr"`
+	Id         int       `form:"id" xorm:"int(11) pk not null autoincr"`
 	Title      string    `form:"title" xorm:"varchar(45) not null"`
 	Content    string    `form:"content" xorm:"blob not null"`
 	State      string    `xorm:"varchar(10) default null"`
 	Priority   int       `xorm:"int(1) default 5"`
+	PublishDate time.Time `json:"publish_date" xorm:"datetime default null"`
 	CreateUser string    `json:"create_user" xorm:"varchar(20) default null"`
 	CreateDate time.Time `json:"create_date" xorm:"datetime created"`
 	UpdateUser string    `json:"update_user" xorm:"varchar(20) default null"`
@@ -27,10 +28,22 @@ func (self *Blog) Insert() error {
 	return err
 }
 
+func (self *Blog) Update() error {
+	_, err := orm.Id(self.Id).Update(self)
+	Log.Info("Blog ", self.Id, " updated!")
+	return err
+}
+
 func (self *Blog) Delete() error {
 	_, err := orm.Delete(self)
 	Log.Info("Blog ", self.Id, " deleted")
 	return err
+}
+
+func (self *Blog) GetBlogById() (*Blog, error) {
+	blog := &Blog{Id: self.Id}
+	_, err := orm.Get(blog)
+	return blog, err
 }
 
 func (self *Blog) GetBlog() error {
