@@ -88,9 +88,6 @@ func main() {
 		r.Any("/role", AuthRequest(Module_Account), handler.SetRole)
 		r.Any("/ban/:id", AuthRequest(Module_Account), handler.BanUser)
 		r.Any("/lift/:id", AuthRequest(Module_Account), handler.LiftUser)
-		//		r.Any("/:id", GetUser)
-		//		r.Any("/new", NewUser)
-		//		r.Any("/update/:id", UpdateUser)
 	})
 
 	m.Group("/profile", func(r martini.Router) {

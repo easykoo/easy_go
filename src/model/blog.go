@@ -8,18 +8,18 @@ import (
 )
 
 type Blog struct {
-	Id         int       `form:"id" xorm:"int(11) pk not null autoincr"`
-	Title      string    `form:"title" xorm:"varchar(45) not null"`
-	Content    string    `form:"content" xorm:"blob not null"`
-	State      string    `xorm:"varchar(10) default null"`
-	Priority   int       `xorm:"int(1) default 5"`
+	Id          int       `form:"id" xorm:"int(11) pk not null autoincr"`
+	Title       string    `form:"title" xorm:"varchar(45) not null"`
+	Content     string    `form:"content" xorm:"blob not null"`
+	State       string    `xorm:"varchar(10) default null"`
+	Priority    int       `xorm:"int(1) default 5"`
 	PublishDate time.Time `json:"publish_date" xorm:"datetime default null"`
-	CreateUser string    `json:"create_user" xorm:"varchar(20) default null"`
-	CreateDate time.Time `json:"create_date" xorm:"datetime created"`
-	UpdateUser string    `json:"update_user" xorm:"varchar(20) default null"`
-	UpdateDate time.Time `json:"update_date" xorm:"datetime updated"`
-	Version    int       `form:"version" xorm:"int(11) version"`
-	Page       `xorm:"-"`
+	CreateUser  string    `json:"create_user" xorm:"varchar(20) default null"`
+	CreateDate  time.Time `json:"create_date" xorm:"datetime created"`
+	UpdateUser  string    `json:"update_user" xorm:"varchar(20) default null"`
+	UpdateDate  time.Time `json:"update_date" xorm:"datetime updated"`
+	Version     int       `form:"version" xorm:"int(11) version"`
+	Page        `xorm:"-"`
 }
 
 func (self *Blog) Insert() error {

@@ -2,13 +2,13 @@ package handler
 
 import (
 	"github.com/go-martini/martini"
-	
+
 	. "common"
 	"middleware"
 	"model"
 
-	"time"
 	"encoding/json"
+	"time"
 )
 
 func PublishBlog(ctx *middleware.Context, blog model.Blog) {
