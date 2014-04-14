@@ -51,22 +51,16 @@ func (self *Feedback) DeleteFeedbackArray(array []int) error {
 	return err
 }
 
-func (self *Feedback) Info() ([]Feedback, int, error) {
-	var totalRecords int
+func (self *Feedback) Info() ([]Feedback, int64, error) {
+	total, err := orm.UseBool("viewed").MustCols("viewed").Count(self)
 	var feedback []Feedback
-	err := orm.UseBool("viewed").MustCols("viewed").Find(&feedback, self)
-	totalRecords = len(feedback)
-	feedback = feedback[:0]
 	err = orm.UseBool("viewed").MustCols("viewed").OrderBy("create_date desc").Limit(5, 0).Find(&feedback, self)
-	return feedback, totalRecords, err
+	return feedback, total, err
 }
 
-func (self *Feedback) SearchByPage() ([]Feedback, int, error) {
-	var totalRecords int
+func (self *Feedback) SearchByPage() ([]Feedback, int64, error) {
+	total, err := orm.Count(self)
 	var feedback []Feedback
-	err := orm.Find(&feedback, self)
-	totalRecords = len(feedback)
-	feedback = feedback[:0]
 	err = orm.OrderBy(self.GetSortProperties()[0].Column+" "+self.GetSortProperties()[0].Direction).Limit(self.GetPageSize(), self.GetDisplayStart()).Find(&feedback, self)
-	return feedback, totalRecords, err
+	return feedback, total, err
 }

@@ -129,14 +129,11 @@ func (self *User) SelectAll() ([]User, error) {
 	return users, err
 }
 
-func (self *User) SearchByPage() ([]User, int, error) {
-	var totalRecords int
+func (self *User) SearchByPage() ([]User, int64, error) {
+	total, err := orm.Count(self)
 	var users []User
-	err := orm.Find(&users, self)
-	totalRecords = len(users)
-	users = users[:0]
 	err = orm.OrderBy(self.GetSortProperties()[0].Column+" "+self.GetSortProperties()[0].Direction).Limit(self.GetPageSize(), self.GetDisplayStart()).Find(&users, self)
-	return users, totalRecords, err
+	return users, total, err
 }
 
 type UserLoginForm struct {

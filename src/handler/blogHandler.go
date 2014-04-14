@@ -1,11 +1,14 @@
 package handler
 
 import (
-	. "common"
 	"github.com/go-martini/martini"
+	
+	. "common"
 	"middleware"
 	"model"
+
 	"time"
+	"encoding/json"
 )
 
 func PublishBlog(ctx *middleware.Context, blog model.Blog) {
@@ -89,4 +92,25 @@ func ViewBlog(ctx *middleware.Context, params martini.Params) {
 	PanicIf(err)
 	ctx.Set("blog", blog)
 	ctx.HTML(200, "blog/view", ctx)
+}
+
+func DeleteBlog(ctx *middleware.Context, params martini.Params) {
+	id := params["id"]
+	blog := new(model.Blog)
+	blog.Id = ParseInt(id)
+	err := blog.Delete()
+	PanicIf(err)
+	ctx.Set("success", true)
+	ctx.JSON(200, ctx.Response)
+}
+
+func DeleteBlogArray(ctx *middleware.Context) {
+	blogArray := ctx.R.FormValue("blogArray")
+	blog := new(model.Blog)
+	var res []int
+	json.Unmarshal([]byte(blogArray), &res)
+	err := blog.DeleteBlogArray(res)
+	PanicIf(err)
+	ctx.Set("success", true)
+	ctx.JSON(200, ctx.Response)
 }

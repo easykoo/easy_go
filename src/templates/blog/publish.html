@@ -123,7 +123,6 @@
                 if (data.success) {
                     blogId = data.blog.Id;
                     version = data.blog.Version;
-                    alert($.toJSON(data.blog))
                     bootbox.dialog({
                         title: data.message,
                         message: data.message,
