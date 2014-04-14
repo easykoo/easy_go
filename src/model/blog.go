@@ -72,9 +72,13 @@ func (self *Blog) DeleteBlogArray(array []int) error {
 	return err
 }
 
-func (self *Blog) SearchByPage() ([]Blog, int64, error) {
+func (self *Blog) SearchByPage(content bool) ([]Blog, int64, error) {
 	total, err := orm.Count(self)
 	var blog []Blog
-	err = orm.Omit("content").OrderBy(self.GetSortProperties()[0].Column+" "+self.GetSortProperties()[0].Direction).Limit(self.GetPageSize(), self.GetDisplayStart()).Find(&blog, self)
+	if content {
+		err = orm.OrderBy(self.GetSortProperties()[0].Column+" "+self.GetSortProperties()[0].Direction).Limit(self.GetPageSize(), self.GetDisplayStart()).Find(&blog, self)
+	} else {
+		err = orm.Omit("content").OrderBy(self.GetSortProperties()[0].Column+" "+self.GetSortProperties()[0].Direction).Limit(self.GetPageSize(), self.GetDisplayStart()).Find(&blog, self)
+	}
 	return blog, total, err
 }

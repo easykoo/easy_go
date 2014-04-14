@@ -73,15 +73,28 @@ func AllBlog(ctx *middleware.Context) {
 		columnNum := ctx.R.FormValue("iSortCol_0")
 		sortColumn := ctx.R.FormValue("mDataProp_" + columnNum)
 		blog.AddSortProperty(sortColumn, ctx.R.FormValue("sSortDir_0"))
-		blogArray, total, err := blog.SearchByPage()
+		blogList, total, err := blog.SearchByPage(false)
 		PanicIf(err)
-		ctx.Set("aaData", blogArray)
+		ctx.Set("aaData", blogList)
 		ctx.Set("iTotalDisplayRecords", total)
 		ctx.Set("iTotalRecords", total)
 		ctx.JSON(200, ctx.Response)
 	default:
 		ctx.HTML(200, "blog/allBlog", ctx)
 	}
+}
+
+func Blog(ctx *middleware.Context) {
+	blog := new(model.Blog)
+	blog.SetPageActive(true)
+	blog.SetPageSize(10)
+	blog.SetDisplayStart(ParseInt(ctx.R.FormValue("iDisplayStart")))
+	blog.AddSortProperty("publish_date", "desc")
+	blogList, total, err := blog.SearchByPage(true)
+	PanicIf(err)
+	ctx.Set("blogList", blogList)
+	ctx.Set("total", total)
+	ctx.HTML(200, "blog", ctx)
 }
 
 func ViewBlog(ctx *middleware.Context, params martini.Params) {

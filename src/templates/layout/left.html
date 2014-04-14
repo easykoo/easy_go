@@ -17,16 +17,16 @@
             </li>
             {{if privilege .Session.SignedUser 2}}
             <li id="user">
-                <a href="/user"><i class="fa fa-users fa-fw"></i> {{tsl .Session.Lang "label.user"}}</a>
+                <a href="/user/all"><i class="fa fa-users fa-fw"></i> {{tsl .Session.Lang "label.user"}}</a>
             </li>
             {{end}}
             {{if privilege .Session.SignedUser 3}}
             <li id="feedback">
-                <a href="/feedback"><i class="fa fa-edit fa-fw"></i> {{tsl .Session.Lang "label.feedback"}}</a>
+                <a href="/feedback/all"><i class="fa fa-edit fa-fw"></i> {{tsl .Session.Lang "label.feedback"}}</a>
             </li>
             {{end}}
             {{if privilege .Session.SignedUser 4}}
-            <li id="news">
+            <!--<li id="news">
                 <a href="javascript:"><i class="fa fa-file-text-o fa-fw"></i> {{tsl .Session.Lang "label.news"}}
                     <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
@@ -37,17 +37,17 @@
                         <a href="/news/publish"> {{tsl .Session.Lang "label.publish.news"}}</a>
                     </li>
                     <li id="allNotice">
-                        <a href="/news"> {{tsl .Session.Lang "label.all.notices"}}</a>
+                        <a href="/notice"> {{tsl .Session.Lang "label.all.notices"}}</a>
                     </li>
                     <li id="publishNotice">
-                        <a href="/news/publish"> {{tsl .Session.Lang "label.publish.notice"}}</a>
+                        <a href="/notice/publish"> {{tsl .Session.Lang "label.publish.notice"}}</a>
                     </li>
                 </ul>
-                <!-- /.nav-second-level -->
-            </li>
+                &lt;!&ndash; /.nav-second-level &ndash;&gt;
+            </li>-->
             {{end}}
             {{if privilege .Session.SignedUser 5}}
-            <li id="product">
+            <!--<li id="product">
                 <a href="javascript:"><i class="fa fa-lightbulb-o fa-fw"></i> {{tsl .Session.Lang "label.product"}}
                     <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
@@ -64,8 +64,8 @@
                         <a href="/product/create"> {{tsl .Session.Lang "label.create.category"}}</a>
                     </li>
                 </ul>
-                <!-- /.nav-second-level -->
-            </li>
+                &lt;!&ndash; /.nav-second-level &ndash;&gt;
+            </li>-->
             {{end}}
             {{if privilege .Session.SignedUser 5}}
             <li id="blog">
@@ -73,7 +73,7 @@
                     <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li id="allBlog">
-                        <a href="/blog"> {{tsl .Session.Lang "label.all.blog"}}</a>
+                        <a href="/blog/all"> {{tsl .Session.Lang "label.all.blog"}}</a>
                     </li>
                     <li id="publishBlog">
                         <a href="/blog/publish"> {{tsl .Session.Lang "label.publish.blog"}}</a>

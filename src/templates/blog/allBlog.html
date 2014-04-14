@@ -25,7 +25,7 @@
 
 <body>
 <div id="wrapper">
-    {{template "layout/head" .}}
+    {{template "layout/back_nav" .}}
     {{template "layout/left" .}}
 
     <div id="page-wrapper">
@@ -207,7 +207,7 @@ var getAllBlog = function () {
         iDisplayLength: 10,
         bLengthChange: true,
         sPaginationType: 'full_numbers',
-        sAjaxSource: '/blog',
+        sAjaxSource: '/blog/all',
         aaSorting: [
             [7, 'desc']
         ],

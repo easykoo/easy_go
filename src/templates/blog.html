@@ -28,46 +28,27 @@
 
     <div class="row">
         <div class="col-lg-8">
-
-            <!-- the actual blog post: title/author/date/content -->
-            {{with .Response.blog}}
-            <h1>{{.Title}}</h1>
+            {{range .Response.blogList}}
+            <h1><a href='/blog/view/{{.Id}}'>{{.Title}}</a></h1>
 
             <p class="lead">by <a href="#">{{.CreateUser}}</a></p>
             <hr>
             <p><span class="glyphicon glyphicon-time"></span> Posted on {{.PublishDate | formatTime}}</p>
             <hr>
             {{.Content | unescaped}}
+            <a class="btn btn-primary" href='/blog/view/{{.Id}}'>Read More <span
+                    class="glyphicon glyphicon-chevron-right"></span></a>
+            <hr>
             {{end}}
             <hr>
 
-            <!-- the comment box -->
-            <div class="well">
-                <h4>Leave a Comment:</h4>
-
-                <form role="form">
-                    <div class="form-group">
-                        <textarea class="form-control" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-
-            <hr>
-
-            <!-- the comments -->
-            <h3>Start Bootstrap
-                <small>9:41 PM on August 24, 2013</small>
-            </h3>
-            <p>This has to be the worst blog post I have ever read. It simply makes no sense. You start off by talking
-                about space or something, then you randomly start babbling about cupcakes, and you end off with random
-                fish names.</p>
-
-            <h3>Start Bootstrap
-                <small>9:47 PM on August 24, 2013</small>
-            </h3>
-            <p>Don't listen to this guy, any blog with the categories 'dinosaurs, spaceships, fried foods, wild animals,
-                alien abductions, business casual, robots, and fireworks' has true potential.</p>
+            <!-- pager -->
+            <ul class="pager">
+                <li class="previous"><a href="#">&larr; Older</a>
+                </li>
+                <li class="next"><a href="#">Newer &rarr;</a>
+                </li>
+            </ul>
 
         </div>
 
@@ -126,9 +107,8 @@
         </div>
     </div>
 
-    <hr>
-
     <footer>
+        <hr>
         <div class="row">
             <div class="col-lg-12">
                 <p>Copyright &copy; easykoo.com 2014</p>
@@ -141,9 +121,6 @@
 
 <!-- JavaScript -->
 <script src="/js/jquery-1.10.2.min.js"></script>
-<script src="/js/jquery.validate.min.js"></script>
-<script src="/js/jquery.validate.method.js"></script>
-<script src="/js/bootbox.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/easykoo.js"></script>
 

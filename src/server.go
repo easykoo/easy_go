@@ -43,8 +43,7 @@ func newMartini() *martini.ClassicMartini {
 		Funcs: []template.FuncMap{
 			{
 				"formatTime": func(args ...interface{}) string {
-					t1 := time.Unix(args[0].(int64), 0)
-					return t1.Format(time.Stamp)
+					return args[0].(time.Time).Format(time.Stamp)
 				},
 				"unescaped": func(args ...interface{}) template.HTML {
 					return template.HTML(args[0].(string))
@@ -75,11 +74,12 @@ func main() {
 
 	m.Get("/", handler.IndexHandler)
 	m.Get("/index", handler.IndexHandler)
-	m.Post("/contact", binding.Form(model.Feedback{}), handler.Contact)
+	m.Get("/about", handler.AboutHandler)
+	m.Any("/contact", binding.Form(model.Feedback{}), handler.ContactHandler)
 	m.Get("/language/change/:lang", handler.LangHandler)
 
 	m.Group("/user", func(r martini.Router) {
-		r.Any("", AuthRequest(Module_Account), handler.AllUserHandler)
+		r.Any("/all", AuthRequest(Module_Account), handler.AllUserHandler)
 		r.Any("/logout", handler.LogoutHandler)
 		r.Any("/login", binding.Form(model.UserLoginForm{}), handler.LoginHandler)
 		r.Any("/register", binding.Form(model.UserRegisterForm{}), handler.RegisterHandler)
@@ -105,7 +105,7 @@ func main() {
 	})
 
 	m.Group("/feedback", func(r martini.Router) {
-		r.Any("", AuthRequest(Module_Feedback), handler.AllFeedback)
+		r.Any("/all", AuthRequest(Module_Feedback), handler.AllFeedback)
 		r.Any("/info", AuthRequest(Module_Feedback), handler.FeedbackInfo)
 		r.Any("/delete", AuthRequest(Module_Feedback), handler.DeleteFeedbackArray)
 		r.Any("/delete/:id", AuthRequest(Module_Feedback), handler.DeleteFeedback)
@@ -113,12 +113,13 @@ func main() {
 	})
 
 	m.Group("/blog", func(r martini.Router) {
-		r.Any("", AuthRequest(Module_Feedback), handler.AllBlog)
+		r.Any("", handler.Blog)
+		r.Any("/view/:id", handler.ViewBlog)
+		r.Any("/all", AuthRequest(Module_Blog), handler.AllBlog)
 		r.Any("/publish", AuthRequest(Module_Blog), binding.Form(model.Blog{}), handler.PublishBlog)
 		r.Any("/save", AuthRequest(Module_Blog), binding.Form(model.Blog{}), handler.SaveBlog)
 		r.Any("/delete", AuthRequest(Module_Blog), handler.DeleteBlogArray)
 		r.Any("/delete/:id", AuthRequest(Module_Blog), handler.DeleteBlog)
-		r.Any("/view/:id", AuthRequest(Module_Blog), handler.ViewBlog)
 	})
 
 	Log.Info("server is started...")

@@ -12,7 +12,7 @@
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="/css/scrolling-nav.css" rel="stylesheet" type="text/css">
+    <link href="/css/front.css" rel="stylesheet" type="text/css">
 
     <!--[if lt IE 9]>
     <script src="/js/html5shiv.min.js"></script>
@@ -21,271 +21,66 @@
 
 </head>
 
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<body>
 
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#page-top">{{tsl .Session.Lang "main.title"}}</a>
-        </div>
-        <div class="collapse-in navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                <li class="hidden">
-                    <a href="#page-top"></a>
-                </li>
-                <li class="page-scroll">
-                    <a href="#about">{{tsl .Session.Lang "label.about.us"}}</a>
-                </li>
-                <li class="page-scroll">
-                    <a href="#services">Services</a>
-                </li>
-                <li class="page-scroll">
-                    <a href="#contact">{{tsl .Session.Lang "label.contact.us"}}</a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav pull-right">
-                {{if .Session.SignedUser}}
-                <li class="dropdown">
-                    <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">
-                        {{.Session.SignedUser.Username}}
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li>
-                            <a href="/admin/dashboard">
-                                <i class="fa fa-user fa-fw"></i>
-                                {{tsl .Session.Lang "label.dashboard"}}
-                            </a>
-                        </li>
-                        {{if privilege .Session.SignedUser 1}}
-                        <li>
-                            <a href="/admin/settings">
-                                <i class="fa fa-gear fa-fw"></i>
-                                {{tsl .Session.Lang "label.settings"}}
-                            </a>
-                        </li>
-                        {{end}}
-                        <li class="divider"></li>
-                        <li>
-                            <a href="/profile/profile">
-                                <i class="fa fa-user fa-fw"></i>
-                                {{tsl .Session.Lang "label.profile"}}
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="/user/logout">
-                                <i class="fa fa-sign-out fa-fw"></i>
-                                {{tsl .Session.Lang "label.logout"}}
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                {{else}}
-                <li class="page-scroll">
-                    <a href="/user/login">{{tsl .Session.Lang "label.sign.in"}}</a>
-                </li>
-                <li class="page-scroll">
-                    <a href="/user/register">{{tsl .Session.Lang "label.sign.up"}}</a>
-                </li>
-                {{end}}
-                <li class="dropdown">
-                    <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">
-                        {{if equal .Session.Lang "en"}}En{{else}}Zh{{end}}
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="javascript:changeLanguage('en')"> English</a></li>
-                        <li><a href="javascript:changeLanguage('zh')"> 中文/简体</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+{{template "layout/front_nav" .}}
 
-        <!-- /.navbar-collapse -->
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-8">
+            <img class="img-responsive img-rounded" src="http://placehold.it/900x350">
+            <!-- take out img-rounded if you don't want the rounded corners on the image -->
+        </div>
+        <div class="col-lg-4">
+            <h1>Business Name or Tagline</h1>
+            <p>This is a template that is great for small businesses. It doesn't have too much fancy flare to it, but it makes a great use of the standard Bootstrap core components. Feel free to use this template for any project you want!</p>
+            <a class="btn btn-primary btn-lg" href="#">Call to Action!</a>
+        </div>
     </div>
-    <!-- /.container -->
-</nav>
 
-<section id="intro" class="intro-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>Scrolling Nav</h1>
+    <hr>
 
-                <div class="page-scroll">
-                    <a class="btn btn-default" href="#about">Click me!</a>
-                </div>
-                <br>
-
-                <p>This demo is the same sort of scrolling navigation menu we use in our <a
-                        href="http://startbootstrap.com/grayscale.php">Grayscale theme</a>. Whenever you want to use the
-                    page scrolling feature, make sure the link points to an ID (<code>#about</code> for example), and
-                    that the parent of the link has the class <code>.page-scroll</code>. See how the button above and
-                    the menu bar links are formatted for a working example.</p>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="well text-center">
+                This is a well that is a great spot for a business tagline or phone number for easy access!
             </div>
         </div>
     </div>
-</section>
 
-<section id="about" class="about-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>About Section</h1>
-            </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <h2>Heading 1</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sollicitudin auctor quam ac tempor. Cras a ante sed libero mollis sodales. Praesent fringilla, neque ut ultrices faucibus, dolor eros ultrices neque, nec bibendum arcu ipsum eget justo.</p>
+            <a class="btn btn-default" href="#">More Info</a>
+        </div>
+        <div class="col-lg-4">
+            <h2>Heading 2</h2>
+            <p>Phasellus vestibulum sagittis purus laoreet varius. Pellentesque malesuada malesuada mattis. Aliquam sed porta nisi, eget suscipit dolor. Nam ipsum sapien, rhoncus eu leo eu, ultricies pellentesque tellus.</p>
+            <a class="btn btn-default" href="#">More Info</a>
+        </div>
+        <div class="col-lg-4">
+            <h2>Heading 3</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sollicitudin auctor quam ac tempor. Cras a ante sed libero mollis sodales. Praesent fringilla, neque ut ultrices faucibus, dolor eros ultrices neque, nec bibendum arcu ipsum eget justo.</p>
+            <a class="btn btn-default" href="#">More Info</a>
         </div>
     </div>
-</section>
 
-<section id="services" class="services-section">
-    <div class="container">
+    <footer>
+        <hr>
         <div class="row">
             <div class="col-lg-12">
-                <h1>Services Section</h1>
+                <p>Copyright &copy; easykoo.com 2014</p>
             </div>
         </div>
-    </div>
-</section>
+    </footer>
 
-<section id="contact" class="contact-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <form id="contactForm" role="form" class="form-horizontal" method="post"
-                      action="/contact">
-                    <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">
-                            {{tsl .Session.Lang "label.name"}}
-                        </label>
-
-                        <div class="col-sm-7">
-                            <input type="text" id="name" class="form-control" name="name">
-                        </div>
-                        <div class="col-sm-3 control-label" style="text-align: left"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="email" class="col-sm-2 control-label">
-                            {{tsl .Session.Lang "label.email"}}
-                        </label>
-
-                        <div class="col-sm-7">
-                            <input type="text" id="email" class="form-control" name="email">
-                        </div>
-                        <div class="col-sm-3 control-label" style="text-align: left"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="content" class="col-sm-2 control-label">
-                            {{tsl .Session.Lang "label.content"}}
-                        </label>
-
-                        <div class="col-sm-7">
-                            <textarea id="content" class="form-control" name="content" rows="5"></textarea>
-                        </div>
-                        <div class="col-sm-3 control-label" style="text-align: left"></div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-7">
-                            <button type="submit" class="btn btn-success btn-block">
-                                {{tsl .Session.Lang "label.send"}}
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
+</div>
 
 <script src="/js/jquery-1.10.2.min.js"></script>
-<script src="/js/jquery.validate.min.js"></script>
-<script src="/js/jquery.validate.method.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.easing.min.js"></script>
-<script src="/js/scrolling-nav.js"></script>
 <script src="/js/easykoo.js"></script>
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        $("#contactForm").validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 4,
-                    maxlength: 20
-                },
-                email: {
-                    required: true,
-                    email: true,
-                    maxlength: 45
-                },
-                content: {
-                    required: true,
-                    minlength: 5,
-                    maxlength: 200
-                }
-            },
-            messages: {
-                name: {
-                    required: '{{tsl .Session.Lang "message.error.required"}}',
-                    minlength: '{{tsl .Session.Lang "message.error.min.length"}}',
-                    maxlength: '{{tsl .Session.Lang "message.error.max.length"}}'
-                },
-                email: {
-                    required: '{{tsl .Session.Lang "message.error.required"}}',
-                    email: '{{tsl .Session.Lang "message.error.wrong.email.format"}}',
-                    maxlength: '{{tsl .Session.Lang "message.error.max.length"}}'
-                },
-                content: {
-                    required: '{{tsl .Session.Lang "message.error.required"}}',
-                    minlength: '{{tsl .Session.Lang "message.error.min.length"}}',
-                    maxlength: '{{tsl .Session.Lang "message.error.max.length"}}'
-                }
-            },
-            focusInvalid: true,
-            onkeyup: false,
-            errorClass: "error",
-            errorPlacement: function (error, element) {
-                error.appendTo(element.parent("div").next("div"));
-            },
-            highlight: function (element, errorClass) {
-                $(element).parent("div").parent("div").addClass("has-error").removeClass("has-success");
-            },
-            success: function (label) {
-                label.parent("div").parent("div").removeClass("has-error").addClass("has-success");
-            },
-            submitHandler: function (form) {
-                $.ajax({
-                    dataType: "json",
-                    type: "POST",
-                    url: '/contact',
-                    data: {
-                        name: $('#name').val(),
-                        email: $('#email').val(),
-                        content: $('#content').val()
-                    },
-                    success: function (data) {
-                        if (data.success) {
-                            $('#name').val("");
-                            $('#email').val("");
-                            $('#content').val("")
-                        }
-                        alert(data.message)
-                    }
-                });
-                return false;
-            }
-        });
-    })
-</script>
 
 </body>
 

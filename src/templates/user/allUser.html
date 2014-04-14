@@ -25,7 +25,7 @@
 
 <body>
 <div id="wrapper">
-    {{template "layout/head" .}}
+    {{template "layout/back_nav" .}}
     {{template "layout/left" .}}
 
     <div id="page-wrapper">
@@ -282,7 +282,7 @@ var getAllAccounts = function () {
         iDisplayLength: 10,
         bLengthChange: true,
         sPaginationType: 'full_numbers',
-        sAjaxSource: '/user',
+        sAjaxSource: '/user/all',
         aaSorting: [
             [1, 'asc']
         ],

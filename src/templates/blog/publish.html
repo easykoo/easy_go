@@ -34,7 +34,7 @@
 
 <body>
 <div id="wrapper">
-    {{template "layout/head" .}}
+    {{template "layout/back_nav" .}}
     {{template "layout/left" .}}
 
     <div id="page-wrapper">
@@ -123,20 +123,7 @@
                 if (data.success) {
                     blogId = data.blog.Id;
                     version = data.blog.Version;
-                    bootbox.dialog({
-                        title: data.message,
-                        message: data.message,
-                        buttons: {
-                            main: {
-                                label: '{{tsl .Session.Lang "label.confirm"}}',
-                                className: "btn-success"
-                            },
-                            danger: {
-                                label: '{{tsl .Session.Lang "label.cancel"}}',
-                                className: "btn-default"
-                            }
-                        }
-                    });
+                    bootbox.alert(data.message, null);
                 }
             }
         });
