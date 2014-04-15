@@ -13,7 +13,7 @@ import (
 
 func LogoutHandler(ctx *middleware.Context) {
 	ctx.SessionSet("SignedUser", nil)
-	ctx.HTML(200, "index", ctx)
+	ctx.Redirect("/index")
 }
 
 func LoginHandler(ctx *middleware.Context, formErr binding.Errors, loginUser model.UserLoginForm) {
