@@ -37,8 +37,11 @@
             <hr>
             <p>
                 <span class="glyphicon glyphicon-time"></span>
-                Posted on {{.Response.Blog.PublishDate | formatTime}} {{if equal .Session.SignedUser.Username .Response.Blog.CreateUser}}
-                <a href='/blog/edit/{{.Response.Blog.Id}}'>{{tsl .Session.Lang "label.edit"}}</a>
+                Posted on {{.Response.Blog.PublishDate | formatTime}}
+                {{if .Session.SignedUser}}
+                {{if equal .Session.SignedUser.Username .Response.Blog.CreateUser}}
+                &nbsp;&nbsp;<a href='/blog/edit/{{.Response.Blog.Id}}'>{{tsl .Session.Lang "label.edit"}}</a>
+                {{end}}
                 {{end}}
             </p>
             <hr>

@@ -28,12 +28,21 @@
 
     <div class="row">
         <div class="col-lg-9">
+            {{$session := .Session}}
             {{range .Response.BlogList}}
             <h1><a href='/blog/view/{{.Id}}'>{{.Title}}</a></h1>
 
             <p class="lead">by <a href="#">{{.CreateUser}}</a></p>
             <hr>
-            <p><span class="glyphicon glyphicon-time"></span> Posted on {{.PublishDate | formatTime}}</p>
+            <p>
+                <span class="glyphicon glyphicon-time"></span>
+                Posted on {{.PublishDate | formatTime}}
+                {{if $session.SignedUser}}
+                {{if equal $session.SignedUser.Username .CreateUser}}
+                &nbsp;&nbsp;<a href='/blog/edit/{{.Id}}'>{{tsl $session.Lang "label.edit"}}</a>
+                {{end}}
+                {{end}}
+            </p>
             <hr>
             {{.Content | unescaped}}
             <a class="btn btn-primary" href='/blog/view/{{.Id}}'>Read More <span
