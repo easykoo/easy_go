@@ -85,7 +85,7 @@
             data: null,
             success: function (data) {
                 $('#feedback_notification').empty();
-                feedbackList = data.array;
+                feedbackList = data.Array;
                 if (feedbackList == undefined || feedbackList.length == 0) {
                     $('#feedbackDropdown').addClass("hidden")
                 } else {
@@ -116,10 +116,10 @@
                             + '</li>'
                     $('#feedback_notification').html(html);
                 }
-                if (data.count == 0) {
+                if (data.Count == 0) {
                     $('#feedbackCount').empty();
                 } else {
-                    $('#feedbackCount').text(data.count);
+                    $('#feedbackCount').text(data.Count);
                 }
             }
         });

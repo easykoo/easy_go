@@ -15,8 +15,8 @@ func FeedbackInfo(ctx *middleware.Context) {
 	feedback.Viewed = false
 	feedbackArray, count, err := feedback.Info()
 	PanicIf(err)
-	ctx.Set("array", feedbackArray)
-	ctx.Set("count", count)
+	ctx.Set("Array", feedbackArray)
+	ctx.Set("Count", count)
 	ctx.JSON(200, ctx.Response)
 }
 
