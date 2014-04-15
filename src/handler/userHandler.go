@@ -26,20 +26,16 @@ func LoginHandler(ctx *middleware.Context, formErr binding.Errors, loginUser mod
 			if has, err := user.Exist(); has {
 				PanicIf(err)
 				if user.Locked {
-					ctx.Set("user", user)
+					ctx.Set("User", user)
 					ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.invalid.username.or.password"))
 					ctx.HTML(200, "user/login", ctx)
 					return
 				}
 				ctx.SessionSet("SignedUser", user)
-				var users []model.User
-				users, err = user.SelectAll()
-				PanicIf(err)
-				ctx.Set("users", users)
 				Log.Info(user.Username, " login")
 				ctx.Redirect("/admin/dashboard")
 			} else {
-				ctx.Set("user", user)
+				ctx.Set("User", user)
 				ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.invalid.username.or.password"))
 				ctx.HTML(200, "user/login", ctx)
 			}
@@ -74,11 +70,11 @@ func RegisterHandler(ctx *middleware.Context, formErr binding.Errors, user model
 				PanicIf(err)
 				ctx.AddMessage(Translate(ctx.SessionGet("Lang").(string), "message.register.success"))
 			} else {
-				ctx.Set("user", user)
+				ctx.Set("User", user)
 			}
 			ctx.HTML(200, "user/register", ctx)
 		} else {
-			ctx.Set("user", user)
+			ctx.Set("User", user)
 			ctx.HTML(200, "user/register", ctx)
 		}
 	default:
@@ -173,7 +169,7 @@ func DeleteUser(ctx *middleware.Context, params martini.Params) {
 }
 
 func DeleteUsers(ctx *middleware.Context) {
-	users := ctx.R.FormValue("users")
+	users := ctx.R.FormValue("Users")
 	var res []int
 	json.Unmarshal([]byte(users), &res)
 	user := new(model.User)
@@ -216,4 +212,8 @@ func LiftUser(ctx *middleware.Context, params martini.Params) {
 	PanicIf(err)
 	ctx.Set("success", true)
 	ctx.JSON(200, ctx.Response)
+}
+
+func PreferencesHandler(ctx *middleware.Context) {
+	ctx.HTML(200, "profile/preferences", ctx)
 }

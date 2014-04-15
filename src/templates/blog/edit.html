@@ -47,25 +47,31 @@
         {{template "layout/message" .}}
         <div class="row">
             <div class="col-lg-10">
-                <form id="profileForm" role="form" class="form-horizontal" method="post" action="/blog/publish">
-
+                <form id="blogForm" role="form" class="form-horizontal" method="post" action="/blog/publish">
+                    <input name="id" type="text" value="{{.Response.Blog.Id}}" hidden="true">
+                    <input name="version" type="text" value="{{.Response.Blog.Version}}" hidden="true">
+                    <input name="state" type="text" value="{{.Response.Blog.State}}" hidden="true">
                     <div class="form-group">
                         <div class="col-sm-12">
+                            <h1 id="titleShow" hidden="true">{{.Response.Blog.Title}}</h1>
                             <input type="text" id="title" class="form-control"
-                                   placeholder='{{tsl .Session.Lang "label.title"}}' name="title">
+                                   placeholder='{{tsl .Session.Lang "label.title"}}' value='{{.Response.Blog.Title}}' name="title">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <div class="summernote"></div>
+                            <textarea id="content" name="content" hidden="true"></textarea>
+                            <div class="summernote">{{ with .Response.Blog.Content}}{{.|unescaped}}{{end}}</div>
                         </div>
                     </div>
                     <div class="form-group">
+                        {{if equal .Response.Blog.State "PUBLISHED"}}{{else}}
                         <div class="col-sm-2">
                             <button type="button" onclick="save(true)" class="btn btn-primary btn-block">
                                 {{tsl .Session.Lang "label.publish"}}
                             </button>
                         </div>
+                        {{end}}
                         <div class="col-sm-2">
                             <button type="button" onclick="save(false)" class="btn btn-success btn-block">
                                 {{tsl .Session.Lang "label.save"}}
@@ -73,7 +79,7 @@
                         </div>
                         <div class="col-sm-2">
                             <button id="viewBtn"  type="button" onclick="viewToggle()" class="btn btn-default btn-block">
-                                {{tsl .Session.Lang "label.view"}}
+                                {{tsl .Session.Lang "label.preview"}}
                             </button>
                         </div>
                     </div>
@@ -95,47 +101,36 @@
 <script type="text/javascript">
     var blogId = 0;
     var version = 1;
-    var state = "EDIT";
+    var mode = "EDIT";
     var viewToggle = function () {
-        if (state == "EDIT"){
+        if (mode == "EDIT"){
             view();
-            state = "VIEW";
+            mode = "VIEW";
             $('#viewBtn').text('{{tsl .Session.Lang "label.edit"}}')
         } else {
             edit();
-            state = "EDIT";
+            mode = "EDIT";
             $('#viewBtn').text('{{tsl .Session.Lang "label.view"}}')
         }
     }
     var save = function (publish) {
+        var action = publish ? '/blog/publish' : '/blog/save';
         var content = $('.summernote').code();
-        $.ajax({
-            dataType: "json",
-            type: "POST",
-            url: publish ? '/blog/publish' : '/blog/save',
-            data: {
-                id: blogId,
-                title: $('#title').val(),
-                content: content,
-                version: version
-            },
-            success: function (data) {
-                if (data.success) {
-                    blogId = data.blog.Id;
-                    version = data.blog.Version;
-                    bootbox.alert(data.message, null);
-                }
-            }
-        });
+        $('#content').val(content);
+        $('#blogForm').attr('action',action);
+        $('#blogForm').submit();
     };
 
     var view = function(){
-        //todo handle title
+        $('#title').hide();
+        $('#titleShow').text($('#title').val());
+        $('#titleShow').show();
         $('.summernote').destroy();
     }
 
     var edit = function(){
-        //todo handle title
+        $('#title').show()
+        $('#titleShow').hide()
         $('.summernote').summernote({
             height: 400,
             codemirror: {

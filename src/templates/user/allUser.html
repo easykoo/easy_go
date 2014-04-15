@@ -414,7 +414,7 @@ $(document).ready(function () {
                                 dataType: "json",
                                 type: "POST",
                                 url: '/user/delete',
-                                data: {users: $.toJSON(accountArray)},
+                                data: {Users: $.toJSON(accountArray)},
                                 traditional: true,
                                 success: function (data) {
                                     if (!data.success) {

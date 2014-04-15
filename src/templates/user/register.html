@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <input type="text" class="form-control" id="username" name="username"
                            placeholder='{{tsl .Session.Lang "label.username"}}'
-                           value="{{.Response.user.Username}}" required>
+                           value="{{.Response.User.Username}}" required>
                     {{with .FieldErrors.username}}
                     <div class="text-danger">{{.}}</div>
                     {{end}}
@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <input type="password" class="form-control" id="password" name="password"
                            placeholder='{{tsl .Session.Lang "label.password"}}'
-                           value="{{.Response.user.Password}}" required>
+                           value="{{.Response.User.Password}}" required>
                     {{with .FieldErrors.password}}
                     <div class="text-danger">{{.}}</div>
                     {{end}}
@@ -51,7 +51,7 @@
                 <div class="form-group">
                     <input type="text" class="form-control" id="email" name="email"
                            placeholder='{{tsl .Session.Lang "label.email"}}'
-                           value="{{.Response.user.Email}}" required>
+                           value="{{.Response.User.Email}}" required>
                     {{with .FieldErrors.email}}
                     <div class="text-danger">{{.}}</div>
                     {{end}}

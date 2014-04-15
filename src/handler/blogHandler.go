@@ -8,6 +8,7 @@ import (
 	"model"
 
 	"encoding/json"
+	"strconv"
 	"time"
 )
 
@@ -15,13 +16,12 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 	switch ctx.R.Method {
 	case "POST":
 		if blog.Title == "" || blog.Content == "" {
-			ctx.Set("success", false)
-			ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.error.publish.failed"))
+			ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.publish.failed"))
 		} else {
-			blog.PublishDate = time.Now()
-			blog.State = "PUBLISHED"
 			blog.UpdateUser = ctx.SessionGet("SignedUser").(model.User).Username
-			if blog.Id == 0 {
+			blog.State = "PUBLISHED"
+			blog.PublishDate = time.Now()
+			if blog.Version == 0 {
 				blog.Priority = 5
 				blog.CreateUser = ctx.SessionGet("SignedUser").(model.User).Username
 				err := blog.Insert()
@@ -30,24 +30,20 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 				err := blog.Update()
 				PanicIf(err)
 			}
-			ctx.Set("blog", blog)
-			ctx.Set("success", true)
-			ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.publish.success"))
 		}
-		ctx.JSON(200, ctx.Response)
+		ctx.Redirect("/blog/view/" + strconv.Itoa(blog.Id))
 	default:
-		ctx.HTML(200, "blog/publish", ctx)
+		ctx.HTML(200, "blog/edit", ctx)
 	}
 }
 
 func SaveBlog(ctx *middleware.Context, blog model.Blog) {
 	if blog.Title == "" || blog.Content == "" {
-		ctx.Set("success", false)
-		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.error.save.failed"))
+		ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.save.failed"))
 	} else {
-		blog.State = "DRAFT"
 		blog.UpdateUser = ctx.SessionGet("SignedUser").(model.User).Username
-		if blog.Id == 0 {
+		if blog.Version == 0 {
+			blog.State = "DRAFT"
 			blog.Priority = 5
 			blog.CreateUser = ctx.SessionGet("SignedUser").(model.User).Username
 			err := blog.Insert()
@@ -56,11 +52,12 @@ func SaveBlog(ctx *middleware.Context, blog model.Blog) {
 			err := blog.Update()
 			PanicIf(err)
 		}
-		ctx.Set("blog", blog)
-		ctx.Set("success", true)
-		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.save.success"))
+		dbBlog, err := blog.GetBlogById()
+		PanicIf(err)
+		ctx.Set("Blog", dbBlog)
+		ctx.AddMessage(Translate(ctx.SessionGet("Lang").(string), "message.save.success"))
 	}
-	ctx.JSON(200, ctx.Response)
+	ctx.HTML(200, "blog/edit", ctx)
 }
 
 func AllBlog(ctx *middleware.Context) {
@@ -92,8 +89,8 @@ func Blog(ctx *middleware.Context) {
 	blog.AddSortProperty("publish_date", "desc")
 	blogList, total, err := blog.SearchByPage(true)
 	PanicIf(err)
-	ctx.Set("blogList", blogList)
-	ctx.Set("total", total)
+	ctx.Set("BlogList", blogList)
+	ctx.Set("Total", total)
 	ctx.HTML(200, "blog", ctx)
 }
 
@@ -103,7 +100,7 @@ func ViewBlog(ctx *middleware.Context, params martini.Params) {
 	blog.Id = ParseInt(id)
 	err := blog.GetBlog()
 	PanicIf(err)
-	ctx.Set("blog", blog)
+	ctx.Set("Blog", blog)
 	ctx.HTML(200, "blog/view", ctx)
 }
 
@@ -126,4 +123,14 @@ func DeleteBlogArray(ctx *middleware.Context) {
 	PanicIf(err)
 	ctx.Set("success", true)
 	ctx.JSON(200, ctx.Response)
+}
+
+func EditBlog(ctx *middleware.Context, params martini.Params) {
+	id := params["id"]
+	blog := new(model.Blog)
+	blog.Id = ParseInt(id)
+	err := blog.GetBlog()
+	PanicIf(err)
+	ctx.Set("Blog", blog)
+	ctx.HTML(200, "blog/edit", ctx)
 }

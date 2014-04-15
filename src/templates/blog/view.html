@@ -30,19 +30,23 @@
         <div class="col-lg-9">
 
             <!-- the actual blog post: title/author/date/content -->
-            {{with .Response.blog}}
-            <h1>{{.Title}}</h1>
+            <h1>{{.Response.Blog.Title}}</h1>
 
-            <p class="lead">by <a href="#">{{.CreateUser}}</a></p>
+
+            <p class="lead">by <a href="#">{{.Response.Blog.CreateUser}}</a></p>
             <hr>
-            <p><span class="glyphicon glyphicon-time"></span> Posted on {{.PublishDate | formatTime}}</p>
+            <p>
+                <span class="glyphicon glyphicon-time"></span>
+                Posted on {{.Response.Blog.PublishDate | formatTime}} {{if equal .Session.SignedUser.Username .Response.Blog.CreateUser}}
+                <a href='/blog/edit/{{.Response.Blog.Id}}'>{{tsl .Session.Lang "label.edit"}}</a>
+                {{end}}
+            </p>
             <hr>
-            {{.Content | unescaped}}
-            {{end}}
+            {{.Response.Blog.Content | unescaped}}
             <hr>
 
             <!-- the comment box -->
-            <div class="well">
+            <!--<div class="well">
                 <h4>Leave a Comment:</h4>
 
                 <form role="form">
@@ -55,7 +59,7 @@
 
             <hr>
 
-            <!-- the comments -->
+            &lt;!&ndash; the comments &ndash;&gt;
             <h3>Start Bootstrap
                 <small>9:41 PM on August 24, 2013</small>
             </h3>
@@ -67,7 +71,7 @@
                 <small>9:47 PM on August 24, 2013</small>
             </h3>
             <p>Don't listen to this guy, any blog with the categories 'dinosaurs, spaceships, fried foods, wild animals,
-                alien abductions, business casual, robots, and fireworks' has true potential.</p>
+                alien abductions, business casual, robots, and fireworks' has true potential.</p>-->
 
         </div>
 

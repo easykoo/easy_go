@@ -42,6 +42,8 @@
                     <div class="panel-heading">
                         <a class="btn btn-danger" id="delete"><i class="fa fa-trash-o fa-fw"></i>
                             {{tsl .Session.Lang "label.delete"}}</a>
+                        <a class="btn btn-success" href="/blog/publish"><i class="fa fa-edit fa-fw"></i>
+                            {{tsl .Session.Lang "label.new"}}</a>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -122,41 +124,11 @@ function deleteBlog(blogID) {
 }
 
 var viewBlog = function (id) {
-    var blogList = blogTable.fnGetData();
-    $.each(blogList, function (index, blog) {
-        if (blog.Id == id) {
-            bootbox.dialog({
-                message: blog.Content,
-                title: blog.Name + " - " + blog.Email,
-                buttons: {
-                    success: {
-                        label: '{{tsl .Session.Lang "label.confirm"}}',
-                        className: "btn-danger",
-                        callback: function () {
-                            if (!blog.Viewed) {
-                                $.ajax({
-                                    dataType: "json",
-                                    type: "GET",
-                                    url: '/blog/view/' + id,
-                                    success: function (data) {
-                                        if (!data.success) {
-                                            bootbox.alert(data.message, null);
-                                        }
-                                        blogTable.fnClearTable(0);
-                                        blogTable.fnDraw();
-                                    }
-                                });
-                            }
-                        }
-                    },
-                    default: {
-                        label: '{{tsl .Session.Lang "label.cancel"}}',
-                        className: "btn-default"
-                    }
-                }
-            });
-        }
-    });
+    window.location.href = "/blog/view/" + id;
+};
+
+var editBlog = function (id) {
+    window.location.href = "/blog/edit/" + id;
 };
 
 var blogArray = [0];
@@ -252,13 +224,16 @@ var getAllBlog = function () {
                     '<li><a href="javascript:deleteBlog(' + aData.Id + ')"><i class="fa fa-trash-o fa-fw"></i>'
                     + '<strong> {{tsl .Session.Lang "label.delete"}}</strong>'
                     + '</a></li>';
+            html += '<li><a href="javascript:editBlog(' + aData.Id + ')"><i class="fa fa-edit fa-fw"></i>'
+                    + '<strong> {{tsl .Session.Lang "label.edit"}}</strong>'
+                    + '</a></li>';
             html += '<li><a href="javascript:viewBlog(' + aData.Id + ')"><i class="fa fa-eye fa-fw"></i>'
                     + '<strong> {{tsl .Session.Lang "label.view"}}</strong>'
                     + '</a></li>';
             html += '</ul></div>';
             $('td:eq(8)', nRow).html(html);
 
-            if (aData.State!='PUBLISHED') {
+            if (aData.State != 'PUBLISHED') {
                 $(nRow).css({"color": "#BBBBBB"})
             }
             $('td:eq(0)', nRow).width(20);

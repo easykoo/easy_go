@@ -72,8 +72,8 @@ func newMartini() *martini.ClassicMartini {
 func main() {
 	m := newMartini()
 
-	m.Get("/", handler.IndexHandler)
-	m.Get("/index", handler.IndexHandler)
+	m.Get("/", handler.Blog)
+	m.Get("/index", handler.Blog)
 	m.Get("/about", handler.AboutHandler)
 	m.Any("/contact", binding.Form(model.Feedback{}), handler.ContactHandler)
 	m.Get("/language/change/:lang", handler.LangHandler)
@@ -92,13 +92,14 @@ func main() {
 
 	m.Group("/profile", func(r martini.Router) {
 		r.Any("/profile", AuthRequest(SignInRequired), binding.Form(model.User{}), handler.ProfileHandler)
+		r.Any("/preferences", AuthRequest(SignInRequired), handler.PreferencesHandler)
 		r.Any("/password", AuthRequest(SignInRequired), binding.Form(model.Password{}), handler.PasswordHandler)
 		r.Any("/checkEmail", AuthRequest(SignInRequired), binding.Form(model.User{}), handler.CheckEmail)
 	})
 
 	m.Group("/admin", func(r martini.Router) {
 		r.Get("/dashboard", AuthRequest(SignInRequired), handler.DashboardHandler)
-		r.Get("/settings", AuthRequest(Module_Admin), handler.DashboardHandler)
+		r.Get("/settings", AuthRequest(Module_Admin), handler.SettingsHandler)
 	})
 
 	m.Group("/feedback", func(r martini.Router) {
@@ -115,6 +116,7 @@ func main() {
 		r.Any("/all", AuthRequest(Module_Blog), handler.AllBlog)
 		r.Any("/publish", AuthRequest(Module_Blog), binding.Form(model.Blog{}), handler.PublishBlog)
 		r.Any("/save", AuthRequest(Module_Blog), binding.Form(model.Blog{}), handler.SaveBlog)
+		r.Any("/edit/:id", AuthRequest(Module_Blog), handler.EditBlog)
 		r.Any("/delete", AuthRequest(Module_Blog), handler.DeleteBlogArray)
 		r.Any("/delete/:id", AuthRequest(Module_Blog), handler.DeleteBlog)
 	})
