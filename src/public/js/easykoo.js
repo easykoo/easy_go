@@ -21,13 +21,12 @@ var timeStamp2String = function (time) {
 };
 
 var changeLanguage = function (lang) {
-    var url = window.location.href;
     $.ajax('/language/change/' + lang, {
         dataType: 'json',
         type: "GET",
         success: function (data) {
             if (data.success) {
-                window.location.href = url;
+                location.reload();
             }
         }
     });
