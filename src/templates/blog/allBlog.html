@@ -307,7 +307,7 @@ $(document).ready(function () {
                             $.ajax({
                                 dataType: "json",
                                 type: "POST",
-                                url: 'blog/delete',
+                                url: '/blog/delete',
                                 data: {blogArray: $.toJSON(blogArray)},
                                 traditional: true,
                                 success: function (data) {

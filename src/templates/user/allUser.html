@@ -413,7 +413,7 @@ $(document).ready(function () {
                             $.ajax({
                                 dataType: "json",
                                 type: "POST",
-                                url: 'user/delete',
+                                url: '/user/delete',
                                 data: {users: $.toJSON(accountArray)},
                                 traditional: true,
                                 success: function (data) {

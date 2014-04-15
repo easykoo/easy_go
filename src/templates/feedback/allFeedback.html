@@ -303,7 +303,7 @@ $(document).ready(function () {
                             $.ajax({
                                 dataType: "json",
                                 type: "POST",
-                                url: 'feedback/delete',
+                                url: '/feedback/delete',
                                 data: {feedbackArray: $.toJSON(feedbackArray)},
                                 traditional: true,
                                 success: function (data) {
