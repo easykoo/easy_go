@@ -77,7 +77,7 @@ func (self *Page) SetPageNo(pageNo int) {
 		pageNo = 1
 	}
 	self.pageNo = pageNo
-	self.displayStart = (pageNo-1) * self.pageSize
+	self.displayStart = (pageNo - 1) * self.pageSize
 }
 
 func (self *Page) SetTotalRecord(totalRecord int) {
@@ -87,7 +87,7 @@ func (self *Page) SetTotalRecord(totalRecord int) {
 	if totalRecord%self.pageSize == 0 {
 		totalPage = totalRecord / self.pageSize
 	} else {
-		totalPage = totalRecord / self.pageSize + 1
+		totalPage = totalRecord/self.pageSize + 1
 	}
 	self.totalPage = totalPage
 	if self.pageNo > totalPage {

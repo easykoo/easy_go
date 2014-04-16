@@ -95,10 +95,10 @@ func Blog(ctx *middleware.Context) {
 	blog.SetTotalRecord(total)
 	blog.Result = blogList
 	ctx.Set("Blog", blog)
-//	ctx.Set("Category", blog.Category)
-//	ctx.Set("Result", blogList)
-//	ctx.Set("Total", total)
-//	ctx.Set("PageNo", blog.GetPageNo())
+	//	ctx.Set("Category", blog.Category)
+	//	ctx.Set("Result", blogList)
+	//	ctx.Set("Total", total)
+	//	ctx.Set("PageNo", blog.GetPageNo())
 	ctx.HTML(200, "blog", ctx)
 }
 

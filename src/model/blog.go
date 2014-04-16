@@ -9,7 +9,7 @@ import (
 
 type Blog struct {
 	Id          int       `form:"id" xorm:"int(11) pk not null autoincr"`
-	CategoryId	int		`form:"category_id" xorm:"int(3) default null"`
+	CategoryId  int       `form:"category_id" xorm:"int(3) default null"`
 	Title       string    `form:"title" xorm:"varchar(45) not null"`
 	Content     string    `form:"content" xorm:"blob not null"`
 	State       string    `xorm:"varchar(10) default null"`
