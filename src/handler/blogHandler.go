@@ -23,6 +23,7 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 			blog.PublishDate = time.Now()
 			if blog.Version == 0 {
 				blog.Priority = 5
+				blog.CategoryId = 1
 				blog.CreateUser = ctx.SessionGet("SignedUser").(model.User).Username
 				err := blog.Insert()
 				PanicIf(err)
@@ -45,6 +46,7 @@ func SaveBlog(ctx *middleware.Context, blog model.Blog) {
 		if blog.Version == 0 {
 			blog.State = "DRAFT"
 			blog.Priority = 5
+			blog.CategoryId = 1
 			blog.CreateUser = ctx.SessionGet("SignedUser").(model.User).Username
 			err := blog.Insert()
 			PanicIf(err)
@@ -85,12 +87,19 @@ func Blog(ctx *middleware.Context) {
 	blog := new(model.Blog)
 	blog.SetPageActive(true)
 	blog.SetPageSize(10)
-	blog.SetDisplayStart(ParseInt(ctx.R.FormValue("iDisplayStart")))
+	pageNo := ParseInt(ctx.R.FormValue("page"))
+	blog.SetPageNo(pageNo)
+	blog.State = "PUBLISHED"
 	blog.AddSortProperty("publish_date", "desc")
 	blogList, total, err := blog.SearchByPage(true)
 	PanicIf(err)
-	ctx.Set("BlogList", blogList)
-	ctx.Set("Total", total)
+	blog.SetTotalRecord(total)
+	blog.Result = blogList
+	ctx.Set("Blog", blog)
+//	ctx.Set("Category", blog.Category)
+//	ctx.Set("Result", blogList)
+//	ctx.Set("Total", total)
+//	ctx.Set("PageNo", blog.GetPageNo())
 	ctx.HTML(200, "blog", ctx)
 }
 

@@ -13,7 +13,7 @@ type Page struct {
 	totalRecord    int
 	totalPage      int
 	sortProperties []*SortProperty
-	Result         []*interface{}
+	Result         interface{}
 }
 
 func (self *Page) GetDisplayStart() int {
@@ -22,6 +22,20 @@ func (self *Page) GetDisplayStart() int {
 
 func (self *Page) GetPageNo() int {
 	return self.pageNo
+}
+
+func (self *Page) GetPreviousPageNo() int {
+	if self.pageNo <= 1 {
+		return 1
+	}
+	return self.pageNo - 1
+}
+
+func (self *Page) GetNextPageNo() int {
+	if self.pageNo >= self.totalPage {
+		return self.totalPage
+	}
+	return self.pageNo + 1
 }
 
 func (self *Page) GetPageSize() int {
@@ -63,18 +77,18 @@ func (self *Page) SetPageNo(pageNo int) {
 		pageNo = 1
 	}
 	self.pageNo = pageNo
+	self.displayStart = (pageNo-1) * self.pageSize
 }
 
 func (self *Page) SetTotalRecord(totalRecord int) {
 	self.initIf()
 	self.totalRecord = totalRecord
-	var d int
-	if self.pageSize == 0 {
-		d = (totalRecord / self.pageSize)
+	var totalPage int
+	if totalRecord%self.pageSize == 0 {
+		totalPage = totalRecord / self.pageSize
 	} else {
-		d = (totalRecord/self.pageSize + 1)
+		totalPage = totalRecord / self.pageSize + 1
 	}
-	totalPage := totalRecord % d
 	self.totalPage = totalPage
 	if self.pageNo > totalPage {
 		self.pageNo = totalPage

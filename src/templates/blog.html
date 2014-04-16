@@ -30,7 +30,7 @@
     <div class="row">
         <div class="col-lg-9">
             {{$session := .Session}}
-            {{range .Response.BlogList}}
+            {{range .Response.Blog.Result}}
             <h1><a href='/blog/view/{{.Id}}'>{{.Title}}</a></h1>
 
             <p class="lead">by <a href="#">{{.CreateUser}}</a></p>
@@ -45,7 +45,7 @@
                 {{end}}
             </p>
             <hr>
-            {{.Content | unescaped}}
+            {{.Content | unescaped}}<br><br>
             <a class="btn btn-primary" href='/blog/view/{{.Id}}'>Read More <span
                     class="glyphicon glyphicon-chevron-right"></span></a>
             <hr>
@@ -54,9 +54,16 @@
 
             <!-- pager -->
             <ul class="pager">
-                <li class="previous"><a href="#">&larr; Older</a>
+                <li class='previous {{if equal .Response.Blog.GetPageNo 1}}disabled{{end}}'>
+                    <a href='/blog?page={{.Response.Blog.GetPreviousPageNo}}'>
+                        &larr;&nbsp;&nbsp;{{tsl .Session.Lang "label.previous.page"}}
+                    </a>
                 </li>
-                <li class="next"><a href="#">Newer &rarr;</a>
+                {{.Response.Blog.GetPageNo}}/{{.Response.Blog.GetTotalPage}}
+                <li class='next {{if equal .Response.Blog.GetPageNo .Response.Blog.GetTotalPage}}disabled{{end}}'>
+                    <a href='/blog?page={{.Response.Blog.GetNextPageNo}}'>
+                        {{tsl .Session.Lang "label.next.page"}}&nbsp;&nbsp;&rarr;
+                    </a>
                 </li>
             </ul>
         </div>
@@ -65,14 +72,7 @@
 
     </div>
 
-    <footer>
-        <hr>
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; easykoo.com 2014</p>
-            </div>
-        </div>
-    </footer>
+    {{template "layout/footer" .}}
 
 </div>
 <!-- /.container -->
@@ -81,6 +81,10 @@
 <script src="/js/jquery-1.10.2.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/easykoo.js"></script>
+
+<script type="text/javascript">
+    var page = '.Response.Blog'
+</script>
 
 </body>
 

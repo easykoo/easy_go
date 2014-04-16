@@ -9,6 +9,7 @@ import (
 
 type Blog struct {
 	Id          int       `form:"id" xorm:"int(11) pk not null autoincr"`
+	CategoryId	int		`form:"category_id" xorm:"int(3) default null"`
 	Title       string    `form:"title" xorm:"varchar(45) not null"`
 	Content     string    `form:"content" xorm:"blob not null"`
 	State       string    `xorm:"varchar(10) default null"`
@@ -72,7 +73,7 @@ func (self *Blog) DeleteBlogArray(array []int) error {
 	return err
 }
 
-func (self *Blog) SearchByPage(content bool) ([]Blog, int64, error) {
+func (self *Blog) SearchByPage(content bool) ([]Blog, int, error) {
 	total, err := orm.Count(self)
 	var blog []Blog
 	if content {
@@ -80,5 +81,5 @@ func (self *Blog) SearchByPage(content bool) ([]Blog, int64, error) {
 	} else {
 		err = orm.Omit("content").OrderBy(self.GetSortProperties()[0].Column+" "+self.GetSortProperties()[0].Direction).Limit(self.GetPageSize(), self.GetDisplayStart()).Find(&blog, self)
 	}
-	return blog, total, err
+	return blog, int(total), err
 }
