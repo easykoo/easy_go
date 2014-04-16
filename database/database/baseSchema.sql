@@ -104,16 +104,17 @@ CREATE TABLE news (
 
 DROP TABLE IF EXISTS blog;
 CREATE TABLE blog (
-  id          INT(11)     NOT NULL AUTO_INCREMENT,
-  title       VARCHAR(60) NOT NULL,
-  content     BLOB        NOT NULL,
-  state      VARCHAR(10) NOT NULL,
-  priority    INT(1)      NULL DEFAULT 5,
+  id           INT(11)     NOT NULL AUTO_INCREMENT,
+  category_id  INT(9)      NOT NULL DEFAULT 1,
+  title        VARCHAR(60) NOT NULL,
+  content      BLOB        NOT NULL,
+  state        VARCHAR(10) NOT NULL,
+  priority     INT(1)      NULL DEFAULT 5,
   publish_date DATETIME DEFAULT NULL,
-  create_user VARCHAR(20) DEFAULT NULL,
-  create_date DATETIME DEFAULT NULL,
-  update_user VARCHAR(20) DEFAULT NULL,
-  update_date DATETIME DEFAULT NULL,
-  version     INT(11) DEFAULT 1,
+  create_user  VARCHAR(20) DEFAULT NULL,
+  create_date  DATETIME DEFAULT NULL,
+  update_user  VARCHAR(20) DEFAULT NULL,
+  update_date  DATETIME DEFAULT NULL,
+  version      INT(11) DEFAULT 1,
   PRIMARY KEY (id)
 );
