@@ -334,6 +334,7 @@ var getAllAccounts = function () {
             $('td:eq(6)', nRow).text(gender);
             //    var createDate = timeStamp2String(aData.CreateDate);
             //    $('td:eq(6)', nRow).text(createDate);
+            $('td:eq(11)', nRow).text(formatTime(aData.create_date))
 
             var html = '<div class="btn-group "><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
                     '<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:"><span class="fa fa-caret-down"></span></a>' +

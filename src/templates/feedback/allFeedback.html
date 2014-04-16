@@ -245,6 +245,8 @@ var getAllFeedback = function () {
             var content = aData.Content.length <= 70 ? aData.Content : (aData.Content.substr(0, 70) + '... ')
             $('td:eq(3)', nRow).text(content)
 
+            $('td:eq(4)', nRow).text(formatTime(aData.create_date))
+
             var html = '<div class="btn-group "><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
                     '<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:"><span class="fa fa-caret-down"></span></a>' +
                     '<ul class="dropdown-menu">' +

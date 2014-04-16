@@ -8,16 +8,10 @@ String.prototype.endWith = function (s) {
     return true;
 };
 
-var timeStamp2String = function (time) {
-    var datetime = new Date();
-    datetime.setTime(time);
-    var year = datetime.getFullYear();
-    var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-    var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-    var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-    var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-    var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-    return hour + ":" + minute + ":" + second + " " + month + "/" + date + "/" + year;
+var formatTime = function (timeString) {
+    var date = timeString.substr(0, 10)
+    var time = timeString.substr(11,8)
+    return date + " " + time;
 };
 
 var changeLanguage = function (lang) {

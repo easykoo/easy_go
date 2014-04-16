@@ -214,7 +214,9 @@ var getAllBlog = function () {
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
             $('td:eq(0)', nRow).html('<input type="checkbox" name="selectFlag" onchange="selectBlog(this,' + aData.Id + ')"/>');
-
+            $('td:eq(5)', nRow).text(formatTime(aData.publish_date))
+            $('td:eq(6)', nRow).text(formatTime(aData.update_date))
+            $('td:eq(7)', nRow).text(formatTime(aData.create_date))
             var title = aData.Title.length <= 50 ? aData.Title : (aData.Title.substr(0, 10) + '... ')
             $('td:eq(1)', nRow).text(title)
 
