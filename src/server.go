@@ -43,7 +43,10 @@ func newMartini() *martini.ClassicMartini {
 		Funcs: []template.FuncMap{
 			{
 				"formatTime": func(args ...interface{}) string {
-					return args[0].(time.Time).Format(time.Stamp)
+					return args[0].(time.Time).Format("Jan _2 15:04")
+				},
+				"cnFormatTime": func(args ...interface{}) string {
+					return args[0].(time.Time).Format("2006-01-02 15:04")
 				},
 				"unescaped": func(args ...interface{}) template.HTML {
 					return template.HTML(args[0].(string))

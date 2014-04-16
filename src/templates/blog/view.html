@@ -30,15 +30,21 @@
     <div class="row">
         <div class="col-lg-9">
 
-            <!-- the actual blog post: title/author/date/content -->
             <h1>{{.Response.Blog.Title}}</h1>
-
-
-            <p class="lead">by <a href="#">{{.Response.Blog.CreateUser}}</a></p>
+            {{if equal .Session.Lang "zh"}}
+            <p class="lead">{{.Response.Blog.CreateUser}}</p>
+            {{else}}
+            <p class="lead">by {{.Response.Blog.CreateUser}}</p>
+            {{end}}
             <hr>
             <p>
                 <span class="glyphicon glyphicon-time"></span>
+
+                {{if equal .Session.Lang "zh"}}
+                发表于 {{.Response.Blog.PublishDate | cnFormatTime}}
+                {{else}}
                 Posted on {{.Response.Blog.PublishDate | formatTime}}
+                {{end}}
                 {{if .Session.SignedUser}}
                 {{if equal .Session.SignedUser.Username .Response.Blog.CreateUser}}
                 &nbsp;&nbsp;<a href='/blog/edit/{{.Response.Blog.Id}}'>{{tsl .Session.Lang "label.edit"}}</a>

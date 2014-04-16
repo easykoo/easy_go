@@ -32,12 +32,19 @@
             {{$session := .Session}}
             {{range .Response.Blog.Result}}
             <h1><a href='/blog/view/{{.Id}}'>{{.Title}}</a></h1>
-
-            <p class="lead">by <a href="#">{{.CreateUser}}</a></p>
+            {{if equal $session.Lang "zh"}}
+            <p class="lead">{{.CreateUser}}</p>
+            {{else}}
+            <p class="lead">by {{.CreateUser}}</p>
+            {{end}}
             <hr>
             <p>
                 <span class="glyphicon glyphicon-time"></span>
+                {{if equal $session.Lang "zh"}}
+                发表于 {{.PublishDate | cnFormatTime}}
+                {{else}}
                 Posted on {{.PublishDate | formatTime}}
+                {{end}}
                 {{if $session.SignedUser}}
                 {{if equal $session.SignedUser.Username .CreateUser}}
                 &nbsp;&nbsp;<a href='/blog/edit/{{.Id}}'>{{tsl $session.Lang "label.edit"}}</a>
