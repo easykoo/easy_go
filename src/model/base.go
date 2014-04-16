@@ -17,6 +17,7 @@ func SetEngine() *xorm.Engine {
 	dbName := Cfg.MustValue("db", "db_name", "easy_go")
 	orm, err = xorm.NewEngine("mysql", username+":"+password+"@/"+dbName+"?charset=utf8")
 	PanicIf(err)
+	orm.TimeZone = "Local"
 	orm.ShowSQL = Cfg.MustBool("db", "show_sql", false)
 	orm.Logger = Log.GetWriter()
 	return orm

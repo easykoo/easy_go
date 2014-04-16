@@ -47,7 +47,6 @@
             </p>
             <hr>
             {{.Response.Blog.Content | unescaped}}
-            <hr>
 
             <!-- the comment box -->
             <!--<div class="well">
@@ -84,14 +83,7 @@
     </div>
 
     <hr>
-
-    <footer>
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; easykoo.com 2014</p>
-            </div>
-        </div>
-    </footer>
+    {{template "layout/footer" .}}
 
 </div>
 <!-- /.container -->
