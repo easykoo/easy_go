@@ -8,7 +8,6 @@ import (
 	"model"
 
 	"encoding/json"
-	"strconv"
 	"time"
 )
 
@@ -32,7 +31,7 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 				PanicIf(err)
 			}
 		}
-		ctx.Redirect("/blog/view/" + strconv.Itoa(blog.Id))
+		ctx.Redirect("/blog/view/" + IntString(blog.Id))
 	default:
 		ctx.HTML(200, "blog/edit", ctx)
 	}
@@ -108,7 +107,6 @@ func ViewBlog(ctx *middleware.Context, params martini.Params) {
 	blog := new(model.Blog)
 	blog.Id = ParseInt(id)
 	err := blog.GetBlog()
-	Log.Debug("time: ", blog.CreateDate)
 	PanicIf(err)
 	ctx.Set("Blog", blog)
 	ctx.HTML(200, "blog/view", ctx)
