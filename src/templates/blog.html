@@ -53,8 +53,8 @@
             </p>
             <hr>
             {{.Content | unescaped}}<br><br>
-            <a class="btn btn-primary" href='/blog/view/{{.Id}}'>Read More <span
-                    class="glyphicon glyphicon-chevron-right"></span></a>
+            <a class="btn btn-default" href='/blog/view/{{.Id}}'>{{tsl $session.Lang "label.read.more"}} <span
+                    class="fa fa-chevron-right"></span></a>
             <hr>
             {{end}}
 
