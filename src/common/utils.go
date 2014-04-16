@@ -35,6 +35,10 @@ func ParseInt(value string) int {
 	return val
 }
 
+func IntString(value int) string {
+	return strconv.Itoa(value)
+}
+
 func Md5(str string) string {
 	h := md5.New()
 	h.Write([]byte(str))
