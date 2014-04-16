@@ -1,12 +1,6 @@
 delete from user;
 insert into user (id, username, password, full_name, gender, qq, tel, postcode,address, email, role_id, dept_id, active, locked, create_user,create_date, update_user, update_date, version)
-values(1,'admin','b0baee9d279d34fa1dfd71aadb908c3f','Admin',1,111111,'11122233344','123456','长江西路130号','admin@easykoo.com',1,1,1,0,'SYSTEM',now(),'SYSTEM',now(),1);
-insert into user (id, username, password, full_name, gender, qq, tel, postcode,address, email, role_id, dept_id, active, locked, create_user,create_date, update_user, update_date, version)
-values(2,'manager','b0baee9d279d34fa1dfd71aadb908c3f','Manager',1,111111,'11122233344','123456','长江西路130号','manager@easykoo.com',2,1,1,0,'SYSTEM',now(),'SYSTEM',now(),1);
-insert into user (id, username, password, full_name, gender, qq, tel, postcode,address, email, role_id, dept_id, active, locked, create_user,create_date, update_user, update_date, version)
-values(3,'employee','b0baee9d279d34fa1dfd71aadb908c3f','Employee',1,111111,'11122233344','123456','长江西路130号','employee@easykoo.com',3,1,1,0,'SYSTEM',now(),'SYSTEM',now(),1);
-insert into user (id, username, password, full_name, gender, qq, tel, postcode,address, email, role_id, dept_id, active, locked, create_user,create_date, update_user, update_date, version)
-values(4,'user','b0baee9d279d34fa1dfd71aadb908c3f','User',1,111111,'11122233344','123456','长江西路130号','user@easykoo.com',4,1,1,0,'SYSTEM',now(),'SYSTEM',now(),1);
+values(1,'admin','b0baee9d279d34fa1dfd71aadb908c3f','Admin',1,111111,'11122233344','123456','自由大道1号','admin@admin.com',1,1,1,0,'SYSTEM',now(),'SYSTEM',now(),1);
 
 delete from role;
 delete from department;
