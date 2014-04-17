@@ -300,8 +300,16 @@ var getAllAccounts = function () {
                 "mData": "Username"},
             { "mData": "Id"},
             { "mData": "Username"},
-            { "mData": "RoleId"},
-            { "mData": "DeptId"},
+            { "mData": "role_id",
+                "mRender" : function(mData) {
+                    return mData.Description
+                }
+            },
+            { "mData": "dept_id",
+                "mRender" : function(mData) {
+                    return mData.Description
+                }
+            },
             { "mData": "FullName"},
             { "mData": "Gender"},
             { "mData": "Qq"},

@@ -185,7 +185,7 @@ func SetRole(ctx *middleware.Context) {
 	version := ctx.R.PostFormValue("Version")
 	user := new(model.User)
 	user.Id = ParseInt(id)
-	user.RoleId = ParseInt(roleId)
+	user.Role.Id = ParseInt(roleId)
 	user.Version = ParseInt(version)
 	err := user.SetRole()
 	PanicIf(err)

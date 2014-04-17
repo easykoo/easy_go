@@ -22,8 +22,8 @@ type User struct {
 	Postcode   string    `form:"postcode" xorm:"varchar(10) default null"`
 	Address    string    `form:"address" xorm:"varchar(80) default null"`
 	Email      string    `form:"email" xorm:"varchar(45) unique"`
-	RoleId     int       `xorm:"int(3) default 3"`
-	DeptId     int       `xorm:"int(3) default 1"`
+	Role       Role      `json:"role_id" xorm:"role_id int(3) default 1"`
+	Dept       Dept      `json:"dept_id" xorm:"dept_id int(3) default 1"`
 	Active     bool      `xorm:"tinyint(1) default 0"`
 	Locked     bool      `xorm:"tinyint(1) default 0"`
 	FailTime   int       `xorm:"int(1) default 0"`
@@ -56,8 +56,10 @@ func (self *User) ExistEmail() (bool, error) {
 }
 
 func (self *User) GetUser() (*User, error) {
-	_, err := orm.Id(self.Id).Get(self)
-	return self, err
+	user:= &User{}
+	_, err := orm.Id(self.Id).Get(user)
+	Log.Debug(user)
+	return user, err
 }
 
 func (self *User) GetUserById(id int) (*User, error) {
@@ -67,18 +69,20 @@ func (self *User) GetUserById(id int) (*User, error) {
 }
 
 func (self *User) Insert() error {
-	self.DeptId = 1
-	self.RoleId = 4
+	self.FullName = self.Username
+	self.Dept = Dept{Id: 1}
+	self.Role = Role{Id: 4}
 	self.Active = true
 	self.CreateUser = "SYSTEM"
 	self.UpdateUser = "SYSTEM"
-	self.FullName = self.Username
 	_, err := orm.InsertOne(self)
 	Log.Info(self.Username, " inserted")
 	return err
 }
 
 func (self *User) Update() error {
+	self.Role = Role{}
+	self.Dept = Dept{}
 	_, err := orm.Id(self.Id).MustCols("gender").Update(self)
 	Log.Info("User ", self.Username, " updated")
 	return err
@@ -107,8 +111,8 @@ func (self *User) DeleteUsers(array []int) error {
 
 func (self *User) SetRole() error {
 	var err error
-	_, err = orm.Id(self.Id).MustCols("role_id").Update(&User{RoleId: self.RoleId, Version: self.Version})
-	Log.Info("User ", self.Username, " roleId set to ", self.RoleId)
+	_, err = orm.Id(self.Id).MustCols("role_id").Update(&User{Role: self.Role, Version: self.Version})
+	Log.Info("User ", self.Username, " roleId set to ", self.Role.Id)
 	return err
 }
 
