@@ -1,5 +1,9 @@
 package model
 
+import (
+	. "common"
+)
+
 type SortProperty struct {
 	Column    string
 	Direction string
@@ -96,7 +100,7 @@ func (self *Page) SetTotalRecord(totalRecord int) {
 }
 
 func (self *Page) AddSortProperty(column string, direction string) {
-	self.sortProperties = append(self.sortProperties, &SortProperty{Column: column, Direction: direction})
+	self.sortProperties = append(self.sortProperties, &SortProperty{Column: Atoa(column), Direction: direction})
 }
 
 func (self *Page) initIf() {

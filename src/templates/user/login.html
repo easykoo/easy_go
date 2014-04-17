@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <input type="text" class="form-control" id="username"
                            placeholder='{{tsl .Session.Lang "label.username"}}'
-                           name="username" required>
+                           name="username" value='{{.Response.User.Username}}' required>
                     {{with .FieldErrors.username}}
                     <div class="text-danger">{{.}}</div>
                     {{end}}

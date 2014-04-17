@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"strconv"
+	"strings"
 )
 
 var Log *Logger
@@ -43,4 +44,17 @@ func Md5(str string) string {
 	h := md5.New()
 	h.Write([]byte(str))
 	return hex.EncodeToString(h.Sum(nil))
+}
+
+func Atoa(str string) string {
+	var result string
+	for i := 0; i < len(str); i++ {
+		c := rune(str[i])
+		if 'A' <= c && c <= 'Z' && i > 0 {
+			result = result+"_"+strings.ToLower(string(str[i]))
+		} else {
+			result = result+string(str[i])
+		}
+	}
+	return result
 }

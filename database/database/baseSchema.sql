@@ -25,7 +25,7 @@ CREATE TABLE user (
   create_date DATETIME DEFAULT NULL,
   update_user VARCHAR(20) DEFAULT NULL,
   update_date DATETIME DEFAULT NULL,
-  version     INT(11) DEFAULT 1,
+  version     INT(5) DEFAULT 1,
   PRIMARY KEY (id),
   UNIQUE KEY username_UNIQUE (username),
   UNIQUE KEY email_UNIQUE (email)
@@ -39,18 +39,19 @@ CREATE TABLE role (
   create_date DATETIME DEFAULT NULL,
   update_user VARCHAR(20) DEFAULT NULL,
   update_date DATETIME DEFAULT NULL,
-  PRIMARY KEY (id),
-  UNIQUE KEY description_UNIQUE (description)
+  version     INT(5) DEFAULT 1,
+  PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS department;
-CREATE TABLE department (
+DROP TABLE IF EXISTS dept;
+CREATE TABLE dept (
   id          INT(3)      NOT NULL AUTO_INCREMENT,
   description VARCHAR(20) NOT NULL,
   create_user VARCHAR(20) DEFAULT NULL,
   create_date DATETIME DEFAULT NULL,
   update_user VARCHAR(20) DEFAULT NULL,
   update_date DATETIME DEFAULT NULL,
+  version     INT(5) DEFAULT 1,
   PRIMARY KEY (id)
 );
 
@@ -62,6 +63,7 @@ CREATE TABLE module (
   create_date DATETIME DEFAULT NULL,
   update_user VARCHAR(20) DEFAULT NULL,
   update_date DATETIME DEFAULT NULL,
+  version     INT(5) DEFAULT 1,
   PRIMARY KEY (id)
 );
 
@@ -73,7 +75,8 @@ CREATE TABLE privilege (
   create_user VARCHAR(20) DEFAULT NULL,
   create_date DATETIME DEFAULT NULL,
   update_user VARCHAR(20) DEFAULT NULL,
-  update_date DATETIME DEFAULT NULL
+  update_date DATETIME DEFAULT NULL,
+  PRIMARY KEY (module_id, role_id, dept_id)
 );
 
 DROP TABLE IF EXISTS feedback;
@@ -88,20 +91,6 @@ CREATE TABLE feedback (
   PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS news;
-CREATE TABLE news (
-  id          INT(11)       NOT NULL AUTO_INCREMENT,
-  title       VARCHAR(60)   NOT NULL,
-  content     VARCHAR(2000) NOT NULL,
-  lang        VARCHAR(5)    NOT NULL,
-  priority    INT(1)        NULL DEFAULT 5,
-  create_user VARCHAR(20) DEFAULT NULL,
-  create_date DATETIME DEFAULT NULL,
-  update_user VARCHAR(20) DEFAULT NULL,
-  update_date DATETIME DEFAULT NULL,
-  PRIMARY KEY (id)
-);
-
 DROP TABLE IF EXISTS blog;
 CREATE TABLE blog (
   id           INT(11)     NOT NULL AUTO_INCREMENT,
@@ -110,11 +99,25 @@ CREATE TABLE blog (
   content      BLOB        NOT NULL,
   state        VARCHAR(10) NOT NULL,
   priority     INT(1)      NULL DEFAULT 5,
+  owner_id     INT(11) DEFAULT NULL,
   publish_date DATETIME DEFAULT NULL,
   create_user  VARCHAR(20) DEFAULT NULL,
   create_date  DATETIME DEFAULT NULL,
   update_user  VARCHAR(20) DEFAULT NULL,
   update_date  DATETIME DEFAULT NULL,
   version      INT(11) DEFAULT 1,
+  PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS category;
+CREATE TABLE category (
+  id          INT(3)      NOT NULL,
+  description VARCHAR(40) NOT NULL,
+  parent_id   INT(3)      NOT NULL,
+  create_user VARCHAR(20) DEFAULT NULL,
+  create_date DATETIME DEFAULT NULL,
+  update_user VARCHAR(20) DEFAULT NULL,
+  update_date DATETIME DEFAULT NULL,
+  version     INT(11) DEFAULT 1,
   PRIMARY KEY (id)
 );

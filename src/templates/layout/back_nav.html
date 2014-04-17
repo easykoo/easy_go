@@ -38,7 +38,7 @@
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:">
                     <i class="fa fa-user fa-fw"></i>
-                    {{.Session.SignedUser.Username}}
+                    {{.Session.SignedUser.FullName}}
                     <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
@@ -99,7 +99,7 @@
                                 + '<div>'
                                 + '<strong>' + (feedback.Name.length <= 10 ? feedback.Name : (feedback.Name.substr(0, 10) + '... ')) + '</strong>'
                                 + '<span class="pull-right text-muted">'
-                                + '<em>' + feedback.create_date + '</em>'
+                                + '<em>' + feedback.CreateDate + '</em>'
                                 + '</span>'
                                 + '</div>'
                                 + '<div>' + (feedback.Content.length <= 30 ? feedback.Content : (feedback.Content.substr(0, 30) + '... ')) + '</div>'

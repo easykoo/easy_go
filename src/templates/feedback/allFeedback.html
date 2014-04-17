@@ -229,7 +229,7 @@ var getAllFeedback = function () {
             { "sTitle": '{{tsl .Session.Lang "label.content"}}',
                 "mData": "Content"},
             { "sTitle": '{{tsl .Session.Lang "label.create.date"}}',
-                "mData": "create_date"},
+                "mData": "CreateDate"},
             { "sTitle": '{{tsl .Session.Lang "label.actions"}}',
                 "mData": "Viewed"}
         ],
@@ -245,7 +245,7 @@ var getAllFeedback = function () {
             var content = aData.Content.length <= 70 ? aData.Content : (aData.Content.substr(0, 70) + '... ')
             $('td:eq(3)', nRow).text(content)
 
-            $('td:eq(4)', nRow).text(formatTime(aData.create_date))
+            $('td:eq(4)', nRow).text(formatTime(aData.CreateDate))
 
             var html = '<div class="btn-group "><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
                     '<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:"><span class="fa fa-caret-down"></span></a>' +

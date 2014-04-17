@@ -195,28 +195,20 @@ var getAllBlog = function () {
         "aoColumns": [
             { "sTitle": "<input id='selectAll' onchange='selectAll(this)' type='checkbox'/>",
                 "mData": "Id"},
-            { "sTitle": '{{tsl .Session.Lang "label.title"}}',
-                "mData": "Title"},
-            { "sTitle": '{{tsl .Session.Lang "label.author"}}',
-                "mData": "create_user"},
-            { "sTitle": '{{tsl .Session.Lang "label.state"}}',
-                "mData": "State"},
-            { "sTitle": '{{tsl .Session.Lang "label.priority"}}',
-                "mData": "Priority"},
-            { "sTitle": '{{tsl .Session.Lang "label.publish.date"}}',
-                "mData": "publish_date"},
-            { "sTitle": '{{tsl .Session.Lang "label.update.date"}}',
-                "mData": "update_date"},
-            { "sTitle": '{{tsl .Session.Lang "label.create.date"}}',
-                "mData": "create_date"},
-            { "sTitle": '{{tsl .Session.Lang "label.actions"}}',
-                "mData": "Id"}
+            { "mData": "Title"},
+            { "mData": "CreateUser"},
+            { "mData": "State"},
+            { "mData": "Priority"},
+            { "mData": "PublishDate"},
+            { "mData": "UpdateDate"},
+            { "mData": "CreateDate"},
+            { "mData": "Id"}
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
             $('td:eq(0)', nRow).html('<input type="checkbox" name="selectFlag" onchange="selectBlog(this,' + aData.Id + ')"/>');
-            $('td:eq(5)', nRow).text(formatTime(aData.publish_date))
-            $('td:eq(6)', nRow).text(formatTime(aData.update_date))
-            $('td:eq(7)', nRow).text(formatTime(aData.create_date))
+            $('td:eq(5)', nRow).text(formatTime(aData.PublishDate))
+            $('td:eq(6)', nRow).text(formatTime(aData.UpdateDate))
+            $('td:eq(7)', nRow).text(formatTime(aData.CreateDate))
             var title = aData.Title.length <= 50 ? aData.Title : (aData.Title.substr(0, 10) + '... ')
             $('td:eq(1)', nRow).text(title)
 

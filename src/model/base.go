@@ -5,6 +5,8 @@ import (
 	"github.com/go-xorm/xorm"
 
 	. "common"
+	"testing"
+	"reflect"
 )
 
 var orm *xorm.Engine
@@ -21,4 +23,11 @@ func SetEngine() *xorm.Engine {
 	orm.ShowSQL = Cfg.MustBool("db", "show_sql", false)
 	orm.Logger = Log.GetWriter()
 	return orm
+}
+
+/* Test Helpers */
+func Expect(t *testing.T, a interface{}, b interface{}) {
+	if a != b {
+		t.Errorf("Expected %v (type %v) - Got %v (type %v)", b, reflect.TypeOf(b), a, reflect.TypeOf(a))
+	}
 }

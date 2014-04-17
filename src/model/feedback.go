@@ -13,8 +13,8 @@ type Feedback struct {
 	Email      string    `form:"email" xorm:"varchar(45) unique"`
 	Content    string    `form:"content" xorm:"varchar(45) unique"`
 	Viewed     bool      `xorm:"tinyint(1) default 0"`
-	CreateDate time.Time `json:"create_date" xorm:"datetime created"`
-	ViewDate   time.Time `json:"view_date" xorm:"datetime updated"`
+	CreateDate time.Time `xorm:"datetime created"`
+	ViewDate   time.Time `xorm:"datetime updated"`
 	Page       `xorm:"-"`
 }
 

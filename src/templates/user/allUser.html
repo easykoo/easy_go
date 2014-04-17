@@ -298,30 +298,18 @@ var getAllAccounts = function () {
         "aoColumns": [
             { "sTitle": "<input id='selectAll' onchange='selectAll(this)' type='checkbox'/>",
                 "mData": "Username"},
-            { "sTitle": '{{tsl .Session.Lang "label.id"}}',
-                "mData": "Id"},
-            { "sTitle": '{{tsl .Session.Lang "label.username"}}',
-                "mData": "Username"},
-            { "sTitle": '{{tsl .Session.Lang "label.role"}}',
-                "mData": "RoleId"},
-            { "sTitle": '{{tsl .Session.Lang "label.dept"}}',
-                "mData": "DeptId"},
-            { "sTitle": '{{tsl .Session.Lang "label.full.name"}}',
-                "mData": "FullName"},
-            { "sTitle": '{{tsl .Session.Lang "label.gender"}}',
-                "mData": "Gender"},
-            { "sTitle": '{{tsl .Session.Lang "label.qq"}}',
-                "mData": "Qq"},
-            { "sTitle": '{{tsl .Session.Lang "label.tel"}}',
-                "mData": "Tel"},
-            { "sTitle": '{{tsl .Session.Lang "label.email"}}',
-                "mData": "Email"},
-            { "sTitle": '{{tsl .Session.Lang "label.address"}}',
-                "mData": "Address"},
-            { "sTitle": '{{tsl .Session.Lang "label.create.date"}}',
-                "mData": "create_date"},
-            { "sTitle": '{{tsl .Session.Lang "label.actions"}}',
-                "mData": "Locked"}
+            { "mData": "Id"},
+            { "mData": "Username"},
+            { "mData": "RoleId"},
+            { "mData": "DeptId"},
+            { "mData": "FullName"},
+            { "mData": "Gender"},
+            { "mData": "Qq"},
+            { "mData": "Tel"},
+            { "mData": "Email"},
+            { "mData": "Address"},
+            { "mData": "CreateDate"},
+            { "mData": "Locked"}
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
             $('td:eq(0)', nRow).html('<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + aData.Id + ')"/>');
@@ -334,7 +322,7 @@ var getAllAccounts = function () {
             $('td:eq(6)', nRow).text(gender);
             //    var createDate = timeStamp2String(aData.CreateDate);
             //    $('td:eq(6)', nRow).text(createDate);
-            $('td:eq(11)', nRow).text(formatTime(aData.create_date))
+            $('td:eq(11)', nRow).text(formatTime(aData.CreateDate))
 
             var html = '<div class="btn-group "><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
                     '<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:"><span class="fa fa-caret-down"></span></a>' +
