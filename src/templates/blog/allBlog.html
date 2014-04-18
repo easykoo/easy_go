@@ -58,7 +58,6 @@
                                     <th>{{tsl .Session.Lang "label.state"}}</th>
                                     <th>{{tsl .Session.Lang "label.priority"}}</th>
                                     <th>{{tsl .Session.Lang "label.publish.date"}}</th>
-                                    <th>{{tsl .Session.Lang "label.update.date"}}</th>
                                     <th>{{tsl .Session.Lang "label.create.date"}}</th>
                                     <th>{{tsl .Session.Lang "label.actions"}}</th>
                                 </tr>
@@ -195,12 +194,16 @@ var getAllBlog = function () {
         },
         "aoColumns": [
             { "mData": "Id",
-                "mRender":function(mData) {
-                    return '<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + mData+ ')"/>';
+                "mRender": function (mData) {
+                    return '<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + mData + ')"/>';
                 },
                 "sWidth": 10
             },
-            { "mData": "Title"},
+            { "mData": "Title",
+                "mRender": function (mData) {
+                    return mData.length <= 35 ? mData : (mData.substr(0, 35) + '... ')
+                }
+            },
             { "mData": "author_id",
                 "mRender": function (mData) {
                     return mData.FullName
@@ -211,22 +214,22 @@ var getAllBlog = function () {
                     return mData.Description
                 }
             },
-            { "mData": "State"},
+            { "mData": "State",
+                "mRender": function (mData) {
+                    if (mData != 'PUBLISHED') {
+                        return '{{tsl .Session.Lang "label.published"}}'
+                    }
+                    return '{{tsl .Session.Lang "label.draft"}}'
+                }},
             { "mData": "Priority"},
             { "mData": "PublishDate",
-                "mRender":function(mData) {
-                    return formatTime(mData)
-                },
-                "sWidth": 150
-            },
-            { "mData": "UpdateDate",
-                "mRender":function(mData) {
+                "mRender": function (mData) {
                     return formatTime(mData)
                 },
                 "sWidth": 150
             },
             { "mData": "CreateDate",
-                "mRender":function(mData) {
+                "mRender": function (mData) {
                     return formatTime(mData)
                 },
                 "sWidth": 150
@@ -234,10 +237,8 @@ var getAllBlog = function () {
             { "mData": "Id", "sWidth": 70}
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-            var title = aData.Title.length <= 50 ? aData.Title : (aData.Title.substr(0, 10) + '... ')
-            $('td:eq(1)', nRow).text(title)
 
-            var html = '<div class="btn-group "><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
+            var html = '<div class="btn-group"><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
                     '<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:"><span class="fa fa-caret-down"></span></a>' +
                     '<ul class="dropdown-menu">' +
                     '<li><a href="javascript:deleteBlog(' + aData.Id + ')"><i class="fa fa-trash-o fa-fw"></i>'
@@ -250,7 +251,7 @@ var getAllBlog = function () {
                     + '<strong> {{tsl .Session.Lang "label.view"}}</strong>'
                     + '</a></li>';
             html += '</ul></div>';
-            $('td:eq(9)', nRow).html(html);
+            $('td:eq(8)', nRow).html(html);
 
             if (aData.State != 'PUBLISHED') {
                 $(nRow).css({"color": "#BBBBBB"})
@@ -262,7 +263,7 @@ var getAllBlog = function () {
         },
         "aoColumnDefs": [
             { "bSortable": false, "aTargets": [ 0 ] },
-            { "bSortable": false, "aTargets": [ 9 ] }
+            { "bSortable": false, "aTargets": [ 8 ] }
         ]
     });
 }
