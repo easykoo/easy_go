@@ -296,8 +296,12 @@ var getAllAccounts = function () {
             });
         },
         "aoColumns": [
-            { "sTitle": "<input id='selectAll' onchange='selectAll(this)' type='checkbox'/>",
-                "mData": "Username"},
+            { "mData": "Id",
+                "mRender":function(mData) {
+                    return '<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + mData+ ')"/>';
+                },
+                "sWidth": 10
+            },
             { "mData": "Id"},
             { "mData": "Username"},
             { "mData": "role_id",
@@ -311,27 +315,29 @@ var getAllAccounts = function () {
                 }
             },
             { "mData": "FullName"},
-            { "mData": "Gender"},
+            { "mData": "Gender",
+                "mRender" : function(mData) {
+                    if (mData == 1) {
+                        return '{{tsl .Session.Lang "label.male"}}'
+                    } else if (mData == 2) {
+                        return '{{tsl .Session.Lang "label.female"}}'
+                    }
+                    return '{{tsl .Session.Lang "label.secret"}}'
+                }
+            },
             { "mData": "Qq"},
             { "mData": "Tel"},
             { "mData": "Email"},
             { "mData": "Address"},
-            { "mData": "CreateDate"},
-            { "mData": "Locked"}
+            { "mData": "CreateDate",
+                "mRender":function(mData) {
+                    return formatTime(mData)
+                },
+                "sWidth": 150
+            },
+            { "mData": "Locked", "sWidth": 70}
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-            $('td:eq(0)', nRow).html('<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + aData.Id + ')"/>');
-            gender = '{{tsl .Session.Lang "label.secret"}}'
-            if (aData.Gender == 1) {
-                gender = '{{tsl .Session.Lang "label.male"}}'
-            } else if (aData.Gender == 2) {
-                gender = '{{tsl .Session.Lang "label.female"}}'
-            }
-            $('td:eq(6)', nRow).text(gender);
-            //    var createDate = timeStamp2String(aData.CreateDate);
-            //    $('td:eq(6)', nRow).text(createDate);
-            $('td:eq(11)', nRow).text(formatTime(aData.CreateDate))
-
             var html = '<div class="btn-group "><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
                     '<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:"><span class="fa fa-caret-down"></span></a>' +
                     '<ul class="dropdown-menu">' +
@@ -363,15 +369,6 @@ var getAllAccounts = function () {
             if (aData.Locked) {
                 $(nRow).css({"color": "#BBBBBB"})
             }
-            $('td:eq(0)', nRow).width(20);
-            $('td:eq(1)', nRow).width(30);
-            $('td:eq(2)', nRow).width(90);
-            $('td:eq(3)', nRow).width(50);
-            $('td:eq(4)', nRow).width(50);
-            $('td:eq(6)', nRow).width(70);
-            $('td:eq(8)', nRow).width(120);
-            $('td:eq(11)', nRow).width(150);
-            $('td:eq(12)', nRow).width(80);
             return nRow;
         },
         "oLanguage": {

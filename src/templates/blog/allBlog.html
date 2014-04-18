@@ -51,9 +51,10 @@
                             <table class="table table-striped table-bordered table-hover" id="dataTable">
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox"  onchange='selectAll(this)' id="selectAll"/></th>
+                                    <th><input type="checkbox" onchange='selectAll(this)' id="selectAll"/></th>
                                     <th>{{tsl .Session.Lang "label.title"}}</th>
                                     <th>{{tsl .Session.Lang "label.author"}}</th>
+                                    <th>{{tsl .Session.Lang "label.category"}}</th>
                                     <th>{{tsl .Session.Lang "label.state"}}</th>
                                     <th>{{tsl .Session.Lang "label.priority"}}</th>
                                     <th>{{tsl .Session.Lang "label.publish.date"}}</th>
@@ -181,7 +182,7 @@ var getAllBlog = function () {
         sPaginationType: 'full_numbers',
         sAjaxSource: '/blog/all',
         aaSorting: [
-            [7, 'desc']
+            [8, 'desc']
         ],
         fnServerData: function (sSource, aoData, fnCallback) {
             $.ajax({
@@ -193,25 +194,46 @@ var getAllBlog = function () {
             });
         },
         "aoColumns": [
-            { "mData": "Id"},
+            { "mData": "Id",
+                "mRender":function(mData) {
+                    return '<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + mData+ ')"/>';
+                },
+                "sWidth": 10
+            },
             { "mData": "Title"},
             { "mData": "author_id",
-                "mRender" : function(mData) {
+                "mRender": function (mData) {
                     return mData.FullName
+                }
+            },
+            { "mData": "category_id",
+                "mRender": function (mData) {
+                    return mData.Description
                 }
             },
             { "mData": "State"},
             { "mData": "Priority"},
-            { "mData": "PublishDate"},
-            { "mData": "UpdateDate"},
-            { "mData": "CreateDate"},
-            { "mData": "Id"}
+            { "mData": "PublishDate",
+                "mRender":function(mData) {
+                    return formatTime(mData)
+                },
+                "sWidth": 150
+            },
+            { "mData": "UpdateDate",
+                "mRender":function(mData) {
+                    return formatTime(mData)
+                },
+                "sWidth": 150
+            },
+            { "mData": "CreateDate",
+                "mRender":function(mData) {
+                    return formatTime(mData)
+                },
+                "sWidth": 150
+            },
+            { "mData": "Id", "sWidth": 70}
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-            $('td:eq(0)', nRow).html('<input type="checkbox" name="selectFlag" onchange="selectBlog(this,' + aData.Id + ')"/>');
-            $('td:eq(5)', nRow).text(formatTime(aData.PublishDate))
-            $('td:eq(6)', nRow).text(formatTime(aData.UpdateDate))
-            $('td:eq(7)', nRow).text(formatTime(aData.CreateDate))
             var title = aData.Title.length <= 50 ? aData.Title : (aData.Title.substr(0, 10) + '... ')
             $('td:eq(1)', nRow).text(title)
 
@@ -228,19 +250,11 @@ var getAllBlog = function () {
                     + '<strong> {{tsl .Session.Lang "label.view"}}</strong>'
                     + '</a></li>';
             html += '</ul></div>';
-            $('td:eq(8)', nRow).html(html);
+            $('td:eq(9)', nRow).html(html);
 
             if (aData.State != 'PUBLISHED') {
                 $(nRow).css({"color": "#BBBBBB"})
             }
-            $('td:eq(0)', nRow).width(20);
-            $('td:eq(2)', nRow).width(100);
-            $('td:eq(3)', nRow).width(80);
-            $('td:eq(4)', nRow).width(70);
-            $('td:eq(5)', nRow).width(150);
-            $('td:eq(6)', nRow).width(150);
-            $('td:eq(7)', nRow).width(150);
-            $('td:eq(8)', nRow).width(80);
             return nRow;
         },
         "oLanguage": {
@@ -248,13 +262,14 @@ var getAllBlog = function () {
         },
         "aoColumnDefs": [
             { "bSortable": false, "aTargets": [ 0 ] },
-            { "bSortable": false, "aTargets": [ 8 ] }
+            { "bSortable": false, "aTargets": [ 9 ] }
         ]
     });
 }
 
 $(document).ready(function () {
-    $('#blog').css({"background": "#DDDDDD"});
+    $('#blog').toggleClass('active').children('ul').collapse('toggle');
+    $('#allBlog').css({"background": "#DDDDDD"});
     getAllBlog();
 
     $('#delete').click(function () {

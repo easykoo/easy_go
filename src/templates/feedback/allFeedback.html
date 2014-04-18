@@ -220,26 +220,39 @@ var getAllFeedback = function () {
             });
         },
         "aoColumns": [
-            { "mData": "Id"},
-            { "mData": "Name"},
-            { "mData": "Email"},
-            { "mData": "Content"},
-            { "mData": "CreateDate"},
-            { "mData": "Viewed"}
+            { "mData": "Id",
+                "mRender":function(mData) {
+                    return '<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + mData+ ')"/>';
+                },
+                "sWidth": 10
+            },
+            { "mData": "Name",
+                "mRender":function(mData) {
+                    return mData.length <= 10 ? mData : (mData.substr(0, 10) + '... ')
+                },
+                "sWidth": 80
+            },
+            { "mData": "Email",
+                "mRender":function(mData) {
+                    return mData.length <= 20 ? mData : (mData.substr(0, 20) + '... ')
+                },
+                "sWidth": 150
+            },
+            { "mData": "Content",
+                "mRender":function(mData) {
+                    return mData.length <= 50 ? mData : (mData.substr(0, 50) + '... ')
+                },
+                "sWidth": 300
+            },
+            { "mData": "CreateDate",
+                "mRender":function(mData) {
+                    return formatTime(mData)
+                },
+                "sWidth": 150
+            },
+            { "mData": "Viewed","sWidth": 70}
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-            $('td:eq(0)', nRow).html('<input type="checkbox" name="selectFlag" onchange="selectFeedback(this,' + aData.Id + ')"/>');
-
-            var name = aData.Name.length <= 10 ? aData.Name : (aData.Name.substr(0, 10) + '... ')
-            $('td:eq(1)', nRow).text(name)
-
-            var email = aData.Email.length <= 25 ? aData.Email : (aData.Email.substr(0, 25) + '... ')
-            $('td:eq(2)', nRow).text(email)
-
-            var content = aData.Content.length <= 70 ? aData.Content : (aData.Content.substr(0, 70) + '... ')
-            $('td:eq(3)', nRow).text(content)
-
-            $('td:eq(4)', nRow).text(formatTime(aData.CreateDate))
 
             var html = '<div class="btn-group "><a class="btn btn-primary" href="javascript:"><i class="fa fa-gavel fa-fw"></i></a>' +
                     '<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:"><span class="fa fa-caret-down"></span></a>' +
@@ -256,11 +269,6 @@ var getAllFeedback = function () {
             if (aData.Viewed) {
                 $(nRow).css({"color": "#BBBBBB"})
             }
-            $('td:eq(0)', nRow).width(20);
-            $('td:eq(1)', nRow).width(100);
-            $('td:eq(2)', nRow).width(200);
-            $('td:eq(4)', nRow).width(150);
-            $('td:eq(5)', nRow).width(80);
             return nRow;
         },
         "oLanguage": {
