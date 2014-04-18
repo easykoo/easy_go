@@ -51,9 +51,9 @@ func Atoa(str string) string {
 	for i := 0; i < len(str); i++ {
 		c := rune(str[i])
 		if 'A' <= c && c <= 'Z' && i > 0 {
-			result = result+"_"+strings.ToLower(string(str[i]))
+			result = result + "_" + strings.ToLower(string(str[i]))
 		} else {
-			result = result+string(str[i])
+			result = result + string(str[i])
 		}
 	}
 	return result

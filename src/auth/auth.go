@@ -53,7 +53,7 @@ func AuthRequest(req interface{}) martini.Handler {
 }
 
 func CheckPermission(user model.User, module int) bool {
-	privilege := &model.Privilege{ModuleId: module, RoleId:user.Role.Id, DeptId: user.Dept.Id}
+	privilege := &model.Privilege{ModuleId: module, RoleId: user.Role.Id, DeptId: user.Dept.Id}
 	exist, err := privilege.CheckModulePrivilege()
 	PanicIf(err)
 	return exist

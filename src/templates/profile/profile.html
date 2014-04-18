@@ -41,7 +41,7 @@
                 <form id="profileForm" role="form" class="form-horizontal" method="post"
                       action="/profile/profile">
 
-                    <input type="text" id="id" name="id" value="{{.Session.SignedUser.Id}}" hidden>
+                    <input type="text" id="id" name="userId" value="{{.Session.SignedUser.Id}}" hidden>
                     <input type="text" id="version" value="{{.Session.SignedUser.Version}}" name="version" hidden>
 
                     <div class="form-group">

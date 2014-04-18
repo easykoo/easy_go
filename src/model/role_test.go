@@ -1,30 +1,30 @@
 package model
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 type RoleTest struct {
-	Id          int       `form:"id" xorm:"int(3) pk not null autoincr"`
-	Desc string    `form:"description" xorm:"varchar(20) not null"`
+	Id   int    `form:"id" xorm:"int(3) pk not null autoincr"`
+	Desc string `form:"description" xorm:"varchar(20) not null"`
 }
 
 type UserTest struct {
-	Id         int       `form:"id" xorm:"int(11) pk not null autoincr"`
-	Username   string    `form:"username" xorm:"varchar(20) not null"`
-	Role Role       `xorm:"role_id int(3) default 3"`
+	Id       int    `form:"id" xorm:"int(11) pk not null autoincr"`
+	Username string `form:"username" xorm:"varchar(20) not null"`
+	Role     Role   `xorm:"role_id int(3) default 3"`
 }
 
 func Test_RoleTest(t *testing.T) {
 	SetEngine()
-	err := orm.DropTables(&RoleTest{},&UserTest{})
+	err := orm.DropTables(&RoleTest{}, &UserTest{})
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	err = orm.CreateTables(&RoleTest{},&UserTest{})
+	err = orm.CreateTables(&RoleTest{}, &UserTest{})
 	if err != nil {
 		fmt.Println(err)
 		return

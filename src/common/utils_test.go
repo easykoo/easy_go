@@ -1,10 +1,9 @@
 package common
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
-
 
 func Test_Atoa(t *testing.T) {
 	str := "FirstBlood"

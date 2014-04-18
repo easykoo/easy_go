@@ -5,7 +5,7 @@ import (
 )
 
 type Role struct {
-	Id          int       `form:"id" xorm:"int(3) pk not null autoincr"`
+	Id          int       `form:"roleId" xorm:"int(3) pk not null autoincr"`
 	Description string    `form:"description" xorm:"varchar(20) not null"`
 	CreateUser  string    `xorm:"varchar(20) default 'SYSTEM'"`
 	CreateDate  time.Time `xorm:"datetime created"`
@@ -21,7 +21,7 @@ func (self *Role) GetRoleById(id int) (*Role, error) {
 }
 
 type Dept struct {
-	Id          int       `form:"id" xorm:"int(3) pk not null autoincr"`
+	Id          int       `form:"deptId" xorm:"int(3) pk not null autoincr"`
 	Description string    `form:"description" xorm:"varchar(20) not null"`
 	CreateUser  string    `xorm:"varchar(20) default 'SYSTEM'"`
 	CreateDate  time.Time `xorm:"datetime created"`

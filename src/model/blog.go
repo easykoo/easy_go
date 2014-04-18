@@ -8,12 +8,13 @@ import (
 )
 
 type Blog struct {
-	Id          int       `form:"id" xorm:"int(11) pk not null autoincr"`
-	CategoryId  int       `form:"category_id" xorm:"int(3) default null"`
+	Id          int       `form:"blogId" xorm:"int(11) pk not null autoincr"`
+	Category    Category  `json:"category_id" xorm:"category_id"`
 	Title       string    `form:"title" xorm:"varchar(45) not null"`
 	Content     string    `form:"content" xorm:"blob not null"`
 	State       string    `xorm:"varchar(10) default null"`
 	Priority    int       `xorm:"int(1) default 5"`
+	Author      User      `json:"author_id" xorm:"author_id"`
 	PublishDate time.Time `xorm:"datetime default null"`
 	CreateUser  string    `xorm:"varchar(20) default null"`
 	CreateDate  time.Time `xorm:"datetime created"`
@@ -24,6 +25,7 @@ type Blog struct {
 }
 
 func (self *Blog) Insert() error {
+	self.Category = Category{Id: 1}
 	_, err := orm.InsertOne(self)
 	Log.Info("Blog ", self.Id, " inserted")
 	return err

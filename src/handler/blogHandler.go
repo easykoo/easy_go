@@ -17,13 +17,13 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 		if blog.Title == "" || blog.Content == "" {
 			ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.publish.failed"))
 		} else {
-			blog.UpdateUser = ctx.SessionGet("SignedUser").(model.User).Username
+			signedUser := ctx.SessionGet("SignedUser").(model.User)
 			blog.State = "PUBLISHED"
 			blog.PublishDate = time.Now()
 			if blog.Version == 0 {
 				blog.Priority = 5
-				blog.CategoryId = 1
-				blog.CreateUser = ctx.SessionGet("SignedUser").(model.User).Username
+				blog.Author = signedUser
+				blog.CreateUser = signedUser.Username
 				err := blog.Insert()
 				PanicIf(err)
 			} else {
@@ -41,12 +41,14 @@ func SaveBlog(ctx *middleware.Context, blog model.Blog) {
 	if blog.Title == "" || blog.Content == "" {
 		ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.save.failed"))
 	} else {
-		blog.UpdateUser = ctx.SessionGet("SignedUser").(model.User).Username
+		signedUser := ctx.SessionGet("SignedUser").(model.User)
+		blog.UpdateUser = signedUser.Username
 		if blog.Version == 0 {
 			blog.State = "DRAFT"
 			blog.Priority = 5
-			blog.CategoryId = 1
-			blog.CreateUser = ctx.SessionGet("SignedUser").(model.User).Username
+			blog.Category = model.Category{Id: 1}
+			blog.Author = signedUser
+			blog.CreateUser = signedUser.Username
 			err := blog.Insert()
 			PanicIf(err)
 		} else {

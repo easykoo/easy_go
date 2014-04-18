@@ -49,7 +49,7 @@
                             <table class="table table-striped table-bordered table-hover" id="dataTable">
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox" id="selectAll"/></th>
+                                    <th><input type="checkbox"  onchange='selectAll(this)' id="selectAll"/></th>
                                     <th>{{tsl .Session.Lang "label.name"}}</th>
                                     <th>{{tsl .Session.Lang "label.email"}}</th>
                                     <th>{{tsl .Session.Lang "label.content"}}</th>
@@ -220,18 +220,12 @@ var getAllFeedback = function () {
             });
         },
         "aoColumns": [
-            { "sTitle": "<input id='selectAll' onchange='selectAll(this)' type='checkbox'/>",
-                "mData": "Id"},
-            { "sTitle": '{{tsl .Session.Lang "label.name"}}',
-                "mData": "Name"},
-            { "sTitle": '{{tsl .Session.Lang "label.email"}}',
-                "mData": "Email"},
-            { "sTitle": '{{tsl .Session.Lang "label.content"}}',
-                "mData": "Content"},
-            { "sTitle": '{{tsl .Session.Lang "label.create.date"}}',
-                "mData": "CreateDate"},
-            { "sTitle": '{{tsl .Session.Lang "label.actions"}}',
-                "mData": "Viewed"}
+            { "mData": "Id"},
+            { "mData": "Name"},
+            { "mData": "Email"},
+            { "mData": "Content"},
+            { "mData": "CreateDate"},
+            { "mData": "Viewed"}
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
             $('td:eq(0)', nRow).html('<input type="checkbox" name="selectFlag" onchange="selectFeedback(this,' + aData.Id + ')"/>');

@@ -12,7 +12,7 @@ import (
 )
 
 type User struct {
-	Id         int       `form:"id" xorm:"int(11) pk not null autoincr"`
+	Id         int       `form:"userId" xorm:"int(11) pk not null autoincr"`
 	Username   string    `form:"username" xorm:"varchar(20) not null"`
 	Password   string    `form:"password" xorm:"varchar(60) not null"`
 	FullName   string    `form:"fullName" xorm:"varchar(20) null"`
@@ -56,7 +56,7 @@ func (self *User) ExistEmail() (bool, error) {
 }
 
 func (self *User) GetUser() (*User, error) {
-	user:= &User{}
+	user := &User{}
 	_, err := orm.Id(self.Id).Get(user)
 	Log.Debug(user)
 	return user, err

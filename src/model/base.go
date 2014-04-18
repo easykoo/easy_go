@@ -5,8 +5,8 @@ import (
 	"github.com/go-xorm/xorm"
 
 	. "common"
-	"testing"
 	"reflect"
+	"testing"
 )
 
 var orm *xorm.Engine

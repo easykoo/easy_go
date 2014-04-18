@@ -51,7 +51,7 @@
                             <table class="table table-striped table-bordered table-hover" id="dataTable">
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox" id="selectAll"/></th>
+                                    <th><input type="checkbox"  onchange='selectAll(this)' id="selectAll"/></th>
                                     <th>{{tsl .Session.Lang "label.title"}}</th>
                                     <th>{{tsl .Session.Lang "label.author"}}</th>
                                     <th>{{tsl .Session.Lang "label.state"}}</th>
@@ -193,10 +193,13 @@ var getAllBlog = function () {
             });
         },
         "aoColumns": [
-            { "sTitle": "<input id='selectAll' onchange='selectAll(this)' type='checkbox'/>",
-                "mData": "Id"},
+            { "mData": "Id"},
             { "mData": "Title"},
-            { "mData": "CreateUser"},
+            { "mData": "author_id",
+                "mRender" : function(mData) {
+                    return mData.FullName
+                }
+            },
             { "mData": "State"},
             { "mData": "Priority"},
             { "mData": "PublishDate"},

@@ -32,9 +32,9 @@
 
             <h1>{{.Response.Blog.Title}}</h1>
             {{if equal .Session.Lang "zh"}}
-            <p class="lead">{{.Response.Blog.CreateUser}}</p>
+            <p class="lead">{{.Response.Blog.Author.FullName}}</p>
             {{else}}
-            <p class="lead">by {{.Response.Blog.CreateUser}}</p>
+            <p class="lead">by {{.Response.Blog.Author.FullName}}</p>
             {{end}}
             <hr>
             <p>

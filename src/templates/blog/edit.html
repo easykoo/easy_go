@@ -48,7 +48,7 @@
         <div class="row">
             <div class="col-lg-10">
                 <form id="blogForm" role="form" class="form-horizontal" method="post" action="/blog/publish">
-                    <input name="id" type="text" value="{{.Response.Blog.Id}}" hidden="true">
+                    <input name="blogId" type="text" value="{{.Response.Blog.Id}}" hidden="true">
                     <input name="version" type="text" value="{{.Response.Blog.Version}}" hidden="true">
                     <input name="state" type="text" value="{{.Response.Blog.State}}" hidden="true">
                     <div class="form-group">

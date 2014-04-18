@@ -33,9 +33,9 @@
             {{range .Response.Blog.Result}}
             <h1><a href='/blog/view/{{.Id}}'>{{.Title}}</a></h1>
             {{if equal $session.Lang "zh"}}
-            <p class="lead">{{.CreateUser}}</p>
+            <p class="lead">{{.Author.FullName}}</p>
             {{else}}
-            <p class="lead">by {{.CreateUser}}</p>
+            <p class="lead">by {{.Author.FullName}}</p>
             {{end}}
             <hr>
             <p>
