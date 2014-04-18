@@ -1,52 +1,44 @@
+{{$lang := .Session.Lang}}
 <div class="col-lg-3">
     <div class="well">
-        <h4>{{tsl .Session.Lang "label.search"}}</h4>
+        <h4>{{tsl $lang "label.search"}}</h4>
 
         <div class="input-group">
             <input type="text" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
         </div>
     </div>
+    {{with .Response.CategoryList}}
     <div class="well">
-        <h4>{{tsl .Session.Lang "label.categories"}}</h4>
+        <h4>{{tsl $lang "label.categories"}}</h4>
 
         <div class="row">
             <div class="col-lg-12">
                 <ul class="list-unstyled">
-                    <li><a href="#dinosaurs">History</a>
-                    </li>
-                    <li><a href="#spaceships">IT</a>
-                    </li>
-                    <li><a href="#fried-foods">Fried Foods</a>
-                    </li>
-                    <li><a href="#wild-animals">Wild Animals</a>
-                    </li>
+                    {{range .}}
+                    <li><a href="javascript:goToCategory('{{.Id}}')">{{.Description}}</a></li>
+                    {{end}}
                 </ul>
             </div>
         </div>
     </div>
+    {{end}}
 
+    {{with .Response.Tags}}
     <div class="well">
-        <h4>{{tsl .Session.Lang "label.tags"}}</h4>
+        <h4>{{tsl $lang "label.tags"}}</h4>
 
         <div class="row">
             <div class="col-lg-12">
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
-                <a class="btn btn-default btn-xs tag" href="#" role="button">Tag1</a>
+                {{range .}}
+                <a class="btn btn-default btn-xs tag" href="#">{{.Description}}</a>
+                {{end}}
             </div>
         </div>
     </div>
+    {{end}}
 </div>

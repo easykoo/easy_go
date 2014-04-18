@@ -6,6 +6,10 @@ import (
 
 var Cfg *cfg.ConfigFile
 
-func init() {
-	Cfg, _ = cfg.LoadConfigFile("config.ini")
+func SetConfig() {
+	var err error
+	Cfg, err = cfg.LoadConfigFile("config.ini")
+	if err!=nil {
+		Cfg, err = cfg.LoadConfigFile("../config.ini")
+	}
 }

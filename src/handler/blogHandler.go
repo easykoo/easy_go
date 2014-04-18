@@ -90,17 +90,22 @@ func Blog(ctx *middleware.Context) {
 	blog.SetPageSize(10)
 	pageNo := ParseInt(ctx.R.FormValue("page"))
 	blog.SetPageNo(pageNo)
+	categoryId := ParseInt(ctx.R.FormValue("category"))
+	blog.Category.Id = categoryId
 	blog.State = "PUBLISHED"
 	blog.AddSortProperty("publish_date", "desc")
 	blogList, total, err := blog.SearchByPage(true)
 	PanicIf(err)
+
+	category :=  new(model.Category)
+	categoryList, _, err := category.SearchByPage()
+	PanicIf(err)
+
 	blog.SetTotalRecord(total)
 	blog.Result = blogList
 	ctx.Set("Blog", blog)
-	//	ctx.Set("Category", blog.Category)
-	//	ctx.Set("Result", blogList)
-	//	ctx.Set("Total", total)
-	//	ctx.Set("PageNo", blog.GetPageNo())
+	ctx.Set("CategoryList", categoryList)
+
 	ctx.HTML(200, "blog", ctx)
 }
 

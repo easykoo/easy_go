@@ -19,6 +19,8 @@ import (
 )
 
 func init() {
+	SetConfig()
+	SetLog()
 	gob.Register(model.User{})
 	Log.Debug("server initializing...")
 }
@@ -125,6 +127,6 @@ func main() {
 	})
 
 	Log.Info("server is started...")
-	os.Setenv("PORT", Cfg.MustValue("", "http_port"))
+	os.Setenv("PORT", Cfg.MustValue("", "http_port", "3000"))
 	m.Run()
 }

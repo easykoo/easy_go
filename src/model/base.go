@@ -5,8 +5,6 @@ import (
 	"github.com/go-xorm/xorm"
 
 	. "common"
-	"reflect"
-	"testing"
 )
 
 var orm *xorm.Engine
@@ -19,15 +17,8 @@ func SetEngine() *xorm.Engine {
 	dbName := Cfg.MustValue("db", "db_name", "easy_go")
 	orm, err = xorm.NewEngine("mysql", username+":"+password+"@/"+dbName+"?charset=utf8")
 	PanicIf(err)
-	orm.TimeZone = "Local"
+	orm.TimeZone = Cfg.MustValue("db", "time_zone", "Local")
 	orm.ShowSQL = Cfg.MustBool("db", "show_sql", false)
 	orm.Logger = Log.GetWriter()
 	return orm
-}
-
-/* Test Helpers */
-func Expect(t *testing.T, a interface{}, b interface{}) {
-	if a != b {
-		t.Errorf("Expected %v (type %v) - Got %v (type %v)", b, reflect.TypeOf(b), a, reflect.TypeOf(a))
-	}
 }

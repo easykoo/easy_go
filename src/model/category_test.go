@@ -1,11 +1,15 @@
 package model
 
 import (
+	. "common"
+
 	"fmt"
 	"testing"
 )
 
 func Test_Category(t *testing.T) {
+	SetConfig()
+	SetLog()
 	SetEngine()
 	err := orm.DropTables(&Category{})
 	if err != nil {
@@ -34,4 +38,13 @@ func Test_Category(t *testing.T) {
 	fmt.Println(category)
 
 	Expect(t, category.Id, 1)
+}
+
+func Test_SearchCategory(t *testing.T) {
+	SetConfig()
+	SetLog()
+	SetEngine()
+	category := new(Category)
+	blogList, total, err := category.SearchByPage()
+	Log.Debug(blogList, total, err)
 }

@@ -53,21 +53,23 @@
             </p>
             <hr>
             {{.Content | unescaped}}<br><br>
-            <a class="btn btn-default" href='/blog/view/{{.Id}}'>{{tsl $session.Lang "label.read.more"}} <span
-                    class="fa fa-chevron-right"></span></a>
+            <a class="btn btn-default" href='/blog/view/{{.Id}}'>
+                {{tsl $session.Lang "label.read.more"}}
+                <span class="fa fa-chevron-right"></span>
+            </a>
             <hr>
             {{end}}
 
             <!-- pager -->
             <ul class="pager">
                 <li class='previous {{if equal .Response.Blog.GetPageNo 1}}disabled{{end}}'>
-                    <a href='/blog?page={{.Response.Blog.GetPreviousPageNo}}'>
+                    <a href="javascript:goToPage('{{.Response.Blog.GetPreviousPageNo}}')">
                         &larr;&nbsp;&nbsp;{{tsl .Session.Lang "label.previous.page"}}
                     </a>
                 </li>
                 {{.Response.Blog.GetPageNo}}/{{.Response.Blog.GetTotalPage}}
                 <li class='next {{if equal .Response.Blog.GetPageNo .Response.Blog.GetTotalPage}}disabled{{end}}'>
-                    <a href='/blog?page={{.Response.Blog.GetNextPageNo}}'>
+                    <a href="javascript:goToPage('{{.Response.Blog.GetNextPageNo}}')">
                         {{tsl .Session.Lang "label.next.page"}}&nbsp;&nbsp;&rarr;
                     </a>
                 </li>
@@ -90,7 +92,27 @@
 <script src="/js/easykoo.js"></script>
 
 <script type="text/javascript">
-    var page = '.Response.Blog'
+    var categoryId = '{{.Response.Blog.Category.Id}}'
+    var tag = '{{.Response.Tag}}'
+    var page = '{{.Response.Blog.GetPageNo}}'
+
+    var goToCategory = function (categoryId) {
+        window.location.href = '/blog?category=' + categoryId;
+    }
+
+    var goToTag = function (tag) {
+        window.location.href = '/blog?tag=' + tag;
+    }
+
+    var goToPage = function (pageNo) {
+        if (categoryId == 0 && tag == "") {
+            window.location.href = '/blog?page=' + pageNo;
+        } else if (categoryId != 0) {
+            window.location.href = '/blog?category=' + categoryId + '&page=' + pageNo;
+        } else if (tag != "") {
+            window.location.href = '/blog?tag=' + tag + '&page=' + pageNo;
+        }
+    }
 </script>
 
 </body>

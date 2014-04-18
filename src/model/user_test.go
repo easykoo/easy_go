@@ -15,6 +15,6 @@ func Test_user(t *testing.T) {
 
 	dbUser, err1 := user.GetUser()
 	PanicIf(err1)
-	Expect(t, dbUser.DeptId, 1)
-	Expect(t, dbUser.RoleId, 3)
+	Expect(t, dbUser.Dept.Id, 1)
+	Expect(t, dbUser.Role.Id, 3)
 }

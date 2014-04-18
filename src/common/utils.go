@@ -7,14 +7,16 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"testing"
+	"reflect"
 )
 
 var Log *Logger
 
-func init() {
+func SetLog() {
 	var w io.Writer
-	if Cfg.MustBool("", "log_file") {
-		f, _ := os.OpenFile(Cfg.MustValue("", "log_path"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
+	if Cfg.MustBool("", "log_file", false) {
+		f, _ := os.OpenFile(Cfg.MustValue("", "log_path", "./log.txt"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
 		w = io.MultiWriter(f)
 	} else {
 		w = os.Stdout
@@ -57,4 +59,11 @@ func Atoa(str string) string {
 		}
 	}
 	return result
+}
+
+/* Test Helpers */
+func Expect(t *testing.T, a interface{}, b interface{}) {
+	if a != b {
+		t.Errorf("Expected %v (type %v) - Got %v (type %v)", b, reflect.TypeOf(b), a, reflect.TypeOf(a))
+	}
 }
