@@ -97,7 +97,7 @@ func Blog(ctx *middleware.Context) {
 	blogList, total, err := blog.SearchByPage(true)
 	PanicIf(err)
 
-	category :=  new(model.Category)
+	category := new(model.Category)
 	categoryList, _, err := category.SearchByPage()
 	PanicIf(err)
 

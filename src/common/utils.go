@@ -5,10 +5,10 @@ import (
 	"encoding/hex"
 	"io"
 	"os"
+	"reflect"
 	"strconv"
 	"strings"
 	"testing"
-	"reflect"
 )
 
 var Log *Logger
