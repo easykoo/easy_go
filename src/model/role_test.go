@@ -1,6 +1,8 @@
 package model
 
 import (
+	. "common"
+
 	"fmt"
 	"testing"
 )

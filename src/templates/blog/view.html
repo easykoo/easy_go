@@ -31,23 +31,28 @@
         <div class="col-lg-9">
 
             <h1>{{.Response.Blog.Title}}</h1>
-            {{if equal .Session.Lang "zh"}}
-            <p class="lead">{{.Response.Blog.Author.FullName}}</p>
-            {{else}}
-            <p class="lead">by {{.Response.Blog.Author.FullName}}</p>
-            {{end}}
+
+            <p class="lead"> {{if equal .Session.Lang "zh"}}{{else}}by&nbsp;{{end}}{{.Response.Blog.Author.FullName}}
+                {{if .Session.SignedUser}}
+                {{if equal .Session.SignedUser.Username .Response.Blog.CreateUser}}
+                &nbsp;&nbsp;<a href='/blog/edit/{{.Response.Blog.Id}}'>{{tsl .Session.Lang "label.edit"}}</a>
+                {{end}}
+                {{end}}
+            </p>
             <hr>
             <p>
-                <span class="glyphicon glyphicon-time"></span>
+                <span class="fa fa-clock-o"></span>
 
                 {{if equal .Session.Lang "zh"}}
                 发表于 {{.Response.Blog.PublishDate | cnFormatTime}}
                 {{else}}
                 Posted on {{.Response.Blog.PublishDate | formatTime}}
                 {{end}}
-                {{if .Session.SignedUser}}
-                {{if equal .Session.SignedUser.Username .Response.Blog.CreateUser}}
-                &nbsp;&nbsp;<a href='/blog/edit/{{.Response.Blog.Id}}'>{{tsl .Session.Lang "label.edit"}}</a>
+                {{with .Response.Blog.Tags}}
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <i class="fa fa-tag fa-5"></i>
+                {{range .}}
+                <a class="label label-info tag" href="javascript:goToTag('{{.Name}}')">{{.Name}}</a>
                 {{end}}
                 {{end}}
             </p>
@@ -101,6 +106,17 @@
 <script src="/js/bootbox.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/easykoo.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".tag").hover(function(){
+            $(this).find(".badge").removeClass("hidden");
+        },function(){
+            $(this).find(".badge").addClass("hidden");
+        })
+    });
+</script>
 
 </body>
 

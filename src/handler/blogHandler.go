@@ -17,6 +17,8 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 		if blog.Title == "" || blog.Content == "" {
 			ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.publish.failed"))
 		} else {
+			tags := ctx.R.PostForm["tags"]
+			blog.SetTags(tags)
 			signedUser := ctx.SessionGet("SignedUser").(model.User)
 			blog.State = "PUBLISHED"
 			blog.PublishDate = time.Now()
@@ -33,6 +35,10 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 		}
 		ctx.Redirect("/blog/view/" + IntString(blog.Id))
 	default:
+		tags, err := blog.GetAllTags()
+		PanicIf(err)
+		ctx.Set("Tags", tags)
+
 		ctx.HTML(200, "blog/edit", ctx)
 	}
 }
@@ -41,12 +47,13 @@ func SaveBlog(ctx *middleware.Context, blog model.Blog) {
 	if blog.Title == "" || blog.Content == "" {
 		ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.save.failed"))
 	} else {
+		tags := ctx.R.PostForm["tags"]
+		blog.SetTags(tags)
 		signedUser := ctx.SessionGet("SignedUser").(model.User)
 		blog.UpdateUser = signedUser.Username
 		if blog.Version == 0 {
 			blog.State = "DRAFT"
 			blog.Priority = 5
-			blog.Category = model.Category{Id: 1}
 			blog.Author = signedUser
 			blog.CreateUser = signedUser.Username
 			err := blog.Insert()
@@ -58,8 +65,14 @@ func SaveBlog(ctx *middleware.Context, blog model.Blog) {
 		dbBlog, err := blog.GetBlogById()
 		PanicIf(err)
 		ctx.Set("Blog", dbBlog)
+
 		ctx.AddMessage(Translate(ctx.SessionGet("Lang").(string), "message.save.success"))
 	}
+
+	tags, err := blog.GetAllTags()
+	PanicIf(err)
+	ctx.Set("Tags", tags)
+
 	ctx.HTML(200, "blog/edit", ctx)
 }
 
@@ -90,21 +103,41 @@ func Blog(ctx *middleware.Context) {
 	blog.SetPageSize(10)
 	pageNo := ParseInt(ctx.R.FormValue("page"))
 	blog.SetPageNo(pageNo)
-	categoryId := ParseInt(ctx.R.FormValue("category"))
-	blog.Category.Id = categoryId
 	blog.State = "PUBLISHED"
 	blog.AddSortProperty("publish_date", "desc")
 	blogList, total, err := blog.SearchByPage(true)
 	PanicIf(err)
 
-	category := new(model.Category)
-	categoryList, _, err := category.SearchByPage()
+	blog.SetTotalRecord(total)
+	blog.Result = blogList
+	ctx.Set("Blog", blog)
+
+	tags, err := blog.GetAllTags()
 	PanicIf(err)
+	ctx.Set("Tags", tags)
+
+	ctx.HTML(200, "blog", ctx)
+}
+
+func BlogWithTag(ctx *middleware.Context, params martini.Params) {
+	tagName := params["tag"]
+	blog := new(model.Blog)
+	blog.SetPageActive(true)
+	blog.SetPageSize(10)
+	pageNo := ParseInt(ctx.R.FormValue("page"))
+	blog.SetPageNo(pageNo)
+	blog.State = "PUBLISHED"
+	blog.AddSortProperty("publish_date", "desc")
+	blogList, total, err := blog.SearchWithTagByPage(tagName)
+	PanicIf(err)
+	ctx.Set("Tag", tagName)
 
 	blog.SetTotalRecord(total)
 	blog.Result = blogList
 	ctx.Set("Blog", blog)
-	ctx.Set("CategoryList", categoryList)
+	tags, err := blog.GetAllTags()
+	PanicIf(err)
+	ctx.Set("Tags", tags)
 
 	ctx.HTML(200, "blog", ctx)
 }
@@ -116,6 +149,11 @@ func ViewBlog(ctx *middleware.Context, params martini.Params) {
 	err := blog.GetBlog()
 	PanicIf(err)
 	ctx.Set("Blog", blog)
+
+	tags, err := blog.GetAllTags()
+	PanicIf(err)
+	ctx.Set("Tags", tags)
+
 	ctx.HTML(200, "blog/view", ctx)
 }
 
@@ -147,5 +185,10 @@ func EditBlog(ctx *middleware.Context, params martini.Params) {
 	err := blog.GetBlog()
 	PanicIf(err)
 	ctx.Set("Blog", blog)
+
+	tags, err := blog.GetAllTags()
+	PanicIf(err)
+	ctx.Set("Tags", tags)
+
 	ctx.HTML(200, "blog/edit", ctx)
 }

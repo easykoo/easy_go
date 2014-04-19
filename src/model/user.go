@@ -58,7 +58,6 @@ func (self *User) ExistEmail() (bool, error) {
 func (self *User) GetUser() (*User, error) {
 	user := &User{}
 	_, err := orm.Id(self.Id).Get(user)
-	Log.Debug(user)
 	return user, err
 }
 

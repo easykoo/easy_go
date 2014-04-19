@@ -48,3 +48,14 @@ func Test_SearchCategory(t *testing.T) {
 	blogList, total, err := category.SearchByPage()
 	Log.Debug(blogList, total, err)
 }
+
+func Test_GenerateCategoryId(t *testing.T) {
+	SetConfig()
+	SetLog()
+	SetEngine()
+	category := new(Category)
+	id, err := category.GenerateCategoryId(0)
+	PanicIf(err)
+
+	Expect(t, id, 101)
+}

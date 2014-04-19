@@ -117,6 +117,7 @@ func main() {
 
 	m.Group("/blog", func(r martini.Router) {
 		r.Any("", handler.Blog)
+		r.Any("/tag/:tag", handler.BlogWithTag)
 		r.Any("/view/:id", handler.ViewBlog)
 		r.Any("/all", AuthRequest(Module_Blog), handler.AllBlog)
 		r.Any("/publish", AuthRequest(Module_Blog), binding.Form(model.Blog{}), handler.PublishBlog)

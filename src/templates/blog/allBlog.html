@@ -54,9 +54,7 @@
                                     <th><input type="checkbox" onchange='selectAll(this)' id="selectAll"/></th>
                                     <th>{{tsl .Session.Lang "label.title"}}</th>
                                     <th>{{tsl .Session.Lang "label.author"}}</th>
-                                    <th>{{tsl .Session.Lang "label.category"}}</th>
                                     <th>{{tsl .Session.Lang "label.state"}}</th>
-                                    <th>{{tsl .Session.Lang "label.priority"}}</th>
                                     <th>{{tsl .Session.Lang "label.publish.date"}}</th>
                                     <th>{{tsl .Session.Lang "label.create.date"}}</th>
                                     <th>{{tsl .Session.Lang "label.actions"}}</th>
@@ -135,15 +133,9 @@ var blogArray = [0];
 
 var selectBlog = function (obj, blogId) {
     if ($(obj).prop("checked")) {
-        if ($.inArray(blogId, blogArray) < 0) {
-            blogArray.push(blogId);
-        }
+        $.inArray(blogId, blogArray) < 0 ? blogArray.push(blogId) : null;
     } else {
-        if ($.inArray(blogId, blogArray) >= 0) {
-            $.each(blogArray, function (key, value) {
-                blogArray.splice(key, key)
-            });
-        }
+        blogArray.splice(jQuery.inArray(blogId, blogArray), 1);
     }
 }
 
@@ -181,7 +173,7 @@ var getAllBlog = function () {
         sPaginationType: 'full_numbers',
         sAjaxSource: '/blog/all',
         aaSorting: [
-            [8, 'desc']
+            [6, 'desc']
         ],
         fnServerData: function (sSource, aoData, fnCallback) {
             $.ajax({
@@ -195,7 +187,7 @@ var getAllBlog = function () {
         "aoColumns": [
             { "mData": "Id",
                 "mRender": function (mData) {
-                    return '<input type="checkbox" name="selectFlag" onchange="selectAccount(this,' + mData + ')"/>';
+                    return '<input type="checkbox" name="selectFlag" onchange="selectBlog(this,' + mData + ')"/>';
                 },
                 "sWidth": 10
             },
@@ -207,21 +199,18 @@ var getAllBlog = function () {
             { "mData": "author_id",
                 "mRender": function (mData) {
                     return mData.FullName
-                }
-            },
-            { "mData": "category_id",
-                "mRender": function (mData) {
-                    return mData.Description
-                }
+                },
+                "sWidth": 80
             },
             { "mData": "State",
                 "mRender": function (mData) {
-                    if (mData != 'PUBLISHED') {
+                    if (mData == 'PUBLISHED') {
                         return '{{tsl .Session.Lang "label.published"}}'
                     }
                     return '{{tsl .Session.Lang "label.draft"}}'
-                }},
-            { "mData": "Priority"},
+                },
+                "sWidth": 80
+            },
             { "mData": "PublishDate",
                 "mRender": function (mData) {
                     return formatTime(mData)
@@ -251,7 +240,7 @@ var getAllBlog = function () {
                     + '<strong> {{tsl .Session.Lang "label.view"}}</strong>'
                     + '</a></li>';
             html += '</ul></div>';
-            $('td:eq(8)', nRow).html(html);
+            $('td:eq(6)', nRow).html(html);
 
             if (aData.State != 'PUBLISHED') {
                 $(nRow).css({"color": "#BBBBBB"})
@@ -263,7 +252,7 @@ var getAllBlog = function () {
         },
         "aoColumnDefs": [
             { "bSortable": false, "aTargets": [ 0 ] },
-            { "bSortable": false, "aTargets": [ 8 ] }
+            { "bSortable": false, "aTargets": [ 6 ] }
         ]
     });
 }

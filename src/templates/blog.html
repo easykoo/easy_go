@@ -32,22 +32,28 @@
             {{$session := .Session}}
             {{range .Response.Blog.Result}}
             <h1><a href='/blog/view/{{.Id}}'>{{.Title}}</a></h1>
-            {{if equal $session.Lang "zh"}}
-            <p class="lead">{{.Author.FullName}}</p>
-            {{else}}
-            <p class="lead">by {{.Author.FullName}}</p>
-            {{end}}
+            <p class="lead">
+                {{if equal $session.Lang "zh"}}{{else}}by&nbsp;{{end}}{{.Author.FullName}}
+
+                {{if $session.SignedUser}}
+                {{if equal $session.SignedUser.Username .CreateUser}}
+                &nbsp;&nbsp;<a href='/blog/edit/{{.Id}}'>{{tsl $session.Lang "label.edit"}}</a>
+                {{end}}
+                {{end}}
+            </p>
             <hr>
             <p>
-                <span class="glyphicon glyphicon-time"></span>
+                <i class="fa fa-clock-o fa-1"></i>
                 {{if equal $session.Lang "zh"}}
                 发表于 {{.PublishDate | cnFormatTime}}
                 {{else}}
                 Posted on {{.PublishDate | formatTime}}
                 {{end}}
-                {{if $session.SignedUser}}
-                {{if equal $session.SignedUser.Username .CreateUser}}
-                &nbsp;&nbsp;<a href='/blog/edit/{{.Id}}'>{{tsl $session.Lang "label.edit"}}</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                {{with .Tags}}
+                <i class="fa fa-tag fa-5"></i>
+                {{range .}}
+                <a class="label label-info tag" href="javascript:goToTag('{{.Name}}')">{{.Name}}</a>
                 {{end}}
                 {{end}}
             </p>
@@ -92,27 +98,28 @@
 <script src="/js/easykoo.js"></script>
 
 <script type="text/javascript">
-    var categoryId = '{{.Response.Blog.Category.Id}}'
     var tag = '{{.Response.Tag}}'
     var page = '{{.Response.Blog.GetPageNo}}'
 
-    var goToCategory = function (categoryId) {
-        window.location.href = '/blog?category=' + categoryId;
-    }
-
     var goToTag = function (tag) {
-        window.location.href = '/blog?tag=' + tag;
+        window.location.href = '/blog/tag/' + tag;
     }
 
     var goToPage = function (pageNo) {
-        if (categoryId == 0 && tag == "") {
+        if (tag == "") {
             window.location.href = '/blog?page=' + pageNo;
-        } else if (categoryId != 0) {
-            window.location.href = '/blog?category=' + categoryId + '&page=' + pageNo;
         } else if (tag != "") {
-            window.location.href = '/blog?tag=' + tag + '&page=' + pageNo;
+            window.location.href = '/blog/tag/' + tag + '?page=' + pageNo;
         }
     }
+
+    $(document).ready(function () {
+        $(".tag").hover(function(){
+            $(this).find(".badge").removeClass("hidden");
+        },function(){
+            $(this).find(".badge").addClass("hidden");
+        })
+    });
 </script>
 
 </body>

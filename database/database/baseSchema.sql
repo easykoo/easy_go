@@ -121,3 +121,10 @@ CREATE TABLE category (
   version     INT(11) DEFAULT 1,
   PRIMARY KEY (id)
 );
+
+DROP TABLE IF EXISTS tag;
+CREATE TABLE tag (
+  name varchar(20) not null,
+  blog_id int(11) not null,
+  PRIMARY KEY (name, blog_id)
+);
