@@ -36,7 +36,6 @@ type User struct {
 }
 
 func (self *User) ShowName() string {
-	Log.Debug("FullName: ", self.FullName)
 	if self.FullName != "" {
 		return self.FullName
 	}

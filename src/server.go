@@ -80,7 +80,7 @@ func main() {
 
 	m.Get("/", handler.Blog)
 	m.Get("/index", handler.Blog)
-	m.Get("/about", handler.AboutHandler)
+	m.Get("/about", handler.About)
 	m.Any("/contact", binding.Form(model.Feedback{}), handler.ContactHandler)
 	m.Get("/language/change/:lang", handler.LangHandler)
 
@@ -106,6 +106,7 @@ func main() {
 	m.Group("/admin", func(r martini.Router) {
 		r.Get("/dashboard", AuthRequest(SignInRequired), handler.DashboardHandler)
 		r.Any("/settings", AuthRequest(Module_Admin), binding.Form(model.Settings{}), handler.SettingsHandler)
+		r.Post("/about", AuthRequest(Module_Admin), handler.AboutHandler)
 	})
 
 	m.Group("/feedback", func(r martini.Router) {

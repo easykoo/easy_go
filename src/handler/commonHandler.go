@@ -8,11 +8,11 @@ import (
 	"model"
 )
 
-func IndexHandler(ctx *middleware.Context) {
+func Index(ctx *middleware.Context) {
 	ctx.HTML(200, "index", ctx)
 }
 
-func AboutHandler(ctx *middleware.Context) {
+func About(ctx *middleware.Context) {
 	ctx.HTML(200, "about", ctx)
 }
 

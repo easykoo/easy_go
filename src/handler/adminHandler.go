@@ -20,9 +20,20 @@ func SettingsHandler(ctx *middleware.Context, settings model.Settings) {
 	}
 	user := &model.User{}
 	users, err := user.SelectAll()
-	Log.Debug("All User: ", users)
 	PanicIf(err)
 	ctx.Set("Users", users)
 
 	ctx.HTML(200, "admin/settings", ctx)
+}
+
+func AboutHandler(ctx *middleware.Context) {
+	settings := model.GetSettings()
+	about := ctx.R.FormValue("about")
+	settings.About = about
+	err := settings.Update()
+	PanicIf(err)
+	dbSettings := model.GetSettings()
+	ctx.SessionSet("Settings", dbSettings)
+
+	ctx.Redirect("/about")
 }
