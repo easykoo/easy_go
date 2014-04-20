@@ -7,6 +7,7 @@ import (
 	"github.com/martini-contrib/sessions"
 
 	. "common"
+	"model"
 
 	"net/http"
 )
@@ -185,6 +186,7 @@ func InitContext() martini.Handler {
 			C:      c,
 			S:      s,
 		}
+		ctx.SessionSet("Settings", model.GetSettings())
 		ctx.TransferSessionProperties(s)
 		c.Map(ctx)
 	}

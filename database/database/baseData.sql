@@ -65,3 +65,6 @@ DELETE FROM category;
 INSERT INTO category (id, description, parent_id, create_user, create_date, update_user, update_date)
 VALUES (1, 'Default', 0, 'SYSTEM', now(), 'SYSTEM', now());
 
+DELETE FROM settings;
+INSERT INTO settings (id, app_name, owner_id, about, create_user, create_date, update_user, update_date)
+VALUES (1, 'Easy Go', 1, null, 'SYSTEM', now(), 'SYSTEM', now());

@@ -22,6 +22,7 @@ func init() {
 	SetConfig()
 	SetLog()
 	gob.Register(model.User{})
+	gob.Register(model.Settings{})
 	Log.Debug("server initializing...")
 }
 
@@ -104,7 +105,7 @@ func main() {
 
 	m.Group("/admin", func(r martini.Router) {
 		r.Get("/dashboard", AuthRequest(SignInRequired), handler.DashboardHandler)
-		r.Get("/settings", AuthRequest(Module_Admin), handler.SettingsHandler)
+		r.Any("/settings", AuthRequest(Module_Admin), binding.Form(model.Settings{}), handler.SettingsHandler)
 	})
 
 	m.Group("/feedback", func(r martini.Router) {
