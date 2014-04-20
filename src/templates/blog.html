@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -36,18 +36,14 @@
 
             {{if $session.SignedUser}}
             {{if equal $session.SignedUser.Id .Author.Id}}
-            &nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-default pull-right" href='/blog/edit/{{.Id}}'>{{tsl $session.Lang "label.edit"}}</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-default pull-right" href='/blog/edit/{{.Id}}'>
+                {{tsl $session.Lang "label.edit"}}
+            </a>
             {{end}}
             {{end}}
             </span>
-            <hr>
-            {{.Summary | unescaped}}
-            <a class="btn btn-default" href='/blog/view/{{.Id}}'>
-                {{tsl $session.Lang "label.read.more"}}
-                <i class="fa fa-angle-right"></i>
-            </a>
-            <br>
-            <br>
+            <br><br>
             {{.Author.FullName}}
 
             &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-clock-o fa-1"></i>
@@ -64,7 +60,14 @@
             <a class="label label-info tag" href="/blog/tag/{{.Name}}">{{.Name}}</a>
             {{end}}
             {{end}}
-
+            <br><br>
+            {{.Summary | unescaped}}
+            <br>
+            <a class="btn btn-default" href='/blog/view/{{.Id}}'>
+                {{tsl $session.Lang "label.read.more"}}
+                <i class="fa fa-angle-right"></i>
+            </a>
+            <br>
             <hr>
             {{end}}
 
