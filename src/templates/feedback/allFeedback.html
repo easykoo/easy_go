@@ -162,28 +162,22 @@ var feedbackArray = [0];
 
 var selectFeedback = function (obj, feedbackId) {
     if ($(obj).prop("checked")) {
-        if ($.inArray(feedbackId, feedbackArray) < 0) {
-            feedbackArray.push(feedbackId);
-        }
+        $.inArray(feedbackId, feedbackArray) < 0 ? feedbackArray.push(feedbackId) : null;
     } else {
-        if ($.inArray(feedbackId, feedbackArray) >= 0) {
-            $.each(feedbackArray, function (key, value) {
-                feedbackArray.splice(key, key)
-            });
-        }
+        feedbackArray.splice(jQuery.inArray(feedbackId, feedbackArray), 1);
     }
 }
 
 var selectAll = function (obj) {
     if (obj.checked) {
         $("input[name='selectFlag']:checkbox").each(function () {
+            $(this).attr("checked", false);
             $(this).click();
-            $(this).attr("checked", true);
         })
     } else {
         $("input[name='selectFlag']:checkbox").each(function () {
+            $(this).attr("checked", true);
             $(this).click();
-            $(this).attr("checked", false);
         })
     }
 }

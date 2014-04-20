@@ -142,13 +142,13 @@ var selectBlog = function (obj, blogId) {
 var selectAll = function (obj) {
     if (obj.checked) {
         $("input[name='selectFlag']:checkbox").each(function () {
+            $(this).attr("checked", false);
             $(this).click();
-            $(this).attr("checked", true);
         })
     } else {
         $("input[name='selectFlag']:checkbox").each(function () {
+            $(this).attr("checked", true);
             $(this).click();
-            $(this).attr("checked", false);
         })
     }
 }

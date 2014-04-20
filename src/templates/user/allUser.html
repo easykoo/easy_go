@@ -238,28 +238,22 @@ var accountArray = [0];
 
 var selectAccount = function (obj, accountId) {
     if ($(obj).prop("checked")) {
-        if ($.inArray(accountId, accountArray) < 0) {
-            accountArray.push(accountId);
-        }
+        $.inArray(accountId, accountArray) < 0 ? accountArray.push(accountId) : null;
     } else {
-        if ($.inArray(accountId, accountArray) >= 0) {
-            $.each(accountArray, function (key, value) {
-                accountArray.splice(key, key)
-            });
-        }
+        accountArray.splice(jQuery.inArray(accountId, accountArray), 1);
     }
 }
 
 var selectAll = function (obj) {
     if (obj.checked) {
         $("input[name='selectFlag']:checkbox").each(function () {
-            $(this).click();
-            $(this).attr("checked", true);
+            $(this).attr("checked", false);//set unchecked
+            $(this).click();//turn to checked
         })
     } else {
         $("input[name='selectFlag']:checkbox").each(function () {
+            $(this).attr("checked", true);
             $(this).click();
-            $(this).attr("checked", false);
         })
     }
 }
