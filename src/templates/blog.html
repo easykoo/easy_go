@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -32,7 +32,8 @@
             {{$session := .Session}}
             {{range .Response.Blog.Result}}
             <h1><a href='/blog/view/{{.Id}}'>{{.Title}}</a></h1>
-            <p class="lead">
+            <hr>
+            <p>
                 {{if equal $session.Lang "zh"}}{{else}}by&nbsp;{{end}}{{.Author.FullName}}
 
                 {{if $session.SignedUser}}
@@ -40,10 +41,7 @@
                 &nbsp;&nbsp;<a href='/blog/edit/{{.Id}}'>{{tsl $session.Lang "label.edit"}}</a>
                 {{end}}
                 {{end}}
-            </p>
-            <hr>
-            <p>
-                <i class="fa fa-clock-o fa-1"></i>
+                &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-clock-o fa-1"></i>
                 {{if equal $session.Lang "zh"}}
                 发表于 {{.PublishDate | cnFormatTime}}
                 {{else}}
@@ -53,16 +51,17 @@
                 {{with .Tags}}
                 <i class="fa fa-tag fa-5"></i>
                 {{range .}}
-                <a class="label label-info tag" href="javascript:goToTag('{{.Name}}')">{{.Name}}</a>
+                <span id="{{.Name}}" class="label label-info n-link tag" onclick="goToTag('{{.Name}}')">{{.Name}}</span>
                 {{end}}
                 {{end}}
             </p>
             <hr>
             {{.Content | unescaped}}<br><br>
-            <a class="btn btn-default" href='/blog/view/{{.Id}}'>
+            <a class="btn btn-default pull-right" href='/blog/view/{{.Id}}'>
                 {{tsl $session.Lang "label.read.more"}}
                 <span class="fa fa-chevron-right"></span>
             </a>
+            <br>
             <hr>
             {{end}}
 
@@ -102,21 +101,24 @@
     var page = '{{.Response.Blog.GetPageNo}}'
 
     var goToTag = function (tag) {
-        window.location.href = '/blog/tag/' + tag;
+        var url = '/blog/tag/' + tag;
+        window.location.href = url;
     }
 
     var goToPage = function (pageNo) {
+        var url = "";
         if (tag == "") {
-            window.location.href = '/blog?page=' + pageNo;
+            url = '/blog?page=' + pageNo;
         } else if (tag != "") {
-            window.location.href = '/blog/tag/' + tag + '?page=' + pageNo;
+            url = '/blog/tag/' + tag + '?page=' + pageNo;
         }
+        window.location.href = url;
     }
 
     $(document).ready(function () {
-        $(".tag").hover(function(){
+        $(".tag").hover(function () {
             $(this).find(".badge").removeClass("hidden");
-        },function(){
+        }, function () {
             $(this).find(".badge").addClass("hidden");
         })
     });

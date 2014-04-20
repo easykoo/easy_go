@@ -77,7 +77,7 @@
                             <small>{{tsl .Session.Lang "label.common.tags"}}: </small>
                             <span>
                                 {{range .Response.Tags}}
-                                <a class="label label-info tag" href="javascript:addTag('{{.Name}}')">{{.Name}}</a>
+                                <span class="label label-info tag" onclick="addTag('{{.Name}}')">{{.Name}}</span>
                                 {{end}}
                             </span>
                         </div>

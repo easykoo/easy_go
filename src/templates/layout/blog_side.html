@@ -35,7 +35,7 @@
         <div class="row">
             <div class="col-lg-12">
                 {{range .}}
-                <a class="btn btn-info btn-xs tag" href="javascript:goToTag('{{.Name}}')">{{.Name}} <span class="badge hidden">{{.Count}}</span></a>
+                <span class="btn btn-info btn-xs tag" onclick="goToTag('{{.Name}}')">{{.Name}} <span class="badge hidden">{{.Count}}</span></span>
                 {{end}}
             </div>
         </div>
