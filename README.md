@@ -1,6 +1,6 @@
 easy_go
 =======
-build with [Martini](https://github.com/go-martini/martini) & [xorm](https://github.com/go-xorm/xorm)
+build with [Martini](https://github.com/go-martini/martini), [xorm](https://github.com/go-xorm/xorm) &  [goconfig](https://github.com/Unknwon/goconfig)
 
 ## Getting Started
 
