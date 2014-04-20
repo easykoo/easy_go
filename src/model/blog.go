@@ -178,3 +178,11 @@ func (self *Tag) GetTagsByBlog() ([]Tag, error) {
 	PanicIf(err)
 	return tags, err
 }
+
+func (self *Blog) Summary() string {
+	return strings.Split(self.Content, "----------")[0]
+}
+
+func (self *Blog) AllContent() string {
+	return strings.Replace(self.Content, "----------", "", -1)
+}

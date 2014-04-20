@@ -31,37 +31,40 @@
         <div class="col-lg-9">
             {{$session := .Session}}
             {{range .Response.Blog.Result}}
-            <h1><a href='/blog/view/{{.Id}}'>{{.Title}}</a></h1>
-            <hr>
-            <p>
-                {{if equal $session.Lang "zh"}}{{else}}by&nbsp;{{end}}{{.Author.FullName}}
+            <span style="font-size: 25px">
+            <a href='/blog/view/{{.Id}}'>{{.Title}}</a>
 
-                {{if $session.SignedUser}}
-                {{if equal $session.SignedUser.Username .CreateUser}}
-                &nbsp;&nbsp;<a href='/blog/edit/{{.Id}}'>{{tsl $session.Lang "label.edit"}}</a>
-                {{end}}
-                {{end}}
-                &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-clock-o fa-1"></i>
-                {{if equal $session.Lang "zh"}}
-                发表于 {{.PublishDate | cnFormatTime}}
-                {{else}}
-                Posted on {{.PublishDate | formatTime}}
-                {{end}}
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                {{with .Tags}}
-                <i class="fa fa-tag fa-5"></i>
-                {{range .}}
-                <span id="{{.Name}}" class="label label-info n-link tag" onclick="goToTag('{{.Name}}')">{{.Name}}</span>
-                {{end}}
-                {{end}}
-            </p>
+            {{if $session.SignedUser}}
+            {{if equal $session.SignedUser.Id .Author.Id}}
+            &nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-default pull-right" href='/blog/edit/{{.Id}}'>{{tsl $session.Lang "label.edit"}}</a>
+            {{end}}
+            {{end}}
+            </span>
             <hr>
-            {{.Content | unescaped}}<br><br>
-            <a class="btn btn-default pull-right" href='/blog/view/{{.Id}}'>
+            {{.Summary | unescaped}}
+            <a class="btn btn-default" href='/blog/view/{{.Id}}'>
                 {{tsl $session.Lang "label.read.more"}}
-                <span class="fa fa-chevron-right"></span>
+                <i class="fa fa-angle-right"></i>
             </a>
             <br>
+            <br>
+            {{.Author.FullName}}
+
+            &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-clock-o fa-1"></i>
+            {{if equal $session.Lang "zh"}}
+            发表于 {{.PublishDate | cnFormatTime}}
+            {{else}}
+            Posted on {{.PublishDate | formatTime}}
+            {{end}}
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {{with .Tags}}
+            <i class="fa fa-tag fa-5"></i>
+            {{range .}}
+            <a class="label label-info tag" href="/blog/tag/{{.Name}}">{{.Name}}</a>
+            {{end}}
+            {{end}}
+
             <hr>
             {{end}}
 
@@ -99,11 +102,6 @@
 <script type="text/javascript">
     var tag = '{{.Response.Tag}}'
     var page = '{{.Response.Blog.GetPageNo}}'
-
-    var goToTag = function (tag) {
-        var url = '/blog/tag/' + tag;
-        window.location.href = url;
-    }
 
     var goToPage = function (pageNo) {
         var url = "";

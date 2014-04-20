@@ -34,7 +34,7 @@
 
             <p class="lead"> {{if equal .Session.Lang "zh"}}{{else}}by&nbsp;{{end}}{{.Response.Blog.Author.FullName}}
                 {{if .Session.SignedUser}}
-                {{if equal .Session.SignedUser.Username .Response.Blog.CreateUser}}
+                {{if equal .Session.SignedUser.Id .Response.Blog.Author.Id}}
                 &nbsp;&nbsp;<a href='/blog/edit/{{.Response.Blog.Id}}'>{{tsl .Session.Lang "label.edit"}}</a>
                 {{end}}
                 {{end}}
@@ -52,12 +52,12 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <i class="fa fa-tag fa-5"></i>
                 {{range .}}
-                <a class="label label-info tag" href="javascript:goToTag('{{.Name}}')">{{.Name}}</a>
+                <a class="label label-info tag" href="/blog/tag/{{.Name}}">{{.Name}}</a>
                 {{end}}
                 {{end}}
             </p>
             <hr>
-            {{.Response.Blog.Content | unescaped}}
+            {{.Response.Blog.AllContent | unescaped}}
 
             <!-- the comment box -->
             <!--<div class="well">

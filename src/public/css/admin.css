@@ -306,3 +306,8 @@ table.dataTable thead .sorting:after {
 .show-grid {
     margin: 15px 0;
 }
+
+.tag {
+    margin-top:5px;
+    cursor:pointer;
+}
