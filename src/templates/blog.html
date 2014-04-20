@@ -44,6 +44,7 @@
             {{end}}
             </span>
             <br><br>
+            <span class="gray">
             {{.Author.FullName}}
 
             &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-clock-o fa-1"></i>
@@ -52,7 +53,6 @@
             {{else}}
             Posted on {{.PublishDate | formatTime}}
             {{end}}
-
             &nbsp;&nbsp;&nbsp;&nbsp;
             {{with .Tags}}
             <i class="fa fa-tag fa-5"></i>
@@ -60,6 +60,7 @@
             <a class="label label-info tag" href="/blog/tag/{{.Name}}">{{.Name}}</a>
             {{end}}
             {{end}}
+            </span>
             <br><br>
             {{.Summary | unescaped}}
             <br>
