@@ -46,12 +46,12 @@ const (
 	// order they appear (the order listed here) or the format they present (as
 	// described in the comments).  A colon appears after these items:
 	//	2009/01/23 01:23:23.123123 /a/b/c/d.go:23: message
-	Ldate         = 1 << iota     // the date: 2009/01/23
-	Ltime                         // the time: 01:23:23
-	Lmicroseconds                 // microsecond resolution: 01:23:23.123123.  assumes Ltime.
-	Llongfile                     // full file name and line number: /a/b/c/d.go:23
-	Lshortfile                    // final file name element and line number: d.go:23. overrides Llongfile
-	LstdFlags     = Ldate | Ltime // initial values for the standard logger
+	Ldate     = 1 << iota     // the date: 2009/01/23
+	Ltime                     // the time: 01:23:23
+	Lmicroseconds             // microsecond resolution: 01:23:23.123123.  assumes Ltime.
+	Llongfile                 // full file name and line number: /a/b/c/d.go:23
+	Lshortfile                // final file name element and line number: d.go:23. overrides Llongfile
+	LstdFlags = Ldate | Ltime // initial values for the standard logger
 )
 
 // A Logger represents an active logging object that generates lines of
@@ -75,6 +75,10 @@ func New(out io.Writer, prefix string, flag int) *Logger {
 	return &Logger{out: out, prefix: prefix, flag: flag}
 }
 
+func NewLogger(out io.Writer, prefix string, flag int) Logger {
+	return Logger{out: out, prefix: prefix, flag: flag}
+}
+
 var std = New(os.Stderr, "", LstdFlags)
 
 // Cheap integer to fixed-width decimal ASCII.  Give a negative width to avoid zero-padding.
@@ -92,7 +96,7 @@ func itoa(buf *[]byte, i int, wid int) {
 	for ; u > 0 || wid > 0; u /= 10 {
 		bp--
 		wid--
-		b[bp] = byte(u%10) + '0'
+		b[bp] = byte(u % 10)+'0'
 	}
 	*buf = append(*buf, b[bp:]...)
 }
@@ -209,60 +213,68 @@ func (l *Logger) LevelOutput(level int, calldepth int, s string) error {
 	return err
 }
 
-func (l *Logger) Debugf(format string, v ...interface{}) {
+func (l *Logger) Debugf(format string, v ...interface{}) (err error) {
 	if LDebug < l.Level {
 		return
 	}
 	l.LevelOutput(LDebug, 2, fmt.Sprintf(format, v...))
+	return
 }
 
-func (l *Logger) Debug(v ...interface{}) {
+func (l *Logger) Debug(v ...interface{}) (err error) {
 	if LDebug < l.Level {
 		return
 	}
 	l.LevelOutput(LDebug, 2, fmt.Sprint(v...))
+	return
 }
 
-func (l *Logger) Infof(format string, v ...interface{}) {
+func (l *Logger) Infof(format string, v ...interface{}) (err error) {
 	if LInfo < l.Level {
 		return
 	}
 	l.LevelOutput(LInfo, 2, fmt.Sprintf(format, v...))
+	return
 }
 
-func (l *Logger) Info(v ...interface{}) {
+func (l *Logger) Info(v ...interface{}) (err error) {
 	if LInfo < l.Level {
 		return
 	}
 	l.LevelOutput(LInfo, 2, fmt.Sprint(v...))
+	return
 }
 
-func (l *Logger) Warnf(format string, v ...interface{}) {
+func (l *Logger) Warningf(format string, v ...interface{}) (err error) {
 	if LWarn < l.Level {
 		return
 	}
 	l.LevelOutput(LWarn, 2, fmt.Sprintf(format, v...))
+	return
 }
 
-func (l *Logger) Warn(v ...interface{}) {
+func (l *Logger) Warning(v ...interface{}) (err error) {
 	if LWarn < l.Level {
 		return
 	}
 	l.LevelOutput(LWarn, 2, fmt.Sprint(v...))
+	return
 }
 
-func (l *Logger) Errorf(format string, v ...interface{}) {
+func (l *Logger) Errf(format string, v ...interface{}) (err error) {
 	if LError < l.Level {
 		return
 	}
 	l.LevelOutput(LError, 2, fmt.Sprintf(format, v...))
+	return
 }
 
-func (l *Logger) Error(v ...interface{}) {
+func (l *Logger) Err(v ...interface{}) (err error) {
 	if LError < l.Level {
 		return
 	}
 	l.LevelOutput(LError, 2, fmt.Sprint(v...))
+	return
 }
 
 func (l *Logger) Panicf(format string, v ...interface{}) {
