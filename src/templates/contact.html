@@ -89,7 +89,6 @@
             rules: {
                 name: {
                     required: true,
-                    minlength: 4,
                     maxlength: 20
                 },
                 email: {
@@ -106,7 +105,6 @@
             messages: {
                 name: {
                     required: '{{tsl .Session.Lang "message.error.required"}}',
-                    minlength: '{{tsl .Session.Lang "message.error.min.length"}}',
                     maxlength: '{{tsl .Session.Lang "message.error.max.length"}}'
                 },
                 email: {
