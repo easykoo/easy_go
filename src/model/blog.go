@@ -16,6 +16,7 @@ type Blog struct {
 	Priority    int       `xorm:"int(1) default 5"`
 	Author      User      `json:"author_id" xorm:"author_id"`
 	Tags        []Tag     `form:"tags" json:"tags" xorm:"-"`
+	Comments    []Comment `json:"comments" xorm:"-"`
 	PublishDate time.Time `xorm:"datetime default null"`
 	CreateUser  string    `xorm:"varchar(20) default null"`
 	CreateDate  time.Time `xorm:"datetime created"`
@@ -65,6 +66,14 @@ func (self *Blog) LoadTagsFromDb() {
 	self.Tags = tags
 }
 
+func (self *Blog) LoadCommentssFromDb() {
+	comment := &Comment{Blog: Blog{Id: self.Id}}
+	var comments []Comment
+	err := orm.Omit("blog_id").Find(&comments, comment)
+	PanicIf(err)
+	self.Comments = comments
+}
+
 func (self *Blog) Update() error {
 	session := orm.NewSession()
 	defer session.Close()
@@ -101,6 +110,7 @@ func (self *Blog) GetBlogById() (*Blog, error) {
 func (self *Blog) GetBlog() error {
 	_, err := orm.Id(self.Id).Get(self)
 	self.LoadTagsFromDb()
+	self.LoadCommentssFromDb()
 	return err
 }
 

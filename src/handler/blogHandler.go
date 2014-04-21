@@ -192,3 +192,21 @@ func EditBlog(ctx *middleware.Context, params martini.Params) {
 
 	ctx.HTML(200, "blog/edit", ctx)
 }
+
+func Comment(ctx *middleware.Context) {
+	id := ParseInt(ctx.R.PostFormValue("blogId"))
+	content := ctx.R.PostFormValue("content")
+	comment := model.Comment{Blog: model.Blog{Id: id}, Content: content}
+	comment.Blog = model.Blog{Id: id}
+
+	if comment.Content == "" {
+		ctx.Set("success", false)
+		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.error.submit.failed"))
+	} else {
+		err := comment.Insert()
+		PanicIf(err)
+		ctx.Set("success", true)
+		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.submit.success"))
+	}
+	ctx.JSON(200, ctx.Response)
+}

@@ -127,6 +127,7 @@ func main() {
 		r.Any("/edit/:id", AuthRequest(Module_Blog), handler.EditBlog)
 		r.Any("/delete", AuthRequest(Module_Blog), handler.DeleteBlogArray)
 		r.Any("/delete/:id", AuthRequest(Module_Blog), handler.DeleteBlog)
+		r.Any("/comment", handler.Comment)
 	})
 
 	Log.Info("server is started...")

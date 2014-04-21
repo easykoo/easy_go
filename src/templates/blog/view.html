@@ -59,33 +59,43 @@
             <hr>
             {{.Response.Blog.AllContent | unescaped}}
 
+            <hr>
             <!-- the comment box -->
-            <!--<div class="well">
-                <h4>Leave a Comment:</h4>
+            <div class="well">
+                <h4>{{tsl .Session.Lang "label.leave.comment"}}:</h4>
 
-                <form role="form">
+                <form role="form" id="commentForm" action="/blog/comment" method="post">
+                    <input name="blogId" type="text" value="{{.Response.Blog.Id}}" hidden="true">
+
                     <div class="form-group">
-                        <textarea class="form-control" rows="3"></textarea>
+                        <textarea id="content" name="content" class="form-control" rows="3"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" onclick="send()" class="btn btn-primary">
+                        {{tsl .Session.Lang "label.submit"}}
+                    </button>
                 </form>
             </div>
 
             <hr>
-
-            &lt;!&ndash; the comments &ndash;&gt;
-            <h3>Start Bootstrap
-                <small>9:41 PM on August 24, 2013</small>
-            </h3>
-            <p>This has to be the worst blog post I have ever read. It simply makes no sense. You start off by talking
-                about space or something, then you randomly start babbling about cupcakes, and you end off with random
-                fish names.</p>
-
-            <h3>Start Bootstrap
-                <small>9:47 PM on August 24, 2013</small>
-            </h3>
-            <p>Don't listen to this guy, any blog with the categories 'dinosaurs, spaceships, fried foods, wild animals,
-                alien abductions, business casual, robots, and fireworks' has true potential.</p>-->
+            {{$session:=.Session}}
+            {{with .Response.Blog.Comments}}
+            {{range .}}
+            <h4>{{if .Name}}
+                <a href='mailto:{{.Email}}'>{{.Name}}</a>
+                {{else}}
+                {{tsl $session.Lang "label.anonymous"}}
+                {{end}}
+                <small>
+                    {{if equal $session.Lang "zh"}}
+                    {{.CreateDate | cnFormatTime}}
+                    {{else}}
+                    {{.CreateDate | formatTime}}
+                    {{end}}
+                </small>
+            </h4>
+            <p>{{.Content}}</p>
+            {{end}}
+            {{end}}
 
         </div>
 
@@ -108,13 +118,34 @@
 <script src="/js/easykoo.js"></script>
 
 <script type="text/javascript">
+    var send = function () {
+        if ($('#content').val() == "") {
+            return bootbox.alert('{{tsl .Session.Lang "message.error.content.required"}}', null);
+        }
+        $.ajax('/blog/comment', {
+            dataType: 'json',
+            type: "POST",
+            data: {
+                blogId: '{{.Response.Blog.Id}}',
+                content: $('#content').val()
+            },
+            success: function (data) {
+                if (!data.success) {
+                    bootbox.alert(data.message, null);
+                }
+                content: $('#content').val("");
+                window.location.reload();
+            }
+        });
+    }
 
     $(document).ready(function () {
-        $(".tag").hover(function(){
+        $(".tag").hover(function () {
             $(this).find(".badge").removeClass("hidden");
-        },function(){
+        }, function () {
             $(this).find(".badge").addClass("hidden");
         })
+
     });
 </script>
 

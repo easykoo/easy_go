@@ -132,8 +132,8 @@ CREATE TABLE tag (
 DROP TABLE IF EXISTS settings;
 CREATE TABLE settings (
   id          INT(1)      NOT NULL DEFAULT 1,
-  app_name        VARCHAR(20) NOT NULL,
-  owner_id     INT(11)     NOT NULL DEFAULT 1,
+  app_name    VARCHAR(20) NOT NULL,
+  owner_id    INT(11)     NOT NULL DEFAULT 1,
   about       BLOB        NULL,
   create_user VARCHAR(20) DEFAULT NULL,
   create_date DATETIME DEFAULT NULL,
@@ -141,4 +141,20 @@ CREATE TABLE settings (
   update_date DATETIME DEFAULT NULL,
   version     INT(11) DEFAULT 1,
   PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment` (
+  blog_id     INT(11)      NOT NULL,
+  seq         INT(5)       NOT NULL,
+  name        VARCHAR(20)  NULL,
+  email       VARCHAR(45)  NULL,
+  content     VARCHAR(150) NOT NULL,
+  parent_seq  INT(3)       NULL,
+  create_user VARCHAR(20) DEFAULT NULL,
+  create_date DATETIME DEFAULT NULL,
+  update_user VARCHAR(20) DEFAULT NULL,
+  update_date DATETIME DEFAULT NULL,
+  version     INT(11) DEFAULT 1,
+  PRIMARY KEY (blog_id, seq)
 );
