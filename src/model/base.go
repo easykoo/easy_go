@@ -5,6 +5,7 @@ import (
 	"github.com/go-xorm/xorm"
 
 	. "common"
+	"time"
 )
 
 var orm *xorm.Engine
@@ -17,8 +18,8 @@ func SetEngine() *xorm.Engine {
 	dbName := Cfg.MustValue("db", "db_name", "easy_go")
 	orm, err = xorm.NewEngine("mysql", username+":"+password+"@/"+dbName+"?charset=utf8")
 	PanicIf(err)
-	orm.TimeZone = Cfg.MustValue("db", "time_zone", "Local")
+	orm.TZLocation = time.Local
 	orm.ShowSQL = Cfg.MustBool("db", "show_sql", false)
-	orm.Logger = Log.GetWriter()
+	orm.Logger = xorm.NewSimpleLogger(Log.GetWriter())
 	return orm
 }
