@@ -99,7 +99,7 @@
                                 + '<div>'
                                 + '<strong>' + (feedback.Name.length <= 10 ? feedback.Name : (feedback.Name.substr(0, 10) + '... ')) + '</strong>'
                                 + '<span class="pull-right text-muted">'
-                                + '<em>' + feedback.CreateDate + '</em>'
+                                + '<em>' + formatTime(feedback.CreateDate) + '</em>'
                                 + '</span>'
                                 + '</div>'
                                 + '<div>' + (feedback.Content.length <= 30 ? feedback.Content : (feedback.Content.substr(0, 30) + '... ')) + '</div>'
