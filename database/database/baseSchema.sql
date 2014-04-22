@@ -148,6 +148,7 @@ CREATE TABLE `comment` (
   blog_id     INT(11)      NOT NULL,
   seq         INT(5)       NOT NULL,
   name        VARCHAR(20)  NULL,
+  www         VARCHAR(45)  NULL,
   email       VARCHAR(45)  NULL,
   content     VARCHAR(150) NOT NULL,
   parent_seq  INT(3)       NULL,
