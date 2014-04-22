@@ -63,8 +63,11 @@ func newMartini() *martini.ClassicMartini {
 				"tslf": func(lang string, format string, args ...interface{}) string {
 					return Translatef(lang, format, args...)
 				},
-				"privilege": func(user model.User, module int) bool {
-					return CheckPermission(user, module)
+				"privilege": func(user interface{}, module int) bool {
+					if user == nil {
+						return false
+					}
+					return CheckPermission(user.(model.User), module)
 				},
 			},
 		},
@@ -127,7 +130,11 @@ func main() {
 		r.Any("/edit/:id", AuthRequest(Module_Blog), handler.EditBlog)
 		r.Any("/delete", AuthRequest(Module_Blog), handler.DeleteBlogArray)
 		r.Any("/delete/:id", AuthRequest(Module_Blog), handler.DeleteBlog)
-		r.Any("/comment", handler.Comment)
+	})
+
+	m.Group("/blog/comment", func(r martini.Router) {
+		r.Any("", handler.Comment)
+		r.Any("/delete/:blogId/:seq", AuthRequest(Module_Blog), handler.DeleteComment)
 	})
 
 	Log.Info("server is started...")

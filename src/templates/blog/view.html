@@ -23,6 +23,8 @@
 
 <body>
 
+{{$session:=.Session}}
+{{$res:=.Response}}
 {{template "layout/front_nav" .}}
 
 <div class="container">
@@ -80,21 +82,29 @@
             </div>
 
             <hr>
-            {{$session:=.Session}}
             {{with .Response.Blog.Comments}}
             {{range .}}
-            <h4>{{if .Name}}
+            {{if equal .Seq 1}}{{else}}<hr>{{end}}
+            <h4 id='{{.Seq}}'>
+                {{if .Name}}
                 <a href='mailto:{{.Email}}'>{{.Name}}</a>
                 {{else}}
                 {{tsl $session.Lang "label.anonymous"}}
                 {{end}}
                 <small>
+                    #{{.Seq}}
                     {{if equal $session.Lang "zh"}}
                     {{.CreateDate | cnFormatTime}}
                     {{else}}
                     {{.CreateDate | formatTime}}
                     {{end}}
                 </small>
+
+                {{if privilege $session.SignedUser 5}}
+                <button class="btn btn-danger btn-xs pull-right" onclick='deleteComment("{{$res.Blog.Id}}","{{.Seq}}")'>
+                    {{tsl $session.Lang "label.delete"}}
+                </button>
+                {{end}}
             </h4>
             <p>{{.Content}}</p>
             {{end}}
@@ -140,13 +150,44 @@
         });
     }
 
+    var deleteComment = function (blogId, seq) {
+        bootbox.dialog({
+            message: '{{tsl .Session.Lang "message.sure.delete.record"}}',
+            title: '{{tsl .Session.Lang "label.delete.record"}}',
+            buttons: {
+                danger: {
+                    label: '{{tsl .Session.Lang "label.confirm"}}',
+                    className: "btn-danger",
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax('/blog/comment/delete/' + blogId + '/' + seq, {
+                                dataType: 'json',
+                                type: "GET",
+                                success: function (data) {
+                                    if (!data.success) {
+                                        bootbox.alert(data.message, null);
+                                    }
+                                    window.location.reload();
+                                }
+                            });
+                        }
+                    }
+                },
+                main: {
+                    label: '{{tsl .Session.Lang "label.cancel"}}',
+                    className: "btn-default",
+                    callback: null
+                }
+            }
+        });
+    }
+
     $(document).ready(function () {
         $(".tag").hover(function () {
             $(this).find(".badge").removeClass("hidden");
         }, function () {
             $(this).find(".badge").addClass("hidden");
         })
-
     });
 </script>
 

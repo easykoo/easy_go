@@ -197,7 +197,6 @@ func Comment(ctx *middleware.Context) {
 	id := ParseInt(ctx.R.PostFormValue("blogId"))
 	content := ctx.R.PostFormValue("content")
 	comment := model.Comment{Blog: model.Blog{Id: id}, Content: content}
-	comment.Blog = model.Blog{Id: id}
 
 	if comment.Content == "" {
 		ctx.Set("success", false)
@@ -207,6 +206,22 @@ func Comment(ctx *middleware.Context) {
 		PanicIf(err)
 		ctx.Set("success", true)
 		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.submit.success"))
+	}
+	ctx.JSON(200, ctx.Response)
+}
+
+func DeleteComment(ctx *middleware.Context, params martini.Params) {
+	blogId := ParseInt(params["blogId"])
+	seq := ParseInt(params["seq"])
+	comment := model.Comment{Blog: model.Blog{Id: blogId}, Seq: seq}
+
+	err := comment.Delete()
+	if err != nil {
+		ctx.Set("success", false)
+		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.error.delete.failed"))
+	} else {
+		ctx.Set("success", true)
+		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.delete.success"))
 	}
 	ctx.JSON(200, ctx.Response)
 }
