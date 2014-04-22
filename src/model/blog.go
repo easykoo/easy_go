@@ -66,7 +66,7 @@ func (self *Blog) LoadTagsFromDb() {
 	self.Tags = tags
 }
 
-func (self *Blog) LoadCommentssFromDb() {
+func (self *Blog) LoadCommentsFromDb() {
 	comment := &Comment{Blog: Blog{Id: self.Id}}
 	var comments []Comment
 	err := orm.Omit("blog_id").Find(&comments, comment)
@@ -110,7 +110,7 @@ func (self *Blog) GetBlogById() (*Blog, error) {
 func (self *Blog) GetBlog() error {
 	_, err := orm.Id(self.Id).Get(self)
 	self.LoadTagsFromDb()
-	self.LoadCommentssFromDb()
+	self.LoadCommentsFromDb()
 	return err
 }
 

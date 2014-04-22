@@ -11,7 +11,7 @@ import (
 	"testing"
 )
 
-var Log Logger
+var Log *SimpleLogger
 
 func SetLog() {
 	var w io.Writer
@@ -21,7 +21,7 @@ func SetLog() {
 	} else {
 		w = os.Stdout
 	}
-	Log = NewLogger(w, "", Lshortfile|Ldate|Lmicroseconds)
+	Log = NewSimpleLogger(w)
 }
 
 func PanicIf(err error) {

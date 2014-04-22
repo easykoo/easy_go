@@ -20,6 +20,6 @@ func SetEngine() *xorm.Engine {
 	PanicIf(err)
 	orm.TZLocation = time.Local
 	orm.ShowSQL = Cfg.MustBool("db", "show_sql", false)
-	orm.Logger = xorm.NewSimpleLogger(Log.GetWriter())
+	orm.Logger = Log
 	return orm
 }
