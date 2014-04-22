@@ -69,6 +69,13 @@ func newMartini() *martini.ClassicMartini {
 					}
 					return CheckPermission(user.(model.User), module)
 				},
+				"plus": func(args ...int) int {
+					var result int
+					for _, val := range args {
+						result += val
+					}
+					return result
+				},
 			},
 		},
 	}))

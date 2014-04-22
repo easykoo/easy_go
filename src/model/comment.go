@@ -10,7 +10,7 @@ type Comment struct {
 	Blog       Blog      `xorm:"blog_id int(11) pk not null"`
 	Seq        int       `xorm:"int(5) pk not null"`
 	Name       string    `form:"name" xorm:"varchar(20) null"`
-	Www     string    `form:"www" xorm:"varchar(45) null"`
+	Www        string    `form:"www" xorm:"varchar(45) null"`
 	Email      string    `form:"email" xorm:"varchar(45) null"`
 	Content    string    `form:"content" xorm:"varchar(150) not null"`
 	Parent_seq int       `form:"prentSeq" xorm:"int(5) null"`
