@@ -67,21 +67,17 @@ var cutoff = function (content) {
     return content;
 }
 function goTop() {
-    var top = $('#nav').offset().top;
     var $top = $('#goTop');
+    var top = $('#nav').offset().top;
     var side = $('#side').offset().left;
     var width = $('#side').width();
-    var right = side + width;
-    var windowWidth = $(window).width();
+    var pos = side + width + 25;
     $top.css({
-        "right": windowWidth - right - 100 + "px",
+        "left": pos + "px",
         "bottom": "50px",
         "width": "50px",
         "height": "50px",
         "position": "fixed",
-        "color": "#FFF",
-        "padding-top": "6px",
-        "padding-bottom": "8px",
         "opacity": .4
     })
     $(window).scroll(function () {
