@@ -84,7 +84,7 @@
             <hr>
             {{with .Response.Blog.Comments}}
             {{range $key,$val:=.}}
-            {{if equal .Seq 1}}{{else}}<hr>{{end}}
+            {{if equal $key 0}}{{else}}<hr>{{end}}
             <h4 id='{{.Seq}}'>
                 {{if .Name}}
                 <a href='mailto:{{.Email}}'>{{.Name}}</a>
