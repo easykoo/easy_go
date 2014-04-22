@@ -67,29 +67,51 @@ var cutoff = function (content) {
     }
     return content;
 }
-function goTop() {
+function direct() {
+    var winHeight = $(window).height()
+    var docHeight = $(document).height()
+
     var $top = $('#goTop');
-    var top = $('#nav').offset().top;
+    var $bottom = $('#goBottom');
     var side = $('#side').offset().left;
     var width = $('#side').width();
     var pos = side + width + 25;
     $top.css({
         "left": pos + "px",
-        "bottom": "50px",
-        "width": "50px",
-        "height": "50px",
+        "top": winHeight / 2 + "px",
+        "width": "45px",
+        "height": "45px",
+        "position": "fixed",
+        "opacity": .4
+    })
+    $bottom.css({
+        "left": pos + "px",
+        "top": winHeight / 2 + 46 + "px",
+        "width": "45px",
+        "height": "45px",
         "position": "fixed",
         "opacity": .4
     })
     $(window).scroll(function () {
-        if (top < $(this).scrollTop()) {
+        var scroll = $(this).scrollTop()
+        if (scroll > 0) {
             $top.removeClass("hidden");
         } else {
             $top.addClass('hidden');
+        }
+
+        if (scroll + winHeight == docHeight) {
+            $bottom.addClass('hidden');
+        } else {
+            $bottom.removeClass("hidden");
         }
     });
     $top.on("click", function () {
         $('body,html').animate({scrollTop: 0}, 500);
         return false;
     })
+    $bottom.click(function () {
+        $('html, body').animate({scrollTop: $(document).height()}, 300);
+        return false;
+    });
 }
