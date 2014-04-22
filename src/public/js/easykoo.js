@@ -45,9 +45,10 @@ var sql_str = function () {
 }
 
 var cutoff = function (content) {
-    var index = content.indexOf('----------');
+    var cutoffLine = "----------"
+    var index = content.indexOf();
     if (index > 0) {
-        content = content.replace("----------", "");
+        content = content.replace(cutoffLine, "");
         var pre = content.substr(0, index);
         var preIndex = pre.lastIndexOf('</p>');
         if (preIndex > 0) {
@@ -62,7 +63,7 @@ var cutoff = function (content) {
         }
         var pre = content.substr(0, preIndex);
         var nex = content.substr(preIndex, content.length);
-        return pre + "----------" + nex;
+        return pre + cutoffLine + nex;
     }
     return content;
 }
