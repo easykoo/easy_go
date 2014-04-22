@@ -33,7 +33,7 @@
 
         {{template "layout/blog_side" .}}
 
-        <div class="col-lg-9 pull-left">
+        <div id="container" class="col-lg-9 pull-left">
 
             <h1>{{.Response.Blog.Title}}</h1>
 
@@ -83,7 +83,7 @@
 
             <hr>
             {{with .Response.Blog.Comments}}
-            {{range .}}
+            {{range $key,$val:=.}}
             {{if equal .Seq 1}}{{else}}<hr>{{end}}
             <h4 id='{{.Seq}}'>
                 {{if .Name}}
@@ -92,7 +92,7 @@
                 {{tsl $session.Lang "label.anonymous"}}
                 {{end}}
                 <small>
-                    #{{.Seq}}
+                    #{{plus $key 1}}
                     {{if equal $session.Lang "zh"}}
                     {{.CreateDate | cnFormatTime}}
                     {{else}}
@@ -188,6 +188,7 @@
         }, function () {
             $(this).find(".badge").addClass("hidden");
         })
+        goTop();
     });
 </script>
 
