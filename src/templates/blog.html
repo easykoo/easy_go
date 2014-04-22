@@ -28,7 +28,10 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-lg-9">
+
+        {{template "layout/blog_side" .}}
+
+        <div class="col-lg-9 pull-left">
             {{$session := .Session}}
             {{range .Response.Blog.Result}}
             <span style="font-size: 25px">
@@ -87,8 +90,6 @@
                 </li>
             </ul>
         </div>
-
-        {{template "layout/blog_side" .}}
 
     </div>
 

@@ -70,11 +70,11 @@
                     <div class="form-group">
                         <div class="col-sm-4">
                             <input id="tags" name="tags" type="text" hidden="true">
-                            <span id="tagShow" ></span>
+                            <span id="tagShow"></span>
                         </div>
                         {{if .Response.Tags}}
                         <div class="col-sm-8">
-                            <small>{{tsl .Session.Lang "label.common.tags"}}: </small>
+                            <small>{{tsl .Session.Lang "label.common.tags"}}:</small>
                             <span>
                                 {{range .Response.Tags}}
                                 <span class="label label-info tag" onclick="addTag('{{.Name}}')">{{.Name}}</span>
@@ -153,7 +153,7 @@
     var save = function (publish) {
         var action = publish ? '/blog/publish' : '/blog/save';
         var content = $('.summernote').code();
-        $('#content').val(content);
+        $('#content').val(cutoff(content));
         $('#blogForm').attr('action', action);
         $('#tags').val(tags);
         submit();
@@ -178,7 +178,7 @@
     }
 
     var addTag = function (tag) {
-        if(tags.length>=5) {
+        if (tags.length >= 5) {
             bootbox.alert('{{tsl .Session.Lang "message.error.max.tag"}}', null);
             return;
         }
@@ -200,13 +200,14 @@
         updateTagShow();
     }
 
-    var validateForm = function (){
+    var validateForm = function () {
         var title = $('#title').val();
         if (title == "") {
             $('#title').focus()
             bootbox.alert('{{tsl .Session.Lang "message.error.please.input.title"}}', null);
             return false;
         }
+
         if ($('.summernote').code() == "<p><br></p>") {
             $('.summernote').focus();
             bootbox.alert('{{tsl .Session.Lang "message.error.please.input.content"}}', null);

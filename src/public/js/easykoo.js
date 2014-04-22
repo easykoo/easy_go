@@ -10,7 +10,7 @@ String.prototype.endWith = function (s) {
 
 var formatTime = function (timeString) {
     var date = timeString.substr(0, 10)
-    var time = timeString.substr(11,8)
+    var time = timeString.substr(11, 8)
     return date + " " + time;
 };
 
@@ -42,4 +42,27 @@ var filterSqlStr = function (value) {
 var sql_str = function () {
     var str = "and,delete,or,exec,insert,select,union,update,count,*,',join,>,<";
     return str;
+}
+
+var cutoff = function (content) {
+    var index = content.indexOf('----------');
+    if (index > 0) {
+        content = content.replace("----------", "");
+        var pre = content.substr(0, index);
+        var preIndex = pre.lastIndexOf('</p>');
+        if (preIndex > 0) {
+            preIndex += 4;
+        } else {
+            preIndex = pre.lastIndexOf('</div>');
+            if (preIndex > 0) {
+                preIndex += 4;
+            } else {
+                return content;
+            }
+        }
+        var pre = content.substr(0, preIndex);
+        var nex = content.substr(preIndex, content.length);
+        return pre + "----------" + nex;
+    }
+    return content;
 }

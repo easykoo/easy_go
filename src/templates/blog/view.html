@@ -28,7 +28,10 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-lg-9">
+
+        {{template "layout/blog_side" .}}
+
+        <div class="col-lg-9 pull-left">
 
             <h1>{{.Response.Blog.Title}}</h1>
 
@@ -98,8 +101,6 @@
             {{end}}
 
         </div>
-
-        {{template "layout/blog_side" .}}
 
     </div>
 
