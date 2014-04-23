@@ -4,8 +4,9 @@
 
  body {
     background-color: #f8f8f8;
+     font-family: Ubuntu, Consolas, "Microsoft YaHei", Verdana, Tahoma, Arial, sans-serif;
+     font-size: 14px;
 }
-
 /* Wrappers */
 
 /* ------------------------------- */
