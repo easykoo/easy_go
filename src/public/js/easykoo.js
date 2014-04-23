@@ -106,7 +106,7 @@ function direct() {
         }
     });
     $top.on("click", function () {
-        $('body,html').animate({scrollTop: 0}, 500);
+        $('html, body').animate({scrollTop: 0}, 300);
         return false;
     })
     $bottom.click(function () {
