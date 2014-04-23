@@ -66,12 +66,12 @@ func (self *Blog) LoadTagsFromDb() {
 	self.Tags = tags
 }
 
-func (self *Blog) LoadCommentsFromDb() {
+func (self *Blog) GetComments() []Comment {
 	comment := &Comment{Blog: Blog{Id: self.Id}}
 	var comments []Comment
 	err := orm.Omit("blog_id").Find(&comments, comment)
 	PanicIf(err)
-	self.Comments = comments
+	return comments
 }
 
 func (self *Blog) Update() error {
@@ -103,14 +103,11 @@ func (self *Blog) DeleteTags() error {
 func (self *Blog) GetBlogById() (*Blog, error) {
 	blog := &Blog{Id: self.Id}
 	_, err := orm.Get(blog)
-	blog.LoadTagsFromDb()
 	return blog, err
 }
 
 func (self *Blog) GetBlog() error {
 	_, err := orm.Id(self.Id).Get(self)
-	self.LoadTagsFromDb()
-	self.LoadCommentsFromDb()
 	return err
 }
 
@@ -143,7 +140,6 @@ func (self *Blog) SearchByPage(content bool) ([]Blog, int, error) {
 	} else {
 		err = orm.Omit("content").OrderBy(self.GetSortProperties()[0].Column+" "+self.GetSortProperties()[0].Direction).Limit(self.GetPageSize(), self.GetDisplayStart()).Find(&blog, self)
 	}
-	BatchLoadTagsFromDb(blog)
 	return blog, int(total), err
 }
 
@@ -151,7 +147,6 @@ func (self *Blog) SearchWithTagByPage(tag string) ([]Blog, int, error) {
 	total, err := orm.Join("LEFT", "tag", "blog.id=tag.blog_id").Where("tag.name=?", tag).Count(self)
 	var blog []Blog
 	err = orm.Join("LEFT", "tag", "blog.id=tag.blog_id").Where("tag.name=?", tag).OrderBy(self.GetSortProperties()[0].Column+" "+self.GetSortProperties()[0].Direction).Limit(self.GetPageSize(), self.GetDisplayStart()).Find(&blog, self)
-	BatchLoadTagsFromDb(blog)
 	return blog, int(total), err
 }
 
@@ -182,11 +177,11 @@ func (self *Tag) GetBlogByTag() ([]Blog, error) {
 	return blog, err
 }
 
-func (self *Tag) GetTagsByBlog() ([]Tag, error) {
+func (self *Blog) GetTags() []Tag {
 	var tags []Tag
-	err := orm.Find(&tags, self)
+	err := orm.Find(&tags, &Tag{Blog:Blog{Id:self.Id}})
 	PanicIf(err)
-	return tags, err
+	return tags
 }
 
 func (self *Blog) Summary() string {

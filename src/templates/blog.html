@@ -57,7 +57,7 @@
             Posted on {{.PublishDate | formatTime}}
             {{end}}
             &nbsp;&nbsp;&nbsp;&nbsp;
-            {{with .Tags}}
+            {{with .GetTags}}
             <i class="fa fa-tag fa-5"></i>
             {{range .}}
             <a class="label label-info tag" href="/blog/tag/{{.Name}}">{{.Name}}</a>

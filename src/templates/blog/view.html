@@ -53,7 +53,7 @@
                 {{else}}
                 Posted on {{.Response.Blog.PublishDate | formatTime}}
                 {{end}}
-                {{with .Response.Blog.Tags}}
+                {{with .Response.Blog.GetTags}}
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <i class="fa fa-tag fa-5"></i>
                 {{range .}}
@@ -82,7 +82,7 @@
             </div>
 
             <hr>
-            {{with .Response.Blog.Comments}}
+            {{with .Response.Blog.GetComments}}
             {{range $key,$val:=.}}
             {{if equal $key 0}}{{else}}<hr>{{end}}
             <h4 id='{{.Seq}}'>
