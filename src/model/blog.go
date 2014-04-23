@@ -74,6 +74,13 @@ func (self *Blog) GetComments() []Comment {
 	return comments
 }
 
+func (self *Blog) GetCommentSize() (size int64) {
+	comment := &Comment{Blog: Blog{Id: self.Id}}
+	size, err := orm.Count(comment)
+	PanicIf(err)
+	return
+}
+
 func (self *Blog) Update() error {
 	session := orm.NewSession()
 	defer session.Close()

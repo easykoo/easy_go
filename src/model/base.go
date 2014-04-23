@@ -31,3 +31,13 @@ func (self *DbUtil) GetRecentComments() (comments []Comment) {
 	PanicIf(err)
 	return
 }
+
+func (self *DbUtil) GetHotBlog() (blog []Blog) {
+	result,err := orm.Query("select * from  blog b, (select  blog_id, count(*) count from comment group by blog_id  order by count desc limit 0,5) t where b.id = t.blog_id order by t.count desc, b.create_date desc")
+	PanicIf(err)
+	for _,val:=range result{
+		b := Blog{Id:int(ParseInt(string(val["id"]))), Title:string(val["title"])}
+		blog = append(blog, b)
+	}
+	return
+}

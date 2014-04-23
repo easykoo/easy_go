@@ -6,14 +6,14 @@ import (
 	"testing"
 )
 
-func Init() {
+func init() {
 	SetConfig()
 	SetLog()
 	SetEngine()
 }
 
 func Test_GenerateCommentId(t *testing.T) {
-	Init()
+//	Init()
 	comment := new(Comment)
 	comment.Blog.Id = 1
 	id, err := comment.GenerateSeq()
