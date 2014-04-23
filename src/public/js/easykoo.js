@@ -69,7 +69,6 @@ var cutoff = function (content) {
 }
 function direct() {
     var winHeight = $(window).height()
-    var docHeight = $(document).height()
 
     var $top = $('#goTop');
     var $bottom = $('#goBottom');
@@ -78,7 +77,7 @@ function direct() {
     var pos = side + width + 25;
     $top.css({
         "left": pos + "px",
-        "top": winHeight / 2 + "px",
+        "top": winHeight / 2 - 23 + "px",
         "width": "45px",
         "height": "45px",
         "position": "fixed",
@@ -86,7 +85,7 @@ function direct() {
     })
     $bottom.css({
         "left": pos + "px",
-        "top": winHeight / 2 + 46 + "px",
+        "top": winHeight / 2 + 23 + "px",
         "width": "45px",
         "height": "45px",
         "position": "fixed",
@@ -100,7 +99,7 @@ function direct() {
             $top.addClass('hidden');
         }
 
-        if (scroll + winHeight == docHeight) {
+        if (scroll + winHeight == $(document).height()) {
             $bottom.addClass('hidden');
         } else {
             $bottom.removeClass("hidden");
