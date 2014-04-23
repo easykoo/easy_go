@@ -35,10 +35,10 @@ func AuthRequest(req interface{}) martini.Handler {
 			Log.Info("Checking style: ", "Module ", req.(int))
 			if user := ctx.SessionGet("SignedUser"); user != nil {
 				if reflect.TypeOf(req).Kind() == reflect.Int {
-					if CheckPermission(user.(model.User), req.(int)) {
-						Log.Info("Pass!")
-						return
-					}
+						if CheckPermission(user, req.(int)) {
+							Log.Info("Pass!")
+							return
+						}
 					ctx.HTML(403, "error/403", ctx)
 					return
 				}
@@ -52,9 +52,19 @@ func AuthRequest(req interface{}) martini.Handler {
 	}
 }
 
-func CheckPermission(user model.User, module int) bool {
-	privilege := &model.Privilege{ModuleId: module, RoleId: user.Role.Id, DeptId: user.Dept.Id}
-	exist, err := privilege.CheckModulePrivilege()
-	PanicIf(err)
-	return exist
+func CheckPermission(user interface {}, module int) bool {
+	Log.Debug("Type: ", reflect.TypeOf(user).Kind())
+	if reflect.TypeOf(user).Kind() == reflect.Struct {
+		val := user.(model.User)
+		privilege := &model.Privilege{ModuleId: module, RoleId: val.Role.Id, DeptId: val.Dept.Id}
+		exist, err := privilege.CheckModulePrivilege()
+		PanicIf(err)
+		return exist
+	} else {
+		val := user.(*model.User)
+		privilege := &model.Privilege{ModuleId: module, RoleId: val.Role.Id, DeptId: val.Dept.Id}
+		exist, err := privilege.CheckModulePrivilege()
+		PanicIf(err)
+		return exist
+	}
 }

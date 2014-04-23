@@ -67,7 +67,7 @@ func newMartini() *martini.ClassicMartini {
 					if user == nil {
 						return false
 					}
-					return CheckPermission(user.(model.User), module)
+					return CheckPermission(user, module)
 				},
 				"plus": func(args ...int) int {
 					var result int
