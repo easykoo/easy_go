@@ -178,6 +178,10 @@
     }
 
     var addTag = function (tag) {
+        if (tag.trim() == "") {
+            $('#tempTag').val("")
+            return;
+        }
         if (tags.length >= 5) {
             bootbox.alert('{{tsl .Session.Lang "message.error.max.tag"}}', null);
             return;
