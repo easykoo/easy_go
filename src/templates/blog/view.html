@@ -34,18 +34,19 @@
         {{template "layout/blog_side" .}}
 
         <div id="container" class="col-lg-9 pull-left">
-
-            <h1>{{.Response.Blog.Title}}</h1>
-
-            <p class="lead"> {{if equal .Session.Lang "zh"}}{{else}}by&nbsp;{{end}}{{.Response.Blog.Author.FullName}}
-                {{if .Session.SignedUser}}
-                {{if equal .Session.SignedUser.Id .Response.Blog.Author.Id}}
-                &nbsp;&nbsp;<a href='/blog/edit/{{.Response.Blog.Id}}'>{{tsl .Session.Lang "label.edit"}}</a>
-                {{end}}
-                {{end}}
-            </p>
+            <span class="h2">{{.Response.Blog.Title}}</span>
+            {{if $session.SignedUser}}
+            {{if equal $session.SignedUser.Id .Response.Blog.Author.Id}}
+            <a class="btn btn-default pull-right btn-edit" href='/blog/edit/{{.Response.Blog.Id}}'>
+                {{tsl $session.Lang "label.edit"}}
+            </a>
+            {{end}}
+            {{end}}
             <hr>
-            <p>
+            <p class="gray" style="line-height: 25px">
+                {{if equal .Session.Lang "zh"}}{{else}}by&nbsp;{{end}}{{.Response.Blog.Author.FullName}}
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="fa fa-clock-o"></span>
 
                 {{if equal .Session.Lang "zh"}}
@@ -53,6 +54,8 @@
                 {{else}}
                 Posted on {{.Response.Blog.PublishDate | formatTime}}
                 {{end}}
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <i class="fa fa-comments"></i>&nbsp;<a href="#commentForm">{{.Response.Blog.GetCommentSize}}</a>
                 {{with .Response.Blog.GetTags}}
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <i class="fa fa-tag fa-5"></i>
@@ -84,29 +87,35 @@
             <hr>
             {{with .Response.Blog.GetComments}}
             {{range $key,$val:=.}}
-            {{if equal $key 0}}{{else}}<hr>{{end}}
-            <h4 id='{{.Seq}}'>
-                {{if .Name}}
-                <a href='mailto:{{.Email}}'>{{.Name}}</a>
-                {{else}}
-                {{tsl $session.Lang "label.anonymous"}}
-                {{end}}
-                <small>
-                    #{{plus $key 1}}
-                    {{if equal $session.Lang "zh"}}
-                    {{.CreateDate | cnFormatTime}}
+            {{if equal $key 0}}{{else}}
+            <hr>
+            {{end}}
+            <div class="comment-line">
+                <h4 id='{{.Seq}}'>
+                    {{if .Name}}
+                    <a href='mailto:{{.Email}}'>{{.Name}}</a>
                     {{else}}
-                    {{.CreateDate | formatTime}}
+                    {{tsl $session.Lang "label.anonymous"}}
                     {{end}}
-                </small>
-
+                    <small>
+                        #{{plus $key 1}}
+                        {{if equal $session.Lang "zh"}}
+                        {{.CreateDate | cnFormatTime}}
+                        {{else}}
+                        {{.CreateDate | formatTime}}
+                        {{end}}
+                    </small>
+                <span class="button-group hidden">
                 {{if privilege $session.SignedUser 5}}
-                <button class="btn btn-danger btn-xs pull-right" onclick='deleteComment("{{$res.Blog.Id}}","{{.Seq}}")'>
+                <button class="btn btn-danger btn-xs pull-right"
+                        onclick='deleteComment("{{$res.Blog.Id}}","{{.Seq}}")'>
                     {{tsl $session.Lang "label.delete"}}
                 </button>
                 {{end}}
-            </h4>
-            <p>{{.Content}}</p>
+                </span>
+                </h4>
+                <p>{{.Content}}</p>
+            </div>
             {{end}}
             {{end}}
 
@@ -187,7 +196,13 @@
             $(this).find(".badge").removeClass("hidden");
         }, function () {
             $(this).find(".badge").addClass("hidden");
-        })
+        });
+
+        $('.comment-line').hover(function () {
+            $(this).find(".button-group").removeClass("hidden");
+        }, function () {
+            $(this).find(".button-group").addClass("hidden");
+        });
 
         direct();
     });

@@ -34,20 +34,21 @@
         <div class="col-lg-9 pull-left">
             {{$session := .Session}}
             {{range .Response.Blog.Result}}
-            <span style="font-size: 25px">
+            <div class="blog-line">
+            <span class="h3">
             <a href='/blog/view/{{.Id}}'>{{.Title}}</a>
 
             {{if $session.SignedUser}}
             {{if equal $session.SignedUser.Id .Author.Id}}
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-default pull-right" href='/blog/edit/{{.Id}}'>
+            <a class="btn btn-default pull-right btn-edit hidden" href='/blog/edit/{{.Id}}'>
                 {{tsl $session.Lang "label.edit"}}
             </a>
             {{end}}
             {{end}}
             </span>
             <br>
-            <span class="gray" style="margin-bottom: 50px">
+            <span class="gray" style="line-height: 25px">
             {{.Author.FullName}}
 
             &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-clock-o fa-1"></i>
@@ -56,8 +57,8 @@
             {{else}}
             Posted on {{.PublishDate | formatTime}}
             {{end}}
-            &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-comments"></i>
-                {{.GetCommentSize}}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <i class="fa fa-comments"></i>&nbsp;<a href="/blog/view/{{.Id}}#commentForm">{{.GetCommentSize}}</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             {{with .GetTags}}
             <i class="fa fa-tag fa-5"></i>
@@ -74,6 +75,7 @@
                 <i class="fa fa-angle-right"></i>
             </a>
             <hr>
+            </div>
             {{end}}
 
             <!-- pager -->
@@ -125,6 +127,12 @@
         }, function () {
             $(this).find(".badge").addClass("hidden");
         })
+
+        $('.blog-line').hover(function(){
+            $(this).find(".btn-edit").removeClass("hidden");
+        }, function () {
+            $(this).find(".btn-edit").addClass("hidden");
+        });
 
         direct();
     });
