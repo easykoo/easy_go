@@ -23,3 +23,11 @@ func SetEngine() *xorm.Engine {
 	orm.Logger = Log
 	return orm
 }
+
+type DbUtil struct {}
+
+func (self *DbUtil) GetRecentComments() (comments []Comment) {
+	err := orm.OrderBy("create_date desc").Limit(5, 0).Find(&comments, &Comment{})
+	PanicIf(err)
+	return
+}

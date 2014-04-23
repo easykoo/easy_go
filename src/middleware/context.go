@@ -25,6 +25,7 @@ type Context struct {
 	Errors   []string
 	Response map[string]interface{}
 	Session  map[string]interface{}
+	DbUtil *model.DbUtil
 }
 
 func (self *Context) init() {
@@ -185,6 +186,7 @@ func InitContext() martini.Handler {
 			R:      r,
 			C:      c,
 			S:      s,
+			DbUtil: &model.DbUtil{},
 		}
 		ctx.SessionSet("Settings", model.GetSettings())
 		ctx.TransferSessionProperties(s)
