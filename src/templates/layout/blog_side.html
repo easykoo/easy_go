@@ -20,9 +20,9 @@
         <hr>
         {{range .}}
         <div class="row">
-            <div class="col-lg-12">
-                <a href="/blog/view/{{.Id}}">{{.Title}}</a>
-                <a class="badge pull-right" href="/blog/view/{{.Id}}#commentForm">{{.GetCommentSize}}</a>
+            <div class="col-lg-12" style="padding-left: 0px">
+                <div class="col-lg-10" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"><a href="/blog/view/{{.Id}}">{{.Title}}</a></div>
+                <div class="col-lg-2"><a class="badge" href="/blog/view/{{.Id}}#commentForm">{{.GetCommentSize}}</a></div>
             </div>
         </div>
         {{end}}
