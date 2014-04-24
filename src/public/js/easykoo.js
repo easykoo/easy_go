@@ -46,7 +46,7 @@ var sql_str = function () {
 
 var cutoff = function (content) {
     var cutoffLine = "----------"
-    var index = content.indexOf();
+    var index = content.indexOf(cutoffLine);
     if (index > 0) {
         content = content.replace(cutoffLine, "");
         var pre = content.substr(0, index);
