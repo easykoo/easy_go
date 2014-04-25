@@ -202,6 +202,7 @@ func Comment(ctx *middleware.Context) {
 		ctx.Set("success", false)
 		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.error.submit.failed"))
 	} else {
+		comment.SetIp(ctx.R.RemoteAddr)
 		err := comment.Insert()
 		PanicIf(err)
 		ctx.Set("success", true)

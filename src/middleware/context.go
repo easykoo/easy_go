@@ -25,7 +25,7 @@ type Context struct {
 	Errors   []string
 	Response map[string]interface{}
 	Session  map[string]interface{}
-	DbUtil *model.DbUtil
+	DbUtil   *model.DbUtil
 }
 
 func (self *Context) init() {

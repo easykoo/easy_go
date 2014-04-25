@@ -186,7 +186,7 @@ func (self *Tag) GetBlogByTag() ([]Blog, error) {
 
 func (self *Blog) GetTags() []Tag {
 	var tags []Tag
-	err := orm.Find(&tags, &Tag{Blog:Blog{Id:self.Id}})
+	err := orm.Find(&tags, &Tag{Blog: Blog{Id: self.Id}})
 	PanicIf(err)
 	return tags
 }

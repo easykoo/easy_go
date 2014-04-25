@@ -35,10 +35,10 @@ func AuthRequest(req interface{}) martini.Handler {
 			Log.Info("Checking style: ", "Module ", req.(int))
 			if user := ctx.SessionGet("SignedUser"); user != nil {
 				if reflect.TypeOf(req).Kind() == reflect.Int {
-						if CheckPermission(user, req.(int)) {
-							Log.Info("Pass!")
-							return
-						}
+					if CheckPermission(user, req.(int)) {
+						Log.Info("Pass!")
+						return
+					}
 					ctx.HTML(403, "error/403", ctx)
 					return
 				}
@@ -52,7 +52,7 @@ func AuthRequest(req interface{}) martini.Handler {
 	}
 }
 
-func CheckPermission(user interface {}, module int) bool {
+func CheckPermission(user interface{}, module int) bool {
 	Log.Debug("Type: ", reflect.TypeOf(user).Kind())
 	if reflect.TypeOf(user).Kind() == reflect.Struct {
 		val := user.(model.User)

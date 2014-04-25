@@ -92,13 +92,16 @@
             {{end}}
             <div class="comment-line">
                 <h4 id='{{.Seq}}'>
+                    <small>#{{plus $key 1}}</small>
+                    <span>
                     {{if .Name}}
                     <a href='mailto:{{.Email}}'>{{.Name}}</a>
                     {{else}}
                     {{tsl $session.Lang "label.anonymous"}}
                     {{end}}
+                    </span>
                     <small>
-                        #{{plus $key 1}}
+                        {{with .Ip}}(<a href="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={{.}}">{{.}}</a>){{end}}
                         {{if equal $session.Lang "zh"}}
                         {{.CreateDate | cnFormatTime}}
                         {{else}}

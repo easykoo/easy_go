@@ -3,6 +3,7 @@ package model
 import (
 	. "common"
 
+	"strings"
 	"time"
 )
 
@@ -13,13 +14,21 @@ type Comment struct {
 	Www        string    `form:"www" xorm:"varchar(45) null"`
 	Email      string    `form:"email" xorm:"varchar(45) null"`
 	Content    string    `form:"content" xorm:"varchar(150) not null"`
-	Parent_seq int       `form:"prentSeq" xorm:"int(5) null"`
+	ParentSeq  int       `form:"prentSeq" xorm:"int(5) null"`
+	Ip         string    `xorm:"varchar(30) null"`
 	CreateUser string    `xorm:"varchar(20) default 'SYSTEM'"`
 	CreateDate time.Time `xorm:"datetime created"`
 	UpdateUser string    `xorm:"varchar(20) default 'SYSTEM'"`
 	UpdateDate time.Time `xorm:"datetime updated"`
 	Version    int       `form:"version" xorm:"int(11) version"`
 	Page       `xorm:"-"`
+}
+
+func (self *Comment) SetIp(ip string) {
+	ip = strings.Split(ip, ":")[0]
+	if len(ip) >= 7 {
+		self.Ip = ip
+	}
 }
 
 func (self *Comment) GenerateSeq() (int, error) {

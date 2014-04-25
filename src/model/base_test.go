@@ -14,6 +14,6 @@ func Init() {
 
 func Test_GetHotBlog(t *testing.T) {
 	Init()
-	blog:=new(DbUtil).GetHotBlog()
+	blog := new(DbUtil).GetHotBlog()
 	Log.Debug(blog)
 }
