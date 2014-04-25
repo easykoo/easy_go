@@ -152,7 +152,7 @@ CREATE TABLE `comment` (
   email       VARCHAR(45)  NULL,
   content     VARCHAR(150) NOT NULL,
   parent_seq  INT(3)       NULL,
-  ip          VARCHAR(30)  NOT NULL,
+  ip          VARCHAR(15)  NOT NULL,
   create_user VARCHAR(20) DEFAULT NULL,
   create_date DATETIME DEFAULT NULL,
   update_user VARCHAR(20) DEFAULT NULL,
@@ -165,7 +165,7 @@ DROP TABLE IF EXISTS visit_log;
 CREATE TABLE visit_log (
   id          INT(11)     NOT NULL AUTO_INCREMENT,
   session_id  VARCHAR(60) NOT NULL,
-  ip          VARCHAR(30) NOT NULL,
+  ip          VARCHAR(15) NOT NULL,
   create_date DATETIME    NOT NULL,
   PRIMARY KEY (id)
 );

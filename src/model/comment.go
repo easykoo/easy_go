@@ -15,7 +15,7 @@ type Comment struct {
 	Email      string    `form:"email" xorm:"varchar(45) null"`
 	Content    string    `form:"content" xorm:"varchar(150) not null"`
 	ParentSeq  int       `form:"prentSeq" xorm:"int(5) null"`
-	Ip         string    `xorm:"varchar(30) null"`
+	Ip         string    `xorm:"varchar(15) null"`
 	CreateUser string    `xorm:"varchar(20) default 'SYSTEM'"`
 	CreateDate time.Time `xorm:"datetime created"`
 	UpdateUser string    `xorm:"varchar(20) default 'SYSTEM'"`
