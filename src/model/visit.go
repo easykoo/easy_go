@@ -21,13 +21,6 @@ type Statistics struct {
 	DayCount   int
 }
 
-func (self *Visit) SetIp(ip string) {
-	ip = strings.Split(ip, ":")[0]
-	if len(ip) >= 7 {
-		self.Ip = ip
-	}
-}
-
 func (self *Visit) Exist() (exist bool) {
 	exist, err := orm.Get(self)
 	PanicIf(err)
