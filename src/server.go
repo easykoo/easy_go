@@ -36,8 +36,7 @@ func newMartini() *martini.ClassicMartini {
 	m.MapTo(r, (*martini.Routes)(nil))
 	m.Action(r.Handle)
 
-	m.Use(sessions.Sessions("my_session", middleware.NewFileStore(60*30)))
-	//m.Use(sessions.Sessions("my_session", middleware.NewMemoryStore(60*30)))
+	m.Use(sessions.Sessions("my_session", middleware.NewDbStore(60*30)))
 
 	m.Use(render.Renderer(render.Options{
 		Directory:  "templates",

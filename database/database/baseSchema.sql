@@ -166,7 +166,17 @@ DROP TABLE IF EXISTS visit;
 CREATE TABLE visit (
   session_id  VARCHAR(60) NOT NULL,
   ip          VARCHAR(15) NOT NULL,
-  user_id    INT(11)     NULL,
+  user_id     INT(11)     NULL,
   create_date DATETIME    NOT NULL,
   PRIMARY KEY (session_id)
+);
+
+DROP TABLE IF EXISTS session_info;
+CREATE TABLE session_info (
+  id          VARCHAR(60) NOT NULL,
+  content     BLOB        NOT NULL,
+  age         INT(9)      NULL,
+  create_date DATETIME    NOT NULL,
+  update_date DATETIME DEFAULT NULL,
+  PRIMARY KEY (id)
 );
