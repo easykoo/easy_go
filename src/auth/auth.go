@@ -53,7 +53,6 @@ func AuthRequest(req interface{}) martini.Handler {
 }
 
 func CheckPermission(user interface{}, module int) bool {
-	Log.Debug("Type: ", reflect.TypeOf(user).Kind())
 	if reflect.TypeOf(user).Kind() == reflect.Struct {
 		val := user.(model.User)
 		privilege := &model.Privilege{ModuleId: module, RoleId: val.Role.Id, DeptId: val.Dept.Id}
