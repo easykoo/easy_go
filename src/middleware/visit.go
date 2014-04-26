@@ -2,9 +2,11 @@ package middleware
 
 import (
 	"github.com/go-martini/martini"
-
 	"github.com/martini-contrib/sessions"
+
+	. "common"
 	"model"
+
 	"net/http"
 	"reflect"
 )
@@ -23,7 +25,7 @@ func RecordVisit() martini.Handler {
 			}
 		}
 		visit.User = model.User{Id: id}
-		visit.SetIp(r.RemoteAddr)
+		visit.Ip = GetRemoteIp(r)
 		if visit.ExistVisit() {
 			visit.Update()
 		} else {

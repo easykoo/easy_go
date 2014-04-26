@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"io"
+	"net/http"
 	"os"
 	"reflect"
 	"strconv"
@@ -59,6 +60,18 @@ func Atoa(str string) string {
 		}
 	}
 	return result
+}
+
+func GetRemoteIp(r *http.Request) (ip string) {
+	ip = r.Header.Get("X-Real-Ip")
+	if ip == "" {
+		ip = r.RemoteAddr
+	}
+	ip = strings.Split(ip, ":")[0]
+	if len(ip) < 7 || ip == "127.0.0.1" {
+		ip = "localhost"
+	}
+	return
 }
 
 /* Test Helpers */

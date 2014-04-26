@@ -3,7 +3,6 @@ package model
 import (
 	. "common"
 
-	"strings"
 	"time"
 )
 
@@ -22,13 +21,6 @@ type Comment struct {
 	UpdateDate time.Time `xorm:"datetime updated"`
 	Version    int       `form:"version" xorm:"int(11) version"`
 	Page       `xorm:"-"`
-}
-
-func (self *Comment) SetIp(ip string) {
-	ip = strings.Split(ip, ":")[0]
-	if len(ip) >= 7 {
-		self.Ip = ip
-	}
 }
 
 func (self *Comment) GenerateSeq() (int, error) {
