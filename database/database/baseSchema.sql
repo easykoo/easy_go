@@ -100,6 +100,7 @@ CREATE TABLE blog (
   state        VARCHAR(10) NOT NULL,
   priority     INT(1)      NULL DEFAULT 5,
   author_id    INT(11) DEFAULT NULL,
+  visit        INT(9) DEFAULT 0,
   publish_date DATETIME DEFAULT NULL,
   create_user  VARCHAR(20) DEFAULT NULL,
   create_date  DATETIME DEFAULT NULL,

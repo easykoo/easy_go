@@ -147,6 +147,8 @@ func ViewBlog(ctx *middleware.Context, params martini.Params) {
 	blog := new(model.Blog)
 	blog.Id = ParseInt(id)
 	err := blog.GetBlog()
+	blog.Visit += 1
+	blog.UpdateVisit()
 	PanicIf(err)
 	ctx.Set("Blog", blog)
 

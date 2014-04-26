@@ -40,26 +40,28 @@
 
             {{if $session.SignedUser}}
             {{if equal $session.SignedUser.Id .Author.Id}}
-            &nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;
             <a class="btn btn-default pull-right btn-edit hidden" href='/blog/edit/{{.Id}}'>
                 {{tsl $session.Lang "label.edit"}}
             </a>
             {{end}}
             {{end}}
             </span>
-            <br>
+                <br>
             <span class="gray" style="line-height: 25px">
             {{.Author.FullName}}
 
-            &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-clock-o fa-1"></i>
+            &nbsp;&nbsp;<i class="fa fa-clock-o fa-1"></i>
             {{if equal $session.Lang "zh"}}
             发表于 {{.PublishDate | cnFormatTime}}
             {{else}}
             Posted on {{.PublishDate | formatTime}}
             {{end}}
-            &nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;
             <i class="fa fa-comments"></i>&nbsp;<a href="/blog/view/{{.Id}}#commentForm">{{.GetCommentSize}}</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <i class="fa fa-eye"></i>&nbsp;<a href="#commentForm">{{.Visit}}</a>
+            &nbsp;&nbsp;
             {{with .GetTags}}
             <i class="fa fa-tag fa-5"></i>
             {{range .}}
@@ -67,14 +69,14 @@
             {{end}}
             {{end}}
             </span>
-            <br>
-            <br>
-            {{.Summary | unescaped}}
-            <a class="btn btn-default" href='/blog/view/{{.Id}}'>
-                {{tsl $session.Lang "label.read.more"}}
-                <i class="fa fa-angle-right"></i>
-            </a>
-            <hr>
+                <br>
+                <br>
+                {{.Summary | unescaped}}
+                <a class="btn btn-default" href='/blog/view/{{.Id}}'>
+                    {{tsl $session.Lang "label.read.more"}}
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                <hr>
             </div>
             {{end}}
 
@@ -128,7 +130,7 @@
             $(this).find(".badge").addClass("hidden");
         })
 
-        $('.blog-line').hover(function(){
+        $('.blog-line').hover(function () {
             $(this).find(".btn-edit").removeClass("hidden");
         }, function () {
             $(this).find(".btn-edit").addClass("hidden");

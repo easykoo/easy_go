@@ -44,9 +44,9 @@
             {{end}}
             <hr>
             <p class="gray" style="line-height: 25px">
-                {{if equal .Session.Lang "zh"}}{{else}}by&nbsp;{{end}}{{.Response.Blog.Author.FullName}}
+                {{.Response.Blog.Author.FullName}}
 
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;
                 <span class="fa fa-clock-o"></span>
 
                 {{if equal .Session.Lang "zh"}}
@@ -54,10 +54,12 @@
                 {{else}}
                 Posted on {{.Response.Blog.PublishDate | formatTime}}
                 {{end}}
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;
                 <i class="fa fa-comments"></i>&nbsp;<a href="#commentForm">{{.Response.Blog.GetCommentSize}}</a>
+                &nbsp;&nbsp;
+                <i class="fa fa-eye"></i>&nbsp;<a href="#commentForm">{{.Response.Blog.Visit}}</a>
                 {{with .Response.Blog.GetTags}}
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;
                 <i class="fa fa-tag fa-5"></i>
                 {{range .}}
                 <a class="label label-info tag" href="/blog/tag/{{.Name}}">{{.Name}}</a>

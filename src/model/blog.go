@@ -15,6 +15,7 @@ type Blog struct {
 	State       string    `xorm:"varchar(10) default null"`
 	Priority    int       `xorm:"int(1) default 5"`
 	Author      User      `json:"author_id" xorm:"author_id"`
+	Visit       int       `xorm:"int(9)"`
 	Tags        []Tag     `form:"tags" json:"tags" xorm:"-"`
 	Comments    []Comment `json:"comments" xorm:"-"`
 	PublishDate time.Time `xorm:"datetime default null"`
@@ -89,6 +90,12 @@ func (self *Blog) Update() error {
 	for key, _ := range self.Tags {
 		session.Insert(self.Tags[key])
 	}
+	Log.Info("Blog ", self.Id, " updated!")
+	return err
+}
+
+func (self *Blog) UpdateVisit() error {
+	_, err := orm.Id(self.Id).Cols("visit").Update(self)
 	Log.Info("Blog ", self.Id, " updated!")
 	return err
 }
@@ -188,6 +195,7 @@ func (self *Blog) GetTags() []Tag {
 	var tags []Tag
 	err := orm.Find(&tags, &Tag{Blog: Blog{Id: self.Id}})
 	PanicIf(err)
+	Log.Debug("GetTags: ", tags)
 	return tags
 }
 
