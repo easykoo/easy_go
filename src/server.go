@@ -81,6 +81,7 @@ func newMartini() *martini.ClassicMartini {
 	}))
 
 	m.Use(middleware.InitContext())
+	m.Use(middleware.RecordVisit())
 
 	return &martini.ClassicMartini{m, r}
 }

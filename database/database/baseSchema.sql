@@ -162,11 +162,11 @@ CREATE TABLE `comment` (
   PRIMARY KEY (blog_id, seq)
 );
 
-DROP TABLE IF EXISTS visit_log;
-CREATE TABLE visit_log (
-  id          INT(11)     NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS visit;
+CREATE TABLE visit (
   session_id  VARCHAR(60) NOT NULL,
   ip          VARCHAR(15) NOT NULL,
+  user_id    INT(11)     NULL,
   create_date DATETIME    NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (session_id)
 );

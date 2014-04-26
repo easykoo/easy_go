@@ -195,7 +195,6 @@ func (self *Blog) GetTags() []Tag {
 	var tags []Tag
 	err := orm.Find(&tags, &Tag{Blog: Blog{Id: self.Id}})
 	PanicIf(err)
-	Log.Debug("GetTags: ", tags)
 	return tags
 }
 

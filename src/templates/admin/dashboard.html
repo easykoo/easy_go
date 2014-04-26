@@ -23,26 +23,8 @@
     <![endif]-->
 
     <script type="text/javascript">
-        var pageNo = '{.Response.page.pageNo}';
-        var pageSize = '{.Response.page.pageSize}';
-
-        var previousPage = function () {
-            var url = '/admin/dashboard?pageNo=' + (parseInt(pageNo) - 1) + '&pageSize=' + pageSize;
-            window.location.href = url;
-        }
-
-        var refresh = function () {
-            var url = '/admin/dashboard?pageNo=' + parseInt(pageNo) + '&pageSize=' + pageSize;
-            window.location.href = url;
-        }
-
-        var nextPage = function () {
-            var url = '/admin/dashboard?pageNo=' + (parseInt(pageNo) + 1) + '&pageSize=' + pageSize;
-            window.location.href = url;
-        }
-
-        var goPage = function (pageNo) {
-            var url = '/admin/dashboard?pageNo=' + pageNo + '&pageSize=' + pageSize;
+        var goToPage = function (pageNo) {
+            var url = '/admin/dashboard?page=' + pageNo;
             window.location.href = url;
         }
     </script>
@@ -50,6 +32,7 @@
 
 <body>
 <div id="wrapper">
+    {{$session := .Session}}
     {{template "layout/back_nav" .}}
     {{template "layout/left" .}}
     <div id="page-wrapper">
@@ -75,64 +58,49 @@
                                 <tr>
                                     <th>#</th>
                                     <th>IP</th>
+                                    <th>{{tsl .Session.Lang "label.user"}}</th>
                                     <th>{{tsl .Session.Lang "label.visit.time"}}</th>
                                     <th>{{tsl .Session.Lang "label.address"}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <!--<c:forEach items="{.Response.page.results}" var="sessionLog" varStatus="status">-->
+                                {{range .Response.Visit.Result}}
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td id="{.Response.status.index}">
-                                        {{with .Response.SessionLog.Ip}}
+                                    <td>#</td>
+                                    <td>{{.Ip}}</td>
+                                    <td>{{.User.FullName}}</td>
+                                    <td>{{cnFormatTime .CreateDate}}</td>
+                                    <td id="{{.SessionId}}">
+                                        {{if .Ip}}
                                         <script type="text/javascript"
-                                                src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={{.}}"></script>
+                                                src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={{.Ip}}"></script>
                                         <script type="text/javascript">
-                                            $('#{.Response.status.index+1}').text(remote_ip_info.country + remote_ip_info.province + remote_ip_info.city + remote_ip_info.district)</script>
+                                            $("#{{.SessionId}}").text(remote_ip_info.country + remote_ip_info.province + remote_ip_info.city + remote_ip_info.district)</script>
                                         {{end}}
                                     </td>
                                 </tr>
-                                <!--</c:forEach>-->
+                                {{end}}
                                 </tbody>
                             </table>
                         </div>
                         <!-- /.table-responsive -->
                     </div>
                     <!-- /.panel-body -->
-                    <!--<div class="panel-heading">
-                        <c:if test="{.Response.page.totalPage > 1}">
-                            <div align="center" class="clearpagination">
-                                <a class="page_prev" href="javascript:previousPage()"><i class="fa fa-angle-left"></i></a>
-                                <c:forEach begin="1" step="1" end="{.Response.page.totalPage}" var="pageNo">
-                                    <c:if test="{.Response.pageNo == page.pageNo}">{.Response.pageNo}</c:if>
-                                    <c:if test="{.Response.pageNo != page.pageNo}">
-                                        <c:choose>
-                                            <c:when test="{.Response.pageNo < page.pageNo - 5}">
-                                                <c:choose>
-                                                    <c:when test="{.Response.pageNo == 1}"><a
-                                                            href="javascript:goPage({.Response.pageNo})">{.Response.pageNo}</a></c:when>
-                                                    <c:when test="{.Response.pageNo == page.pageNo - 6}">...</c:when>
-                                                </c:choose>
-                                            </c:when>
-                                            <c:when test="{.Response.pageNo > page.pageNo + 5}">
-                                                <c:choose>
-                                                    <c:when test="{.Response.pageNo == page.totalPage}"><a
-                                                            href="javascript:goPage({.Response.pageNo})">{.Response.pageNo}</a></c:when>
-                                                    <c:when test="{.Response.pageNo == page.pageNo + 6}">...</c:when>
-                                                </c:choose>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <a href="javascript:goPage({.Response.pageNo})">{.Response.pageNo}</a>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:if>
-                                </c:forEach>
-                                <a class="page_next" href="javascript:nextPage()"><i class="fa fa-angle-right"></i></a>
-                            </div>
-                        </c:if>
-                    </div>-->
+                    <div class="panel-heading">
+                        <ul class="pager">
+                            <li class='previous {{if equal .Response.Visit.GetPageNo 1}}disabled{{end}}'>
+                                <a href="javascript:goToPage('{{.Response.Visit.GetPreviousPageNo}}')">
+                                    &larr;&nbsp;&nbsp;{{tsl .Session.Lang "label.previous.page"}}
+                                </a>
+                            </li>
+                            {{.Response.Visit.GetPageNo}}/{{.Response.Visit.GetTotalPage}}
+                            <li class='next {{if equal .Response.Visit.GetPageNo .Response.Visit.GetTotalPage}}disabled{{end}}'>
+                                <a href="javascript:goToPage('{{.Response.Visit.GetNextPageNo}}')">
+                                    {{tsl .Session.Lang "label.next.page"}}&nbsp;&nbsp;&rarr;
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <!-- /.panel -->
             </div>
@@ -156,10 +124,12 @@
                                 </thead>
                                 <tbody>
                                 <tr>
+                                    {{with .Response.Visit.GetStatistics}}
                                     <td>#</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{.TotalCount}}</td>
+                                    <td>{{.MonthCount}}</td>
+                                    <td>{{.DayCount}}</td>
+                                    {{end}}
                                 </tr>
                                 </tbody>
                             </table>

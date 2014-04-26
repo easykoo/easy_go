@@ -7,6 +7,18 @@ import (
 )
 
 func DashboardHandler(ctx *middleware.Context) {
+	visit := new(model.Visit)
+	visit.SetPageActive(true)
+	visit.SetPageSize(10)
+	pageNo := ParseInt(ctx.R.FormValue("page"))
+	visit.SetPageNo(pageNo)
+	visit.AddSortProperty("create_date", "desc")
+	visitList, total, err := visit.SearchByPage()
+	PanicIf(err)
+
+	visit.SetTotalRecord(total)
+	visit.Result = visitList
+	ctx.Set("Visit", visit)
 	ctx.HTML(200, "admin/dashboard", ctx)
 }
 
