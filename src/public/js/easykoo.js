@@ -157,3 +157,13 @@ var setupPage = function (section, pageNo, totalPage) {
         section.html(html);
     }
 }
+
+var initTag = function () {
+    $(".tag").hover(function () {
+        $(this).find(".badge").removeClass("hidden");
+        $(this).parent().css("padding-right", "8px");
+    }, function () {
+        $(this).find(".badge").addClass("hidden");
+        $(this).parent().css("padding-right", "15px");
+    })
+}

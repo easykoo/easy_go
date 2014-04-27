@@ -243,11 +243,7 @@
     }
 
     $(document).ready(function () {
-        $(".tag").hover(function () {
-            $(this).find(".badge").removeClass("hidden");
-        }, function () {
-            $(this).find(".badge").addClass("hidden");
-        });
+        initTag();
 
         $('.comment-line').hover(function () {
             $(this).find(".button-group").removeClass("hidden");

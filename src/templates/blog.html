@@ -113,11 +113,7 @@
     }
 
     $(document).ready(function () {
-        $(".tag").hover(function () {
-            $(this).find(".badge").removeClass("hidden");
-        }, function () {
-            $(this).find(".badge").addClass("hidden");
-        })
+        initTag();
 
         $('.blog-line').hover(function () {
             $(this).find(".btn-edit").removeClass("hidden");
