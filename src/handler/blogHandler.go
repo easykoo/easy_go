@@ -197,8 +197,11 @@ func EditBlog(ctx *middleware.Context, params martini.Params) {
 
 func Comment(ctx *middleware.Context) {
 	id := ParseInt(ctx.R.PostFormValue("blogId"))
+	name := ctx.R.PostFormValue("name")
+	email := ctx.R.PostFormValue("email")
+	www := ctx.R.PostFormValue("www")
 	content := ctx.R.PostFormValue("content")
-	comment := model.Comment{Blog: model.Blog{Id: id}, Content: content}
+	comment := model.Comment{Blog: model.Blog{Id: id}, Name: name, Email: email, Www: www, Content: content}
 
 	if comment.Content == "" {
 		ctx.Set("success", false)

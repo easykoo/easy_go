@@ -71,18 +71,48 @@
 
             <hr>
             <!-- the comment box -->
-            <div class="well">
-                <h4>{{tsl .Session.Lang "label.leave.comment"}}:</h4>
+            <div>
+                <div class="form-group">
+                    <div class="row form-group">
+                        <div class="col-lg-4">
+                            <span class="h4">{{tsl .Session.Lang "label.leave.comment"}}:</span>
+                        </div>
+                    </div>
+                </div>
 
                 <form role="form" id="commentForm" action="/blog/comment" method="post">
                     <input name="blogId" type="text" value="{{.Response.Blog.Id}}" hidden="true">
 
-                    <div class="form-group">
-                        <textarea id="content" name="content" class="form-control" rows="3"></textarea>
+                    <div id="info" class="row form-group">
+                        <div class="col-lg-4">
+                            <input name="name" type="text" id="name" placeholder='{{tsl .Session.Lang "label.name"}}'
+                                   class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <input name="email" type="text" id="email" placeholder='{{tsl .Session.Lang "label.email"}}'
+                                   class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <input name="www" type="text" id="www" placeholder='{{tsl .Session.Lang "label.website"}}'
+                                   class="form-control">
+                        </div>
                     </div>
-                    <button type="button" onclick="send()" class="btn btn-primary">
-                        {{tsl .Session.Lang "label.submit"}}
-                    </button>
+                    <div class="row form-group">
+                        <div class="col-lg-12">
+                            <textarea id="content" name="content" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12">
+                            <button type="button" onclick="send()" class="btn btn-primary">
+                                {{tsl .Session.Lang "label.submit"}}
+                            </button>
+                            <button id="toggle" type="button" class="btn btn-default"
+                                    onclick="toggleAnonymous()">
+                                {{tsl .Session.Lang "label.anonymous"}}
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </div>
 
@@ -97,7 +127,7 @@
                     <small>#{{plus $key 1}}</small>
                     <span>
                     {{if .Name}}
-                    <a href='mailto:{{.Email}}'>{{.Name}}</a>
+                    <a href='http://{{.Www}}'>{{.Name}}</a>
                     {{else}}
                     {{tsl $session.Lang "label.anonymous"}}
                     {{end}}
@@ -144,14 +174,21 @@
 
 <script type="text/javascript">
     var send = function () {
+        if ($('#email').val() != "" && (!$('#email').val().match(/^\w[\w|\.|\-]+@\w[\w|\.|\-]+\.[a-zA-Z]{2,4}$/))) {
+            return bootbox.alert('{{tsl .Session.Lang "message.error.wrong.email.format"}}', null);
+        }
         if ($('#content').val() == "") {
             return bootbox.alert('{{tsl .Session.Lang "message.error.content.required"}}', null);
         }
+        $('#www').val($('#www').val().replace("http://", ""));
         $.ajax('/blog/comment', {
             dataType: 'json',
             type: "POST",
             data: {
                 blogId: '{{.Response.Blog.Id}}',
+                name: $('#name').val(),
+                www: $('#www').val(),
+                email: $('#email').val(),
                 content: $('#content').val()
             },
             success: function (data) {
@@ -194,6 +231,15 @@
                 }
             }
         });
+    }
+
+    var toggleAnonymous = function () {
+        $('#info').toggleClass('hidden')
+        if ($('#info').hasClass("hidden")) {
+            $('#toggle').text('{{tsl .Session.Lang "label.more.information"}}')
+        } else {
+            $('#toggle').text('{{tsl .Session.Lang "label.anonymous"}}')
+        }
     }
 
     $(document).ready(function () {
