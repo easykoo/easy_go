@@ -67,7 +67,8 @@ var cutoff = function (content) {
     }
     return content;
 }
-function direct() {
+
+var direct = function () {
     var winHeight = $(window).height()
 
     var $top = $('#goTop');
@@ -145,9 +146,9 @@ var setupPage = function (section, pageNo, totalPage) {
                 html += '<li><a href="javascript:goToPage(' + i + ')">' + i + '</a></li>';
             }
         }
-        if (pageNo<totalPage){
-        html += '<li><a class="page_next" href="javascript:goToPage(' + (pageNo + 1 > totalPage ? totalPage : pageNo + 1) + ')"><i class="fa fa-angle-right"></i></a></li>';
-        html += '<li><a class="page_prev" href="javascript:goToPage(' + totalPage + ')"><i class="fa fa-angle-double-right"></i></a></li>'
+        if (pageNo < totalPage) {
+            html += '<li><a class="page_next" href="javascript:goToPage(' + (pageNo + 1 > totalPage ? totalPage : pageNo + 1) + ')"><i class="fa fa-angle-right"></i></a></li>';
+            html += '<li><a class="page_prev" href="javascript:goToPage(' + totalPage + ')"><i class="fa fa-angle-double-right"></i></a></li>'
         } else {
             html += '<li class="disabled"><span class="fa fa-angle-right"></span></li>'
             html += '<li class="disabled"><span class="fa fa-angle-double-right"></span></li>'
