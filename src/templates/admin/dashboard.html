@@ -86,8 +86,7 @@
                         <!-- /.table-responsive -->
                     </div>
                     <!-- /.panel-body -->
-                    <div id="page" class="panel-heading">
-                    </div>
+                    <div id="page" class="page"></div>
                 </div>
                 <!-- /.panel -->
             </div>
@@ -145,42 +144,11 @@
     var pageNo = parseInt('{{.Response.Visit.GetPageNo}}');
     var totalPage = parseInt('{{.Response.Visit.GetTotalPage}}');
 
-    var setupPage = function () {
-        var html = "";
-        if (totalPage > 1) {
-
-            html += '<div align="center">';
-            html += '<a class="page_prev" href="javascript:goToPage(' + (pageNo - 1 < 1 ? 1 : pageNo - 1) + ')"><i class="fa fa-angle-left"></i></a>&nbsp;'
-            for (var i = 1; i <= totalPage; i++) {
-                if (i == pageNo) {
-                    html += i;
-                } else if (i < pageNo - 5) {
-                    if (i == 1) {
-                        html += '<a href="javascript:goToPage(' + i + ')">' + i + '</a> ';
-                    } else if (i == pageNo - 6) {
-                        html += '...';
-                    }
-                } else if (i > pageNo + 5) {
-                    if (i == totalPage) {
-                        html += '<a href="javascript:goToPage(' + i + ')">' + i + '</a> ';
-                    } else if (i == pageNo + 6) {
-                        html += '...';
-                    }
-                } else {
-                    html += '<a href="javascript:goToPage(' + i + ')">' + i + '</a>';
-                }
-            }
-            html += '&nbsp;<a class="page_next" href="javascript:goToPage(' + (pageNo + 1 > totalPage ? totalPage : pageNo + 1) + ')"><i class="fa fa-angle-right"></i></a>';
-            html += '</div>';
-            $('#page').html(html);
-        }
-    }
-
     $(document).ready(function () {
         $('#dashboard').css({"background": "#DDDDDD"});
         $('#dataTable').dataTable();
 
-        setupPage();
+        setupPage($('#page'), pageNo, totalPage);
     });
 
 </script>

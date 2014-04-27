@@ -81,19 +81,7 @@
             {{end}}
 
             <!-- pager -->
-            <ul class="pager">
-                <li class='previous {{if equal .Response.Blog.GetPageNo 1}}disabled{{end}}'>
-                    <a href="javascript:goToPage('{{.Response.Blog.GetPreviousPageNo}}')">
-                        &larr;&nbsp;&nbsp;{{tsl .Session.Lang "label.previous.page"}}
-                    </a>
-                </li>
-                {{.Response.Blog.GetPageNo}}/{{.Response.Blog.GetTotalPage}}
-                <li class='next {{if equal .Response.Blog.GetPageNo .Response.Blog.GetTotalPage}}disabled{{end}}'>
-                    <a href="javascript:goToPage('{{.Response.Blog.GetNextPageNo}}')">
-                        {{tsl .Session.Lang "label.next.page"}}&nbsp;&nbsp;&rarr;
-                    </a>
-                </li>
-            </ul>
+            <div id="page" class="page"></div>
         </div>
 
     </div>
@@ -110,8 +98,9 @@
 <script src="/js/easykoo.js"></script>
 
 <script type="text/javascript">
-    var tag = '{{.Response.Tag}}'
-    var page = '{{.Response.Blog.GetPageNo}}'
+    var tag = '{{.Response.Tag}}';
+    var pageNo = parseInt('{{.Response.Blog.GetPageNo}}');
+    var totalPage = parseInt('{{.Response.Blog.GetTotalPage}}');
 
     var goToPage = function (pageNo) {
         var url = "";
@@ -135,6 +124,8 @@
         }, function () {
             $(this).find(".btn-edit").addClass("hidden");
         });
+
+        setupPage($('#page'), pageNo, totalPage);
 
         direct();
     });

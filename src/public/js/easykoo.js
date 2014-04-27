@@ -114,3 +114,45 @@ function direct() {
         return false;
     });
 }
+
+var setupPage = function (section, pageNo, totalPage) {
+    var html = "";
+    if (totalPage > 1) {
+        html += '<ul class="pagination">';
+        if (pageNo > 1) {
+            html += '<li><a class="page_prev" href="javascript:goToPage(' + 1 + ')"><i class="fa fa-angle-double-left"></i></a></li>'
+            html += '<li><a class="page_prev" href="javascript:goToPage(' + (pageNo - 1 < 1 ? 1 : pageNo - 1) + ')"><i class="fa fa-angle-left"></i></a></li>'
+        } else {
+            html += '<li class="disabled"><span class="fa fa-angle-double-left"></span></li>'
+            html += '<li class="disabled"><span class="fa fa-angle-left"></span></li>'
+        }
+        for (var i = 1; i <= totalPage; i++) {
+            if (i == pageNo) {
+                html += '<li class="active"><span>' + i + '</span></li>';
+            } else if (i < pageNo - 5) {
+                if (i == 1) {
+                    html += '<li><a href="javascript:goToPage(' + i + ')">' + i + '</a></li>';
+                } else if (i == pageNo - 6) {
+                    html += '<li><span>...</span></li>';
+                }
+            } else if (i > pageNo + 5) {
+                if (i == totalPage) {
+                    html += '<li><a href="javascript:goToPage(' + i + ')">' + i + '</a></li>';
+                } else if (i == pageNo + 6) {
+                    html += '<li><span>...</span></li>';
+                }
+            } else {
+                html += '<li><a href="javascript:goToPage(' + i + ')">' + i + '</a></li>';
+            }
+        }
+        if (pageNo<totalPage){
+        html += '<li><a class="page_next" href="javascript:goToPage(' + (pageNo + 1 > totalPage ? totalPage : pageNo + 1) + ')"><i class="fa fa-angle-right"></i></a></li>';
+        html += '<li><a class="page_prev" href="javascript:goToPage(' + totalPage + ')"><i class="fa fa-angle-double-right"></i></a></li>'
+        } else {
+            html += '<li class="disabled"><span class="fa fa-angle-right"></span></li>'
+            html += '<li class="disabled"><span class="fa fa-angle-double-right"></span></li>'
+        }
+        html += '</ul>';
+        section.html(html);
+    }
+}
