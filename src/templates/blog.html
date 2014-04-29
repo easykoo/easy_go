@@ -52,10 +52,11 @@
             {{.Author.FullName}}
 
             &nbsp;&nbsp;<i class="fa fa-clock-o fa-1"></i>
+            {{tsl $session.Lang "label.post.on"}}
             {{if equal $session.Lang "zh"}}
-            发表于 {{.PublishDate | cnFormatTime}}
+            {{.PublishDate | cnFormatTime}}
             {{else}}
-            Posted on {{.PublishDate | formatTime}}
+            {{.PublishDate | formatTime}}
             {{end}}
             &nbsp;&nbsp;
             <i class="fa fa-comments"></i>&nbsp;<a href="/blog/view/{{.Id}}#commentForm">{{.GetCommentSize}}</a>

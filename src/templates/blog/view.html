@@ -48,11 +48,11 @@
 
                 &nbsp;&nbsp;
                 <span class="fa fa-clock-o"></span>
-
+                {{tsl .Session.Lang "label.post.on"}}
                 {{if equal .Session.Lang "zh"}}
-                发表于 {{.Response.Blog.PublishDate | cnFormatTime}}
+                {{.Response.Blog.PublishDate | cnFormatTime}}
                 {{else}}
-                Posted on {{.Response.Blog.PublishDate | formatTime}}
+                {{.Response.Blog.PublishDate | formatTime}}
                 {{end}}
                 &nbsp;&nbsp;
                 <i class="fa fa-comments"></i>&nbsp;<a href="#commentForm">{{.Response.Blog.GetCommentSize}}</a>
