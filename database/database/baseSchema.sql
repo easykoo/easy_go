@@ -132,10 +132,12 @@ CREATE TABLE tag (
 
 DROP TABLE IF EXISTS settings;
 CREATE TABLE settings (
-  id          INT(1)      NOT NULL DEFAULT 1,
-  app_name    VARCHAR(20) NOT NULL,
-  owner_id    INT(11)     NOT NULL DEFAULT 1,
-  about       BLOB        NULL,
+  id          INT(1)       NOT NULL DEFAULT 1,
+  app_name    VARCHAR(20)  NOT NULL,
+  owner_id    INT(11)      NOT NULL DEFAULT 1,
+  about       BLOB         NULL,
+  keywords    VARCHAR(100) NULL,
+  description VARCHAR(100) NULL,
   create_user VARCHAR(20) DEFAULT NULL,
   create_date DATETIME DEFAULT NULL,
   update_user VARCHAR(20) DEFAULT NULL,

@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="keywords" content="{{.Session.Settings.Keywords}}">
+    <meta name="description" content="{{.Session.Settings.Description}}">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>{{.Session.Settings.AppName}} - {{tsl .Session.Lang "label.preferences"}}</title>
+    <title>{{tsl .Session.Lang "label.preferences"}} - {{.Session.Settings.AppName}}</title>
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">

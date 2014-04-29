@@ -7,16 +7,18 @@ import (
 )
 
 type Settings struct {
-	Id         int       `form:"settingsId" xorm:"int(11) pk not null autoincr"`
-	AppName    string    `form:"appName" xorm:"varchar(45) not null"`
-	About      string    `form:"about" xorm:"blob not null"`
-	Owner      User      `form:"owner_id" json:"owner_id" xorm:"owner_id"`
-	CreateUser string    `xorm:"varchar(20) default null"`
-	CreateDate time.Time `xorm:"datetime created"`
-	UpdateUser string    `xorm:"varchar(20) default null"`
-	UpdateDate time.Time `xorm:"datetime updated"`
-	Version    int       `form:"version" xorm:"int(11) version"`
-	Page       `xorm:"-"`
+	Id          int       `form:"settingsId" xorm:"int(11) pk not null autoincr"`
+	AppName     string    `form:"appName" xorm:"varchar(45) not null"`
+	About       string    `form:"about" xorm:"blob not null"`
+	Owner       User      `form:"owner_id" json:"owner_id" xorm:"owner_id"`
+	Keywords    string    `form:"keywords" xorm:"varchar(100) default null"`
+	Description string    `form:"description" xorm:"varchar(100) default null"`
+	CreateUser  string    `xorm:"varchar(20) default null"`
+	CreateDate  time.Time `xorm:"datetime created"`
+	UpdateUser  string    `xorm:"varchar(20) default null"`
+	UpdateDate  time.Time `xorm:"datetime updated"`
+	Version     int       `form:"version" xorm:"int(11) version"`
+	Page        `xorm:"-"`
 }
 
 func GetSettings() *Settings {
