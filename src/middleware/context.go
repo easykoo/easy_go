@@ -1,11 +1,12 @@
 package middleware
 
 import (
+	"github.com/easykoo/sessions"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
-	"github.com/easykoo/sessions"
 
+	. "common"
 	"model"
 
 	"net/http"
@@ -143,7 +144,7 @@ func (self *Context) FieldErrors() map[string]string {
 	return self.FormErr.Fields
 }
 
-func (self *Context) Session() map[interface {}] interface {}{
+func (self *Context) Session() map[interface{}]interface{} {
 	return self.S.Values()
 }
 
@@ -157,7 +158,13 @@ func InitContext() martini.Handler {
 			S:      s,
 			DbUtil: &model.DbUtil{},
 		}
-		ctx.S.Set("Settings", model.GetSettings())
+
+		lang := s.Get("Lang")
+		if lang == nil {
+			s.Set("Lang", Cfg.MustValue("", "locale", "en"))
+		}
+
+		s.Set("Settings", model.GetSettings())
 		c.Map(ctx)
 	}
 }
