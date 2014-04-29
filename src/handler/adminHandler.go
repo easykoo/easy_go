@@ -27,8 +27,8 @@ func SettingsHandler(ctx *middleware.Context, settings model.Settings) {
 		err := settings.Update()
 		PanicIf(err)
 		dbSettings := model.GetSettings()
-		ctx.AddMessage(Translate(ctx.SessionGet("Lang").(string), "message.change.success"))
-		ctx.SessionSet("Settings", dbSettings)
+		ctx.AddMessage(Translate(ctx.S.Get("Lang").(string), "message.change.success"))
+		ctx.S.Set("Settings", dbSettings)
 	}
 	user := &model.User{}
 	users, err := user.SelectAll()
@@ -45,7 +45,7 @@ func AboutHandler(ctx *middleware.Context) {
 	err := settings.Update()
 	PanicIf(err)
 	dbSettings := model.GetSettings()
-	ctx.SessionSet("Settings", dbSettings)
+	ctx.S.Set("Settings", dbSettings)
 
 	ctx.Redirect("/about")
 }

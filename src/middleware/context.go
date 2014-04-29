@@ -4,15 +4,12 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
-	"github.com/martini-contrib/sessions"
+	"github.com/easykoo/sessions"
 
-	. "common"
 	"model"
 
 	"net/http"
 )
-
-var sessionProperties []string
 
 type Context struct {
 	render.Render
@@ -24,7 +21,6 @@ type Context struct {
 	Messages []string
 	Errors   []string
 	Response map[string]interface{}
-	Session  map[string]interface{}
 	DbUtil   *model.DbUtil
 }
 
@@ -32,31 +28,12 @@ func (self *Context) init() {
 	if self.Response == nil {
 		self.Response = make(map[string]interface{})
 	}
-	if self.Session == nil {
-		self.Session = make(map[string]interface{})
-	}
 	if self.FormErr.Fields == nil {
 		self.FormErr.Fields = make(map[string]string)
 	}
 	if self.FormErr.Overall == nil {
 		self.FormErr.Overall = make(map[string]string)
 	}
-}
-
-func (self *Context) SessionGet(key string) interface{} {
-	return self.S.Get(key)
-}
-
-func (self *Context) SessionSet(key string, val interface{}) {
-	self.init()
-	self.S.Set(key, val)
-	self.Session[key] = val
-	for _, val := range sessionProperties {
-		if val == key {
-			return
-		}
-	}
-	sessionProperties = append(sessionProperties, key)
 }
 
 func (self *Context) SessionDelete(key string) {
@@ -166,16 +143,8 @@ func (self *Context) FieldErrors() map[string]string {
 	return self.FormErr.Fields
 }
 
-func (self *Context) TransferSessionProperties(s sessions.Session) {
-	lang := s.Get("Lang")
-	if lang == nil {
-		self.SessionSet("Lang", Cfg.MustValue("", "locale", "en"))
-	} else {
-		self.SessionSet("Lang", lang)
-	}
-	for _, val := range sessionProperties {
-		self.SessionSet(val, s.Get(val))
-	}
+func (self *Context) Session() map[interface {}] interface {}{
+	return self.S.Values()
 }
 
 func InitContext() martini.Handler {
@@ -188,8 +157,7 @@ func InitContext() martini.Handler {
 			S:      s,
 			DbUtil: &model.DbUtil{},
 		}
-		ctx.SessionSet("Settings", model.GetSettings())
-		ctx.TransferSessionProperties(s)
+		ctx.S.Set("Settings", model.GetSettings())
 		c.Map(ctx)
 	}
 }

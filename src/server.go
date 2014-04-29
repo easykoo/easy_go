@@ -4,7 +4,7 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
-	"github.com/martini-contrib/sessions"
+	"github.com/easykoo/sessions"
 
 	. "auth"
 	. "common"

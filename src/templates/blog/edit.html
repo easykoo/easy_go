@@ -236,17 +236,9 @@
         $('#publishBlog').css({"background": "#DDDDDD"});
         edit();
 
-        {
-            {
-                range.Response.Blog.GetTags
-            }
-        }
+        '{{range.Response.Blog.GetTags}}'
         tags.push('{{.Name}}');
-        {
-            {
-                end
-            }
-        }
+        '{{end}}'
         updateTagShow();
     })
 </script>

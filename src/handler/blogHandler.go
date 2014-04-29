@@ -15,11 +15,11 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 	switch ctx.R.Method {
 	case "POST":
 		if blog.Title == "" || blog.Content == "" {
-			ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.publish.failed"))
+			ctx.AddError(Translate(ctx.S.Get("Lang").(string), "message.error.publish.failed"))
 		} else {
 			tags := ctx.R.PostForm["tags"]
 			blog.SetTags(tags)
-			signedUser := ctx.SessionGet("SignedUser").(model.User)
+			signedUser := ctx.S.Get("SignedUser").(model.User)
 			blog.State = "PUBLISHED"
 			blog.PublishDate = time.Now()
 			if blog.Version == 0 {
@@ -45,11 +45,11 @@ func PublishBlog(ctx *middleware.Context, blog model.Blog) {
 
 func SaveBlog(ctx *middleware.Context, blog model.Blog) {
 	if blog.Title == "" || blog.Content == "" {
-		ctx.AddError(Translate(ctx.SessionGet("Lang").(string), "message.error.save.failed"))
+		ctx.AddError(Translate(ctx.S.Get("Lang").(string), "message.error.save.failed"))
 	} else {
 		tags := ctx.R.PostForm["tags"]
 		blog.SetTags(tags)
-		signedUser := ctx.SessionGet("SignedUser").(model.User)
+		signedUser := ctx.S.Get("SignedUser").(model.User)
 		blog.UpdateUser = signedUser.Username
 		if blog.Version == 0 {
 			blog.State = "DRAFT"
@@ -66,7 +66,7 @@ func SaveBlog(ctx *middleware.Context, blog model.Blog) {
 		PanicIf(err)
 		ctx.Set("Blog", dbBlog)
 
-		ctx.AddMessage(Translate(ctx.SessionGet("Lang").(string), "message.save.success"))
+		ctx.AddMessage(Translate(ctx.S.Get("Lang").(string), "message.save.success"))
 	}
 
 	tags, err := blog.GetAllTags()
@@ -205,13 +205,13 @@ func Comment(ctx *middleware.Context) {
 
 	if comment.Content == "" {
 		ctx.Set("success", false)
-		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.error.submit.failed"))
+		ctx.Set("message", Translate(ctx.S.Get("Lang").(string), "message.error.submit.failed"))
 	} else {
 		comment.Ip = GetRemoteIp(ctx.R)
 		err := comment.Insert()
 		PanicIf(err)
 		ctx.Set("success", true)
-		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.submit.success"))
+		ctx.Set("message", Translate(ctx.S.Get("Lang").(string), "message.submit.success"))
 	}
 	ctx.JSON(200, ctx.Response)
 }
@@ -224,10 +224,10 @@ func DeleteComment(ctx *middleware.Context, params martini.Params) {
 	err := comment.Delete()
 	if err != nil {
 		ctx.Set("success", false)
-		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.error.delete.failed"))
+		ctx.Set("message", Translate(ctx.S.Get("Lang").(string), "message.error.delete.failed"))
 	} else {
 		ctx.Set("success", true)
-		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.delete.success"))
+		ctx.Set("message", Translate(ctx.S.Get("Lang").(string), "message.delete.success"))
 	}
 	ctx.JSON(200, ctx.Response)
 }

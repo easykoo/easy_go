@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/go-martini/martini"
-	"github.com/martini-contrib/sessions"
+	"github.com/easykoo/sessions"
 
 	. "common"
 	"model"

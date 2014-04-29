@@ -25,7 +25,7 @@ func AuthRequest(req interface{}) martini.Handler {
 		switch req {
 		case SignInRequired:
 			Log.Info("Checking style: ", "SignInRequired")
-			if user := ctx.SessionGet("SignedUser"); user != nil {
+			if user := ctx.S.Get("SignedUser"); user != nil {
 				Log.Info("Pass!")
 				return
 			}
@@ -33,7 +33,7 @@ func AuthRequest(req interface{}) martini.Handler {
 			return
 		default:
 			Log.Info("Checking style: ", "Module ", req.(int))
-			if user := ctx.SessionGet("SignedUser"); user != nil {
+			if user := ctx.S.Get("SignedUser"); user != nil {
 				if reflect.TypeOf(req).Kind() == reflect.Int {
 					if CheckPermission(user, req.(int)) {
 						Log.Info("Pass!")

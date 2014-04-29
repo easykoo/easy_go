@@ -22,7 +22,7 @@ func ContactHandler(ctx *middleware.Context, feedback model.Feedback) {
 		err := feedback.Insert()
 		PanicIf(err)
 		ctx.Set("success", true)
-		ctx.Set("message", Translate(ctx.SessionGet("Lang").(string), "message.send.success"))
+		ctx.Set("message", Translate(ctx.S.Get("Lang").(string), "message.send.success"))
 		ctx.JSON(200, ctx.Response)
 	default:
 		ctx.HTML(200, "contact", ctx)
@@ -31,7 +31,7 @@ func ContactHandler(ctx *middleware.Context, feedback model.Feedback) {
 
 func LangHandler(ctx *middleware.Context, params martini.Params) {
 	lang := params["lang"]
-	ctx.SessionSet("Lang", lang)
+	ctx.S.Set("Lang", lang)
 	ctx.Set("success", true)
 	ctx.JSON(200, ctx.Response)
 }
