@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"github.com/go-martini/martini"
 	"github.com/easykoo/sessions"
+	"github.com/go-martini/martini"
 
 	. "common"
 	"model"
