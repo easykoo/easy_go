@@ -1,5 +1,12 @@
 body {
-    margin-top: 125px; /* adjust this if the height of the menu bar changes */
+    margin-top: 100px;
+    word-wrap:break-word;
+}
+
+@media (max-width: 460px) {
+    #side {
+        width: 100%;
+    }
 }
 
 footer {
