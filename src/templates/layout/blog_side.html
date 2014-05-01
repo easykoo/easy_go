@@ -36,14 +36,14 @@
         {{range .}}
         <div class="row">
             <div class="col-lg-12">
-                <a class="" href="/blog/view/{{.Blog.Id}}#{{.Seq}}">
+                <a href="/blog/view/{{.Blog.Id}}#{{.Seq}}">
                     {{if .Name}}
                     {{.Name}}
                     {{else}}
                     {{tsl $session.Lang "label.anonymous"}}
                     {{end}}
                 </a>:
-                <span class="">{{.Content}}</span>
+                <span>{{.Content}}</span>
             </div>
         </div>
         {{end}}
