@@ -83,17 +83,13 @@
                 <form role="form" id="commentForm" action="/blog/comment" method="post">
                     <input name="blogId" type="text" value="{{.Response.Blog.Id}}" hidden="true">
 
-                    <div id="info" class="row form-group">
-                        <div class="col-lg-4">
+                    <div id="info" class="row form-group hidden">
+                        <div class="col-lg-2">
                             <input name="name" type="text" id="name" placeholder='{{tsl .Session.Lang "label.name"}}'
                                    class="form-control">
                         </div>
                         <div class="col-lg-4">
                             <input name="email" type="text" id="email" placeholder='{{tsl .Session.Lang "label.email"}}'
-                                   class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <input name="www" type="text" id="www" placeholder='{{tsl .Session.Lang "label.website"}}'
                                    class="form-control">
                         </div>
                     </div>
@@ -109,7 +105,7 @@
                             </button>
                             <button id="toggle" type="button" class="btn btn-default"
                                     onclick="toggleAnonymous()">
-                                {{tsl .Session.Lang "label.anonymous"}}
+                                {{tsl .Session.Lang "label.more.info"}}
                             </button>
                         </div>
                     </div>
@@ -236,7 +232,7 @@
     var toggleAnonymous = function () {
         $('#info').toggleClass('hidden')
         if ($('#info').hasClass("hidden")) {
-            $('#toggle').text('{{tsl .Session.Lang "label.more.information"}}')
+            $('#toggle').text('{{tsl .Session.Lang "label.more.info"}}')
         } else {
             $('#toggle').text('{{tsl .Session.Lang "label.anonymous"}}')
         }
