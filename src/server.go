@@ -5,6 +5,7 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
+	"github.com/russross/blackfriday"
 
 	. "auth"
 	. "common"
@@ -49,6 +50,9 @@ func newMartini() *martini.ClassicMartini {
 				},
 				"cnFormatTime": func(args ...interface{}) string {
 					return args[0].(time.Time).Format("2006-01-02 15:04")
+				},
+				"mdToHtml": func(args ...interface{}) template.HTML {
+					return template.HTML(string(blackfriday.MarkdownBasic([]byte(args[0].(string)))))
 				},
 				"unescaped": func(args ...interface{}) template.HTML {
 					return template.HTML(args[0].(string))
