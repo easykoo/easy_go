@@ -179,7 +179,7 @@
             return bootbox.alert('{{tsl .Session.Lang "message.error.content.required"}}', null);
         }
         if ($('#content').val().length >=150) {
-            return bootbox.alert('{{tsl .Session.Lang "message.error.content.required"}}', null);
+            return bootbox.alert('{{tsl .Session.Lang "message.error.content.max.length"}}', null);
         }
 
         $.ajax('/blog/comment', {
