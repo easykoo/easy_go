@@ -13,6 +13,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="/css/front.css" rel="stylesheet" type="text/css">
+    <script src="/js/jquery-1.10.2.min.js"></script>
 
     <!--[if lt IE 9]>
     <script src="/js/html5shiv.min.js"></script>
@@ -84,6 +85,16 @@
                     <input name="blogId" type="text" value="{{.Response.Blog.Id}}" hidden="true">
 
                     <div id="info" class="row form-group hidden">
+                        {{if .Session.SignedUser}}
+                        <div class="col-lg-2">
+                            <input name="name" type="text" id="name" placeholder='{{tsl .Session.Lang "label.name"}}'
+                                   class="form-control" value="{{.Session.SignedUser.FullName}}" disabled>
+                        </div>
+                        <div class="col-lg-4">
+                            <input name="email" type="text" id="email" placeholder='{{tsl .Session.Lang "label.email"}}'
+                                   class="form-control" value="{{.Session.SignedUser.Email}}" disabled>
+                        </div>
+                        {{else}}
                         <div class="col-lg-2">
                             <input name="name" type="text" id="name" placeholder='{{tsl .Session.Lang "label.name"}}'
                                    class="form-control">
@@ -92,6 +103,7 @@
                             <input name="email" type="text" id="email" placeholder='{{tsl .Session.Lang "label.email"}}'
                                    class="form-control">
                         </div>
+                        {{end}}
                     </div>
                     <div class="row form-group">
                         <div class="col-lg-12">
@@ -124,18 +136,29 @@
                     <small>#{{plus $key 1}}</small>
                     <span>
                     {{if .Name}}
-                    <a href='http://{{.Www}}'>{{.Name}}</a>
+                    {{.Name}}
                     {{else}}
                     {{tsl $session.Lang "label.anonymous"}}
                     {{end}}
                     </span>
                     <small>
-                        {{with .Ip}}(<a href="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={{.}}">{{.}}</a>){{end}}
+                        {{if privilege $session.SignedUser 5}}
+                        {{if .Ip}}
+                        <span id="{{.Seq}}from">
+                            <script type="text/javascript"
+                                    src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip={{.Ip}}"></script>
+                            <script type="text/javascript">
+                                $("#"+"{{.Seq}}from").text(remote_ip_info.country + remote_ip_info.province + remote_ip_info.city + remote_ip_info.district)</script>
+                        </span>
+                        {{end}}
+                        {{end}}
+                        <span>
                         {{if equal $session.Lang "zh"}}
                         {{.CreateDate | cnFormatTime}}
                         {{else}}
                         {{.CreateDate | formatTime}}
                         {{end}}
+                        </span>
                     </small>
                 <span class="button-group hidden">
                 {{if privilege $session.SignedUser 5}}
@@ -162,7 +185,6 @@
 <!-- /.container -->
 
 <!-- JavaScript -->
-<script src="/js/jquery-1.10.2.min.js"></script>
 <script src="/js/jquery.validate.min.js"></script>
 <script src="/js/jquery.validate.method.js"></script>
 <script src="/js/bootbox.min.js"></script>
@@ -178,7 +200,7 @@
         if ($('#content').val() == "") {
             return bootbox.alert('{{tsl .Session.Lang "message.error.content.required"}}', null);
         }
-        if ($('#content').val().length >=150) {
+        if ($('#content').val().length >= 150) {
             return bootbox.alert('{{tsl .Session.Lang "message.error.content.max.length"}}', null);
         }
 
